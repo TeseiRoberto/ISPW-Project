@@ -1,5 +1,7 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.exceptions.DbException;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,27 +12,34 @@ import java.util.Properties;
 
 public class DbConnection {
 
-    private final Connection dbConnection;
+    private final Connection connection;
     private static DbConnection instance = null;
-    private final static String dbCredentialsFileName = "myHolidayDb.cfg";
+    private static final String DB_CREDENTIALS_FILE_NAME = "myHolidayDb.cfg";
 
 
     // Load credentials to connect with db and try to connect
-    private DbConnection() throws IOException, SQLException
+    private DbConnection() throws DbException
     {
-        InputStream credentialsFile = new FileInputStream(dbCredentialsFileName);
-        Properties credentials = new Properties();
-        credentials.load(credentialsFile);
+        try {
+            InputStream credentialsFile = new FileInputStream(DB_CREDENTIALS_FILE_NAME);
+            Properties credentials = new Properties();
+            credentials.load(credentialsFile);
 
-        String username = credentials.getProperty("USERNAME");
-        String password = credentials.getProperty("PASSWORD");
-        String url = credentials.getProperty("CONNECTION");
+            String username = credentials.getProperty("USERNAME");
+            String password = credentials.getProperty("PASSWORD");
+            String url = credentials.getProperty("CONNECTION");
 
-        dbConnection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, password);
+            credentialsFile.close();
+        } catch (IOException e) {
+            throw new DbException("Cannot connect to db, " + DB_CREDENTIALS_FILE_NAME + " not found");
+        } catch (SQLException e) {
+            throw new DbException("Db error " + e.getMessage());
+        }
     }
 
 
-    public static DbConnection getInstance() throws IOException, SQLException
+    public static DbConnection getInstance() throws DbException
     {
         if(instance == null)
             instance = new DbConnection();
@@ -38,5 +47,5 @@ public class DbConnection {
         return instance;
     }
 
-    public Connection getConnection() { return dbConnection; }
+    public Connection getConnection() { return connection; }
 }

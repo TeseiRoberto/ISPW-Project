@@ -4,9 +4,9 @@ import com.rt.ispwproject.config.UserRole;
 
 // Bean class that represents the session of a user
 public class Session {
-    final private String username;
-    final private String email;
-    final private UserRole role;
+    private final String username;
+    private final String email;
+    private final UserRole role;
 
     public Session(String username, String email, UserRole role)
     {

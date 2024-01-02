@@ -1,6 +1,9 @@
-package com.rt.ispwproject.graphicControllers.jfxGraphicControllers;
+package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
 import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.config.UserRole;
+import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.exceptions.UserNotFoundException;
 import com.rt.ispwproject.logicControllers.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -37,7 +40,13 @@ public class LoginGfxControllerJfx extends Application {
 
         try {
             currSession = ctrl.login(usernameTextfield.getText(), passwordTextfield.getText());
-        } catch(RuntimeException e)
+
+            if(currSession.getUserRole() == UserRole.SIMPLE_USER)
+            {
+
+            }
+
+        } catch(UserNotFoundException | DbException e)
         {
             Alert errorMsg = new Alert(Alert.AlertType.ERROR);
             errorMsg.setContentText(e.getMessage());

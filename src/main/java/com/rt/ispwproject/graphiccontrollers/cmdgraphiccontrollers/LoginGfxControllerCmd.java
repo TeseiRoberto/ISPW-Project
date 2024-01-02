@@ -1,4 +1,4 @@
-package com.rt.ispwproject.graphicControllers.cmdGraphicControllers;
+package com.rt.ispwproject.graphiccontrollers.cmdgraphiccontrollers;
 
 public class LoginGfxControllerCmd {
     // TODO: Add implementation...
