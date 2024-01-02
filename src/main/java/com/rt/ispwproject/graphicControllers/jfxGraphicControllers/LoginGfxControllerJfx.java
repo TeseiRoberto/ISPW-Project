@@ -1,9 +1,12 @@
 package com.rt.ispwproject.graphicControllers.jfxGraphicControllers;
 
+import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.logicControllers.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -29,7 +32,16 @@ public class LoginGfxControllerJfx extends Application {
     // Called when login button is clicked
     public void onLoginClick()
     {
-        // TODO: add implementation
-        System.out.println(usernameTextfield.getText() + " - " + passwordTextfield.getText());
+        LoginController ctrl = new LoginController();
+        Session currSession;
+
+        try {
+            currSession = ctrl.login(usernameTextfield.getText(), passwordTextfield.getText());
+        } catch(RuntimeException e)
+        {
+            Alert errorMsg = new Alert(Alert.AlertType.ERROR);
+            errorMsg.setContentText(e.getMessage());
+            errorMsg.showAndWait();
+        }
     }
 }
