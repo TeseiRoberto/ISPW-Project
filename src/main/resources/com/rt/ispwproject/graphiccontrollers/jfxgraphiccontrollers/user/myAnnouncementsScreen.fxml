@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.MyAnnouncementsGfxControllerJfx">
+   <top>
+      <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: E69E0F;" BorderPane.alignment="CENTER">
+         <left>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="My Holiday" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets left="14.0" />
+               </BorderPane.margin>
+            </Text>
+         </left>
+         <center>
+            <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="myAnnouncements_btn" fx:id="myAnnouncementsBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" style="-fx-border-color: #2B2B2B; -fx-background-color: FFFFFF; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="My announcements" textFill="#e69e0f">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets></Button>
+                  <Button id="createAnnouncement_btn" fx:id="createAnnouncementBtn" mnemonicParsing="false" onMouseClicked="#onCreateAnnouncementClick" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Create announcement" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="50.0" right="50.0" />
+               </BorderPane.margin>
+            </HBox>
+         </center>
+         <right>
+            <Button id="logout_btn" fx:id="logoutBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-shape: &quot;M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z&quot;; -fx-background-color: #2B2B2B;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="14.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox id="titles" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="614.0" spacing="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure - Return">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Budget" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <ScrollPane id="announcements_scrollPane" fx:id="announcements_scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #FFFFFF;">
+               <content>
+                  <VBox fx:id="announcementsVbox" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF;">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </ScrollPane>
+         </children>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

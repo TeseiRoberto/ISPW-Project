@@ -17,26 +17,34 @@ public class ProfileDao {
         Profile newProfile = null;
         Connection connection = DbConnection.getInstance().getConnection();
 
-        // Create callable statement and set up parameters to call the login stored procedure
-        try {
-            CallableStatement loginProc = connection.prepareCall("{call login(?, ?, ?, ?)}");
-
+        // Create callable statement and set up parameters to invoke the login stored procedure
+        try (CallableStatement loginProc = connection.prepareCall("call login(?, ?, ?, ?, ?)"))
+        {
             loginProc.setString("username_in", username);
             loginProc.setString("password_in", password);
+            loginProc.registerOutParameter("userId_out", Types.INTEGER);
+            loginProc.registerOutParameter("role_out", Types.VARCHAR);
             loginProc.registerOutParameter("email_out", Types.VARCHAR);
-            loginProc.registerOutParameter("role_out", Types.NUMERIC);
 
             loginProc.executeQuery();
 
-            int roleNum = loginProc.getInt(3);                  // Retrieve output parameters
-            String email = loginProc.getString(4);
+            int userId = loginProc.getInt(3);                                   // Retrieve output parameters
+            String roleAsStr = loginProc.getString(4);
+            String email = loginProc.getString(5);
 
-            if (!loginProc.wasNull())
-                newProfile = new Profile(username, email, UserRole.fromInt(roleNum));
+            if (!loginProc.wasNull())                                           // If we got not null output parameters
+            {
+                try {
+                    UserRole role = UserRole.valueOf(roleAsStr);                // Get user role
+                    newProfile = new Profile(userId, username, email, role);
+                } catch(IllegalArgumentException e)
+                {
+                    throw new DbException("User has been found but cannot recognize his role in the system: " + e.getMessage());
+                }
+            }
 
-            loginProc.close();
         } catch (SQLException e) {
-            throw new DbException("Failed to invoke the login stored procedure");
+            throw new DbException("Failed to invoke the \"login\" stored procedure: " + e.getMessage());
         }
 
         return newProfile;

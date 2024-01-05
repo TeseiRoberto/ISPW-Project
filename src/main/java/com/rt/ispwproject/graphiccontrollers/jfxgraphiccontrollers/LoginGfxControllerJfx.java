@@ -3,8 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.exceptions.UserNotFoundException;
-import com.rt.ispwproject.logicControllers.LoginController;
+import com.rt.ispwproject.logicControllers.LoginManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class LoginGfxControllerJfx extends Application {
@@ -35,22 +35,42 @@ public class LoginGfxControllerJfx extends Application {
     // Called when login button is clicked
     public void onLoginClick()
     {
-        LoginController ctrl = new LoginController();
+        LoginManager loginMan = new LoginManager();
         Session currSession;
 
         try {
-            currSession = ctrl.login(usernameTextfield.getText(), passwordTextfield.getText());
-
-            if(currSession.getUserRole() == UserRole.SIMPLE_USER)
-            {
-
-            }
-
-        } catch(UserNotFoundException | DbException e)
+            currSession = loginMan.login(usernameTextfield.getText(), passwordTextfield.getText());
+            onLoginSuccess(currSession);
+        } catch(RuntimeException | DbException | IOException e)
         {
             Alert errorMsg = new Alert(Alert.AlertType.ERROR);
             errorMsg.setContentText(e.getMessage());
             errorMsg.showAndWait();
         }
+    }
+
+
+    // Loads new screen according to user role
+    private void onLoginSuccess(Session session) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader();
+
+        switch (session.getUserRole())
+        {
+            case UserRole.SIMPLE_USER:
+                loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session));
+                loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
+                break;
+
+            case UserRole.TRAVEL_AGENCY:
+                // TODO: Create appropriate graphics controller and load appropriate screen!!!
+                loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session));
+                loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
+                break;
+        }
+
+        Scene newScene = new Scene(loader.load(), 720, 480);
+        Stage currStage = (Stage) usernameTextfield.getScene().getWindow();
+        currStage.setScene(newScene);
     }
 }
