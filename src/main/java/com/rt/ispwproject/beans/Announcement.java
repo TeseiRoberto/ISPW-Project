@@ -1,6 +1,5 @@
 package com.rt.ispwproject.beans;
 
-import com.rt.ispwproject.model.Accommodation;
 import com.rt.ispwproject.model.AccommodationType;
 import com.rt.ispwproject.model.TransportType;
 
