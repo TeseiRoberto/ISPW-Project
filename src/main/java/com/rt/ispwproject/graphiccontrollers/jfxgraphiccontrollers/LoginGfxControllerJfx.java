@@ -3,7 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.logicControllers.LoginManager;
+import com.rt.ispwproject.logiccontrollers.LoginManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,8 +69,9 @@ public class LoginGfxControllerJfx extends Application {
                 break;
         }
 
-        Scene newScene = new Scene(loader.load(), 720, 480);
-        Stage currStage = (Stage) usernameTextfield.getScene().getWindow();
+        Scene currScene = usernameTextfield.getScene();
+        Stage currStage = (Stage) currScene.getWindow();
+        Scene newScene = new Scene(loader.load(), currScene.getWidth(), currScene.getHeight());
         currStage.setScene(newScene);
     }
 }

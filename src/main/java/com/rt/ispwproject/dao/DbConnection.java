@@ -20,8 +20,8 @@ public class DbConnection {
     // Load credentials to connect with db and try to connect
     private DbConnection() throws DbException
     {
-        try {
-            InputStream credentialsFile = new FileInputStream(DB_CREDENTIALS_FILE_NAME);
+        try (InputStream credentialsFile = new FileInputStream(DB_CREDENTIALS_FILE_NAME))
+        {
             Properties credentials = new Properties();
             credentials.load(credentialsFile);
 
@@ -30,7 +30,6 @@ public class DbConnection {
             String url = credentials.getProperty("CONNECTION");
 
             connection = DriverManager.getConnection(url, username, password);
-            credentialsFile.close();
         } catch (IOException e) {
             throw new DbException("Cannot connect to db, " + DB_CREDENTIALS_FILE_NAME + " not found");
         } catch (SQLException e) {

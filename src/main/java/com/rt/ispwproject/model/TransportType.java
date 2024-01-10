@@ -1,4 +1,4 @@
 package com.rt.ispwproject.model;
 
-public enum TransportType { UNSPECIFIED, AIRPLANE, TRAIN, BOAT, BUS }
+public enum TransportType { UNSPECIFIED, AIRPLANE, TRAIN, FERRY, BUS }
 

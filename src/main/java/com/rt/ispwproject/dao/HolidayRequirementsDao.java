@@ -18,12 +18,11 @@ public class HolidayRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createHolidayRequirements stored procedure
-        try (CallableStatement saveRequirementsProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") )
+        try (CallableStatement saveRequirementsProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             saveRequirementsProc.setInt("userId_in", userId);
             saveRequirementsProc.setString("destination_in", requirements.getDestination());
             saveRequirementsProc.setInt("availableBudget_in", requirements.getAvailableBudget());
-            saveRequirementsProc.setInt("numOfTravelers_in", requirements.getNumOfTravelers());
             saveRequirementsProc.setString("description_in", requirements.getHolidayDescription());
             saveRequirementsProc.setDate("dateOfPost_in", Date.valueOf(requirements.getDateOfPost()));
             saveRequirementsProc.setDate("departureDate_in", Date.valueOf(requirements.getDateOfPost()));
@@ -33,6 +32,8 @@ public class HolidayRequirementsDao {
             saveRequirementsProc.setInt("numOfRooms_in", requirements.getNumOfRoomsRequired());
             saveRequirementsProc.setString("transportType_in", requirements.getTransportType().toString());
             saveRequirementsProc.setInt("transportQuality_in", requirements.getTransportQuality());
+            saveRequirementsProc.setInt("numOfTravelers_in", requirements.getNumOfTravelers());
+            saveRequirementsProc.setString("departureLocation_in", requirements.getDepartureLocation());
 
             saveRequirementsProc.execute();
         } catch(SQLException e)
@@ -50,7 +51,7 @@ public class HolidayRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the getUserHolidayRequirements stored procedure
-        try (CallableStatement getRequirementsProc = connection.prepareCall("call getUserHolidayRequirements(?, ?)") )
+        try (CallableStatement getRequirementsProc = connection.prepareCall("call getUserHolidayRequirements(?, ?)"))
         {
             getRequirementsProc.setInt("userId_in", userId);
             getRequirementsProc.registerOutParameter("ownerUsername_out", Types.VARCHAR);
@@ -68,8 +69,7 @@ public class HolidayRequirementsDao {
                     req.setOwner(ownerUsername);
                     req.setDestination(rs.getString("destination"));
                     req.setHolidayDescription(rs.getString("description"));
-                    req.setAvailableBudget(rs.getInt("availableBudget"));
-                    req.setNumOfTravelers(rs.getInt("numOfTravelers"));
+                    req.setAvailableBudget(rs.getInt("budget"));
                     req.setDateOfPost(rs.getDate("dateOfPost").toLocalDate());
                     req.setDepartureDate(rs.getDate("departureDate").toLocalDate());
                     req.setReturnDate(rs.getDate("returnDate").toLocalDate());
@@ -78,7 +78,10 @@ public class HolidayRequirementsDao {
                     req.setNumOfRoomsRequired(rs.getInt("numOfRooms"));
                     req.setTransportType(TransportType.valueOf( rs.getString("transportType") ));
                     req.setTransportQuality(rs.getInt("transportQuality"));
+                    req.setNumOfTravelers(rs.getInt("numOfTravelers"));
+                    req.setDepartureLocation(rs.getString("departureLocation"));
                     req.setNumOfViews(rs.getInt("numOfViews"));
+                    req.setSatisfied(rs.getBoolean("isSatisfied"));
 
                     requirements.add(req);
                 }

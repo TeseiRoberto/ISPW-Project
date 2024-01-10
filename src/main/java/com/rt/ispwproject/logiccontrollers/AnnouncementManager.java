@@ -1,4 +1,4 @@
-package com.rt.ispwproject.logicControllers;
+package com.rt.ispwproject.logiccontrollers;
 
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
@@ -13,7 +13,7 @@ import java.util.List;
 public class AnnouncementManager {
 
     // Inserts a new announcement in the system
-    public void PostAnnouncement(Session currUser, Announcement announcement) throws RuntimeException, DbException
+    public void postAnnouncement(Session currUser, Announcement announcement) throws DbException
     {
         HolidayRequirements newReq = new HolidayRequirements();
 
@@ -31,10 +31,9 @@ public class AnnouncementManager {
         newReq.setTransportType(announcement.getTransportType());
         newReq.setTransportQuality(announcement.getTransportQuality());
 
-        LocalDate today = LocalDate.now();
-        newReq.setDateOfPost(today);
+        newReq.setDateOfPost(LocalDate.now());
 
-        newReq.checkValidity();
+        //newReq.checkValidity(); TODO: This must be done in the bean class
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
         requirementsDao.postRequirements(currUser.getUserId(), newReq);
@@ -42,7 +41,7 @@ public class AnnouncementManager {
 
 
     // Removes an existing announcement from the system
-    public void RemoveAnnouncement(Session currUser, Announcement announcement) throws DbException
+    public void removeAnnouncement(Session currUser, Announcement announcement) throws DbException
     {
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
         requirementsDao.removeRequirements(currUser.getUserId(), announcement.getId());
@@ -59,11 +58,23 @@ public class AnnouncementManager {
 
         for(HolidayRequirements req : requirements)         // Convert model instances to beans
         {
-            Announcement a = new Announcement(
-              req.getId(), req.getOwner(), req.getDestination(), req.getHolidayDescription(), req.getAvailableBudget(), req.getNumOfTravelers(),
-              req.getDateOfPost(), req.getDepartureDate(), req.getReturnDate(), req.getAccommodationType(), req.getAccommodationQuality(),
-              req.getNumOfRoomsRequired(), req.getTransportType(), req.getTransportQuality(), req.getNumOfViews()
-            );
+            Announcement a = new Announcement();
+            a.setId(req.getId());
+            a.setOwner(req.getOwner());
+            a.setDestination(req.getDestination());
+            a.setHolidayDescription(req.getHolidayDescription());
+            a.setAvailableBudget(req.getAvailableBudget());
+            a.setNumOfTravelers(req.getNumOfTravelers());
+            a.setDateOfPost(req.getDateOfPost());
+            a.setDepartureDate(req.getDepartureDate());
+            a.setReturnDate(req.getReturnDate());
+            a.setAccommodationType(req.getAccommodationType());
+            a.setAccommodationQuality(req.getAccommodationQuality());
+            a.setNumOfRoomsRequired(req.getNumOfRoomsRequired());
+            a.setTransportType(req.getTransportType());
+            a.setTransportQuality(req.getTransportQuality());
+            a.setDepartureLocation(req.getDepartureLocation());
+            a.setNumOfViews(req.getNumOfViews());
 
             announcements.add(a);
         }

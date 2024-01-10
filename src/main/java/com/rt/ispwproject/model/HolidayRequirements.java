@@ -4,60 +4,67 @@ import java.time.LocalDate;
 
 public class HolidayRequirements {
 
-    private int         id = -1;
-    private String      owner = "";
-    private String      destination = "";
-    private String      holidayDescription = "";
-    private int         availableBudget = 0;
-    private int         numOfTravelers = 1;
-    private LocalDate   dateOfPost = LocalDate.now();
-    private LocalDate   departureDate = LocalDate.now();
-    private LocalDate   returnDate = LocalDate.now();
+    private int             id;
+    private String          owner;
+    private String          holidayDescription;
+    private LocalDate       dateOfPost;
+    private int             numOfViews;
+    private boolean         satisfied;
+    private final Holiday   requirements;
 
-    private AccommodationType   accommodationType = AccommodationType.UNSPECIFIED;
-    private int                 accommodationQuality = 1;
-    private int                 numOfRoomsRequired = 1;
-    private TransportType       transportType = TransportType.UNSPECIFIED;
-    private int                 transportQuality = 1;
-    private int                 numOfViews = 0;
+
+    public HolidayRequirements()
+    {
+        this.id = -1;
+        this.owner = "";
+        this.holidayDescription = "";
+        this.dateOfPost = LocalDate.now();
+        this.numOfViews = 0;
+        this.satisfied = false;
+        this.requirements = new Holiday("", 0, LocalDate.now(), LocalDate.now(), new Accommodation(), new Transport());
+    }
+
 
     // Setters
     public void setId(int id)                               { this.id = id; }
     public void setOwner(String owner)                      { this.owner = owner; }
-    public void setDestination(String destination)          { this.destination = destination; }
     public void setHolidayDescription(String description)   { this.holidayDescription = description; }
-    public void setAvailableBudget(int budget)              { this.availableBudget = budget; }
-    public void setNumOfTravelers(int numOfTravelers)       { this.numOfTravelers = numOfTravelers; }
     public void setDateOfPost(LocalDate date)               { this.dateOfPost = date; }
-    public void setDepartureDate(LocalDate date)            { this.departureDate = date; }
-    public void setReturnDate(LocalDate date)               { this.returnDate = date; }
-
-    public void setAccommodationType(AccommodationType type) { this.accommodationType = type; }
-    public void setAccommodationQuality(int quality)        { this.accommodationQuality = Math.clamp(quality, 1, 5 ); }
-    public void setNumOfRoomsRequired(int numOfRooms)       { this.numOfRoomsRequired = Math.max(numOfRooms, 0); }
-    public void setTransportType(TransportType type)        { this.transportType = type; }
-    public void setTransportQuality(int quality)            { this.transportQuality = Math.clamp(quality, 1, 5 ); }
     public void setNumOfViews(int num)                      { this.numOfViews = Math.max(0, num); }
+    public void setDestination(String destination)          { this.requirements.setDestination(destination); }
+    public void setAvailableBudget(int budget)              { this.requirements.setPrice(budget); }
+    public void setNumOfTravelers(int numOfTravelers)       { this.requirements.getTransport().setNumOfTravelers(numOfTravelers); }
+    public void setDepartureDate(LocalDate date)            { this.requirements.setStartDate(date); }
+    public void setReturnDate(LocalDate date)               { this.requirements.setEndDate(date); }
+    public void setAccommodationType(AccommodationType type) { this.requirements.getAccommodation().setType(type); }
+    public void setAccommodationQuality(int quality)        { this.requirements.getAccommodation().setQuality(quality); }
+    public void setNumOfRoomsRequired(int numOfRooms)       { this.requirements.getAccommodation().setNumOfRooms(numOfRooms); }
+    public void setTransportType(TransportType type)        { this.requirements.getTransport().setType(type); }
+    public void setTransportQuality(int quality)            { this.requirements.getTransport().setQuality(quality); }
+    public void setDepartureLocation(String location)       { this.requirements.getTransport().setDepartureLocation(location); }
+    public void setSatisfied(boolean value)                 { this.satisfied = value; }
+
 
     // Getters
     public int getId()                                      { return this.id; }
     public String getOwner()                                { return this.owner; }
-    public String getDestination()                          { return this.destination; }
     public String getHolidayDescription()                   { return this.holidayDescription; }
-    public int getAvailableBudget()                         { return this.availableBudget; }
-    public int getNumOfTravelers()                          { return this.numOfTravelers; }
     public LocalDate getDateOfPost()                        { return this.dateOfPost; }
-    public LocalDate getDepartureDate()                     { return this.departureDate; }
-    public LocalDate getReturnDate()                        { return this.returnDate; }
-
-    public AccommodationType getAccommodationType()         { return this.accommodationType; }
-    public int getAccommodationQuality()                    { return this.accommodationQuality; }
-    public int getNumOfRoomsRequired()                      { return this.numOfRoomsRequired; }
-    public TransportType getTransportType()                 { return this.transportType; }
-    public int getTransportQuality()                        { return this.transportQuality; }
     public int getNumOfViews()                              { return this.numOfViews; }
+    public String getDestination()                          { return this.requirements.getDestination(); }
+    public int getAvailableBudget()                         { return this.requirements.getPrice(); }
+    public int getNumOfTravelers()                          { return this.requirements.getTransport().getNumOfTravelers(); }
+    public LocalDate getDepartureDate()                     { return this.requirements.getStartDate(); }
+    public LocalDate getReturnDate()                        { return this.requirements.getEndDate(); }
+    public AccommodationType getAccommodationType()         { return this.requirements.getAccommodation().getType(); }
+    public int getAccommodationQuality()                    { return this.requirements.getAccommodation().getQuality(); }
+    public int getNumOfRoomsRequired()                      { return this.requirements.getAccommodation().getNumOfRooms(); }
+    public TransportType getTransportType()                 { return this.requirements.getTransport().getType(); }
+    public int getTransportQuality()                        { return this.requirements.getTransport().getQuality(); }
+    public String getDepartureLocation()                    { return this.requirements.getTransport().getDepartureLocation(); }
+    public boolean isSatisfied()                            { return this.satisfied; }
 
-
+    /* TODO: This should be moved into the bean class
     // Verify that the holiday requirements are logically valid, if they are not an exception is thrown
     public void checkValidity() throws RuntimeException
     {
@@ -111,6 +118,6 @@ public class HolidayRequirements {
             errorMsg = errorMsg.substring(0, errorMsg.length() - 1) + '.';  // Replace last comma with a dot
             throw new RuntimeException(errorMsg);
         }
-    }
+    }*/
 
 }

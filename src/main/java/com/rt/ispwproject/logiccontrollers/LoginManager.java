@@ -1,4 +1,4 @@
-package com.rt.ispwproject.logicControllers;
+package com.rt.ispwproject.logiccontrollers;
 
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.dao.ProfileDao;

@@ -38,8 +38,8 @@ public class Main {
     // Loads the type of gui that the application should use from given configuration file
     public static void loadConfigurationFile(String fileName)
     {
-        try {
-            InputStream configFile = new FileInputStream(fileName);
+        try (InputStream configFile = new FileInputStream(fileName))
+        {
             Properties config = new Properties();
             config.load(configFile);
 
@@ -48,7 +48,6 @@ public class Main {
             else
                 typeOfGui = GuiType.CMDLINE_GUI;
 
-            configFile.close();
         } catch(IOException e)
         {
             typeOfGui = GuiType.CMDLINE_GUI;

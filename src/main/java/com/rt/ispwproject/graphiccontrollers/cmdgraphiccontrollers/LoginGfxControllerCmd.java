@@ -3,7 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.cmdgraphiccontrollers;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.cmdview.LoginViewCmd;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.logicControllers.LoginManager;
+import com.rt.ispwproject.logiccontrollers.LoginManager;
 
 import java.io.IOException;
 
@@ -13,8 +13,8 @@ public class LoginGfxControllerCmd {
 
     public void start()
     {
-        String username = "";
-        String password = "";
+        String username;
+        String password;
 
         loginView.showWelcome();
         try {

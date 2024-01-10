@@ -4,7 +4,7 @@ import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.AnnouncementGfxElement;
-import com.rt.ispwproject.logicControllers.AnnouncementManager;
+import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
