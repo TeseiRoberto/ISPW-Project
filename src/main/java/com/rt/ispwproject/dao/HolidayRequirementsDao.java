@@ -25,8 +25,8 @@ public class HolidayRequirementsDao {
             saveRequirementsProc.setInt("availableBudget_in", requirements.getAvailableBudget());
             saveRequirementsProc.setString("description_in", requirements.getHolidayDescription());
             saveRequirementsProc.setDate("dateOfPost_in", Date.valueOf(requirements.getDateOfPost()));
-            saveRequirementsProc.setDate("departureDate_in", Date.valueOf(requirements.getDateOfPost()));
-            saveRequirementsProc.setDate("returnDate_in", Date.valueOf(requirements.getDateOfPost()));
+            saveRequirementsProc.setDate("departureDate_in", Date.valueOf(requirements.getDepartureDate()));
+            saveRequirementsProc.setDate("returnDate_in", Date.valueOf(requirements.getReturnDate()));
             saveRequirementsProc.setString("accommodationType_in", requirements.getAccommodationType().toString());
             saveRequirementsProc.setInt("accommodationQuality_in", requirements.getAccommodationQuality());
             saveRequirementsProc.setInt("numOfRooms_in", requirements.getNumOfRoomsRequired());

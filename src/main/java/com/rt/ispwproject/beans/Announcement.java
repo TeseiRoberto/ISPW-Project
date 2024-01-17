@@ -31,8 +31,8 @@ public class Announcement {
         this.destination = "";
         this.holidayDescription = "";
         this.availableBudget = -1;
-        //this.dateOfPost = LocalDate.now();
-        //this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
+        this.dateOfPost = LocalDate.now();
+        this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
         this.accommodationType = AccommodationType.UNSPECIFIED;
         this.accommodationQuality = -1;
         this.numOfRoomsRequired = -1;
@@ -82,7 +82,7 @@ public class Announcement {
             throw new IllegalArgumentException("Date of post cannot be empty!");
 
         if(this.holidayDuration != null && date.isAfter(this.holidayDuration.getStartDate()))
-            throw new IllegalArgumentException("Date of post cannot be after the start date of the holiday!");
+            throw new IllegalArgumentException("Date of post cannot be after the departure date of the holiday!");
 
         this.dateOfPost = date;
     }
@@ -93,7 +93,7 @@ public class Announcement {
             throw new IllegalArgumentException("Holiday duration cannot be empty!");
 
         if(this.dateOfPost != null && duration.getStartDate().isBefore(this.dateOfPost))
-            throw new IllegalArgumentException("Holiday duration start date cannot be before the date of post of the announcement!");
+            throw new IllegalArgumentException("Departure date cannot be before the date of post of the announcement!");
 
         this.holidayDuration = duration;
     }
@@ -108,7 +108,7 @@ public class Announcement {
 
     public void setAccommodationQuality(int quality) throws IllegalArgumentException
     {
-        if(quality < 0 || quality > 5)
+        if(quality < 1 || quality > 5)
             throw new IllegalArgumentException("Accommodation quality must be in range [0, 5]!");
 
         this.accommodationQuality = quality;
@@ -132,7 +132,7 @@ public class Announcement {
 
     public void setTransportQuality(int quality) throws IllegalArgumentException
     {
-        if(quality < 0 || quality > 5)
+        if(quality < 1 || quality > 5)
             throw new IllegalArgumentException("Transport quality must be in range [0, 5]!");
 
         this.transportQuality = quality;

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.CreateAnnouncementGfxControllerJfx">
+   <top>
+      <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: #E69E0F;" BorderPane.alignment="CENTER">
+         <left>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="My Holiday" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets left="14.0" />
+               </BorderPane.margin>
+            </Text>
+         </left>
+         <center>
+            <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="myAnnouncements_btn" mnemonicParsing="false" onMouseClicked="#onMyAnnouncementsClick" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="My announcements" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button id="createAnnouncement_btn" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: FFFFFF; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Create announcement" textFill="#e69e0f">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="50.0" right="50.0" />
+               </BorderPane.margin>
+            </HBox>
+         </center>
+         <right>
+            <Button id="logout_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-shape: &quot;M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z&quot;; -fx-background-color: #2B2B2B;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="14.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <ScrollPane id="announcements_scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+         <content>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-background-color: #ffffff;">
+               <children>
+                  <HBox id="general_title" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="127.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="General">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox id="description_field" alignment="CENTER" prefHeight="120.0" spacing="20.0">
+                     <children>
+                        <Label text="Description" textAlignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextArea id="description_textarea" fx:id="descriptionTextarea" prefHeight="100.0" prefWidth="500.0" promptText="Insert a brief description..." style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </HBox>
+                  <HBox id="destinationAndBudget" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="destination_textfield" fx:id="destinationTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Destination" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available budget" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="destination_textfield" fx:id="availableBudgetTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="available budget" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox id="departureAndReturn" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure date" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker id="departure_datepicker" fx:id="departureDatePicker" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Departure" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Return date" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker id="departure_datepicker" fx:id="returnDatePicker" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Return" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox id="numOfTravelers" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="destination_textfield" fx:id="numOfTravelersTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Num. of travelers" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0" />
+                     </children>
+                  </HBox>
+                  <HBox id="accommodation_title" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="127.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Accommodation">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox id="accommodationTypeAndQuality" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <ComboBox fx:id="accommodationTypeCombobox" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="accommodationQualityHbox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quality" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox id="accommodationNumOfRooms" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of rooms" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="numOfRoomsTextfield" fx:id="numOfRoomsTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Num. of rooms" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0" />
+                     </children>
+                  </HBox>
+                  <HBox id="transport_title" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="127.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Transport">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox id="transportTypeAndQuality" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <ComboBox fx:id="transportTypeCombobox" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="transportQualityHbox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quality" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox id="transportDepartureFrom" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure from" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="departureFromTextfield" fx:id="departureFromTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Departure from" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0" />
+                     </children>
+                  </HBox>
+                  <Button id="postAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onPostAnnouncementClick" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: E69E0F; -fx-background-radius: 8; -fx-border-color: #2B2B2B; -fx-border-radius: 8;" text="Post announcement" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

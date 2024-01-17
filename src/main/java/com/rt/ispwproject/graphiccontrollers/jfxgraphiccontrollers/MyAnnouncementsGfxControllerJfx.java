@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -56,12 +57,11 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "create announcements" button is clicked
+    // Invoked when the "create announcements" button is clicked, switches to the "create announcement" screen
     public void onCreateAnnouncementClick()
     {
-        // TODO: pass to "create announcement screen"
-        System.out.println("User: " + currSession.getUsername() + " (" +
-                currSession.getEmail() + ") has clicked the create announcement button!");
+        changeScreen(getClass().getResource("user/createAnnouncementScreen.fxml"),
+                (Stage) announcementsVbox.getScene().getWindow(), c -> new CreateAnnouncementGfxControllerJfx(currSession));
     }
 
 

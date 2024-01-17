@@ -7,7 +7,6 @@ import com.rt.ispwproject.dao.HolidayRequirementsDao;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.HolidayRequirements;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class AnnouncementManager {
         newReq.setDestination(announce.getDestination());
         newReq.setHolidayDescription(announce.getHolidayDescription());
         newReq.setAvailableBudget(announce.getAvailableBudget());
-        newReq.setNumOfTravelers(announce.getNumOfTravelers());
+        newReq.setDateOfPost(announce.getDateOfPost());
         newReq.setDepartureDate(announce.getHolidayDuration().getStartDate());
         newReq.setReturnDate(announce.getHolidayDuration().getEndDate());
         newReq.setAccommodationType(announce.getAccommodationType());
@@ -31,8 +30,8 @@ public class AnnouncementManager {
         newReq.setNumOfRoomsRequired(announce.getNumOfRoomsRequired());
         newReq.setTransportType(announce.getTransportType());
         newReq.setTransportQuality(announce.getTransportQuality());
-
-        newReq.setDateOfPost(LocalDate.now());
+        newReq.setNumOfTravelers(announce.getNumOfTravelers());
+        newReq.setDepartureLocation(announce.getDepartureLocation());
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
         requirementsDao.postRequirements(currUser.getUserId(), newReq);
