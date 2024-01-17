@@ -41,7 +41,7 @@ public class LoginGfxControllerJfx extends Application {
         try {
             currSession = loginMan.login(usernameTextfield.getText(), passwordTextfield.getText());
             onLoginSuccess(currSession);
-        } catch(RuntimeException | DbException | IOException e)
+        } catch(RuntimeException | DbException e)
         {
             Alert errorMsg = new Alert(Alert.AlertType.ERROR);
             errorMsg.setContentText(e.getMessage());
@@ -51,7 +51,7 @@ public class LoginGfxControllerJfx extends Application {
 
 
     // Loads new screen according to user role
-    private void onLoginSuccess(Session session) throws IOException
+    private void onLoginSuccess(Session session) throws RuntimeException
     {
         FXMLLoader loader = new FXMLLoader();
 
@@ -69,9 +69,14 @@ public class LoginGfxControllerJfx extends Application {
                 break;
         }
 
-        Scene currScene = usernameTextfield.getScene();
-        Stage currStage = (Stage) currScene.getWindow();
-        Scene newScene = new Scene(loader.load(), currScene.getWidth(), currScene.getHeight());
-        currStage.setScene(newScene);
+        try {
+            Scene currScene = usernameTextfield.getScene();
+            Stage currStage = (Stage) currScene.getWindow();
+            Scene newScene = new Scene(loader.load(), currScene.getWidth(), currScene.getHeight());
+            currStage.setScene(newScene);
+        } catch(IOException e)
+        {
+            throw new RuntimeException("Change of JavaFx screen failed: " + e.getMessage());
+        }
     }
 }

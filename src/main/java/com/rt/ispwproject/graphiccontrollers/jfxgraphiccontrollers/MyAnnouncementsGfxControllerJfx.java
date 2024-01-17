@@ -6,7 +6,6 @@ import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.AnnouncementGfxElement;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -15,7 +14,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.List;
 
 
-public class MyAnnouncementsGfxControllerJfx {
+public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
 
     @FXML VBox announcementsVbox;
     private final Session currSession;
@@ -37,9 +36,7 @@ public class MyAnnouncementsGfxControllerJfx {
             announcements = annManager.getMyAnnouncements(currSession);
         } catch(DbException e)
         {
-            Alert errorMsg = new Alert(Alert.AlertType.ERROR);
-            errorMsg.setContentText(e.getMessage());
-            errorMsg.showAndWait();
+            displayError(e.getMessage());
             announcements.clear();
         }
 
@@ -52,7 +49,7 @@ public class MyAnnouncementsGfxControllerJfx {
         } else {
             for(Announcement el : announcements)
             {
-                AnnouncementGfxElement gfxEl = new AnnouncementGfxElement(el, e -> onAnnouncementSelected(el) );
+                AnnouncementGfxElement gfxEl = new AnnouncementGfxElement(el, e -> onAnnouncementSelected(el), false);
                 announcementsVbox.getChildren().add(gfxEl);
             }
         }

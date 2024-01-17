@@ -51,22 +51,19 @@ public class HolidayRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the getUserHolidayRequirements stored procedure
-        try (CallableStatement getRequirementsProc = connection.prepareCall("call getUserHolidayRequirements(?, ?)"))
+        try (CallableStatement getRequirementsProc = connection.prepareCall("call getUserHolidayRequirements(?)"))
         {
             getRequirementsProc.setInt("userId_in", userId);
-            getRequirementsProc.registerOutParameter("ownerUsername_out", Types.VARCHAR);
 
             boolean status = getRequirementsProc.execute();
-            String ownerUsername = getRequirementsProc.getString("ownerUsername_out");  // Retrieve name of the user that posted the announcements
-
-            if(status && !getRequirementsProc.wasNull())                                // If the stored procedure returned a result set
+            if(status)                                      // If the stored procedure returned a result set
             {
                 ResultSet rs = getRequirementsProc.getResultSet();
                 while(rs.next())
                 {
                     HolidayRequirements req = new HolidayRequirements();
                     req.setId(rs.getInt("id"));
-                    req.setOwner(ownerUsername);
+                    req.setOwner(rs.getString("ownerUsername"));
                     req.setDestination(rs.getString("destination"));
                     req.setHolidayDescription(rs.getString("description"));
                     req.setAvailableBudget(rs.getInt("budget"));

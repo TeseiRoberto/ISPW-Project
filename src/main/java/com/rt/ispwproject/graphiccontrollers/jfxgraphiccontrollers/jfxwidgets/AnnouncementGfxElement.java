@@ -14,7 +14,7 @@ import javafx.scene.text.Font;
 public class AnnouncementGfxElement extends VBox {
 
 
-    public AnnouncementGfxElement(Announcement announcement, EventHandler<MouseEvent> onClick)
+    public AnnouncementGfxElement(Announcement announce, EventHandler<MouseEvent> onClick, boolean showOwner)
     {
         // Set vbox style and layout
         this.setStyle("-fx-background-color: #EBEBEB;" +
@@ -31,11 +31,11 @@ public class AnnouncementGfxElement extends VBox {
         this.minHeight(USE_PREF_SIZE);
 
         // Create labels
-        Label destinationText = new Label(announcement.getDestination());
-        Label departureAndReturnText = new Label(announcement.getDepartureDate().toString() + " - " + announcement.getReturnDate().toString());
-        Label budgetText = new Label( Integer.toString(announcement.getAvailableBudget()) );
-        Label dateOfPostText = new Label("published on " + announcement.getDateOfPost().toString());
-        Label numOfViewsText = new Label( announcement.getNumOfViews() + " views");
+        Label destinationText = new Label(announce.getDestination());
+        Label departureAndReturnText = new Label(announce.getHolidayDuration().getStartDate().toString() + " - " + announce.getHolidayDuration().getEndDate().toString());
+        Label budgetText = new Label( Integer.toString(announce.getAvailableBudget()) );
+        Label dateOfPostText = new Label("published on " + announce.getDateOfPost().toString());
+        Label numOfViewsText = new Label( announce.getNumOfViews() + " views");
 
         Font bigFont = new Font("System", 18);
         destinationText.setFont(bigFont);
@@ -60,6 +60,14 @@ public class AnnouncementGfxElement extends VBox {
         row1.getChildren().add(budgetText);
 
         row2.getChildren().add(dateOfPostText);
+
+        if(showOwner)
+        {
+            Label ownerText = new Label(announce.getOwner());
+            ownerText.setFont(smallFont);
+            row2.getChildren().add(ownerText);
+        }
+
         row2.getChildren().add(numOfViewsText);
 
         // Add rows to the vbox

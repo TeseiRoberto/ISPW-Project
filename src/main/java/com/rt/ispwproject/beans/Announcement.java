@@ -12,15 +12,14 @@ public class Announcement {
     private String              destination;
     private String              holidayDescription;
     private int                 availableBudget;
-    private int                 numOfTravelers;
     private LocalDate           dateOfPost;
-    private LocalDate           departureDate;
-    private LocalDate           returnDate;
+    private Duration            holidayDuration;
     private AccommodationType   accommodationType;
     private int                 accommodationQuality;
     private int                 numOfRoomsRequired;
     private TransportType       transportType;
     private int                 transportQuality;
+    private int                 numOfTravelers;
     private String              departureLocation;
     private int                 numOfViews;
 
@@ -32,37 +31,136 @@ public class Announcement {
         this.destination = "";
         this.holidayDescription = "";
         this.availableBudget = -1;
-        this.numOfTravelers = -1;
-        this.dateOfPost = LocalDate.now();
-        this.departureDate = LocalDate.now();
-        this.returnDate = LocalDate.now();
+        //this.dateOfPost = LocalDate.now();
+        //this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
         this.accommodationType = AccommodationType.UNSPECIFIED;
         this.accommodationQuality = -1;
         this.numOfRoomsRequired = -1;
         this.transportType = TransportType.UNSPECIFIED;
         this.transportQuality = -1;
         this.departureLocation = "";
+        this.numOfTravelers = -1;
         this.numOfViews = -1;
     }
 
 
     // Setters
     public void setId(int id)                                   { this.id = id; }
-    public void setOwner(String owner)                          { this.owner = owner; }
-    public void setDestination(String destination)              { this.destination = destination; }
-    public void setHolidayDescription(String description)       { this.holidayDescription = description; }
-    public void setAvailableBudget(int budget)                  { this.availableBudget = Math.max(0, budget); }
-    public void setNumOfTravelers(int numOfTravelers)           { this.numOfTravelers = Math.max(0, numOfTravelers); }
-    public void setDateOfPost(LocalDate date)                   { this.dateOfPost = date; }
-    public void setDepartureDate(LocalDate date)                { this.departureDate = date; }
-    public void setReturnDate(LocalDate date)                   { this.returnDate = date; }
-    public void setAccommodationType(AccommodationType type)    { this.accommodationType = type; }
-    public void setAccommodationQuality(int quality)            { this.accommodationQuality = Math.clamp(quality, 1, 5); }
-    public void setNumOfRoomsRequired(int numOfRooms)           { this.numOfRoomsRequired = numOfRooms; }
-    public void setTransportType(TransportType type)            { this.transportType = type; }
-    public void setTransportQuality(int quality)                { this.transportQuality = Math.clamp(quality, 1, 5); }
-    public void setDepartureLocation(String location)           { this.departureLocation = location; }
-    public void setNumOfViews(int numOfViews)                   { this.numOfViews = Math.max(0, numOfViews); }
+
+    public void setOwner(String owner) throws IllegalArgumentException
+    {
+        if(owner == null || owner.isEmpty())
+            throw new IllegalArgumentException("Owner name cannot be empty!");
+
+        this.owner = owner;
+    }
+
+    public void setDestination(String destination) throws IllegalArgumentException
+    {
+        if(destination == null || destination.isEmpty())
+            throw new IllegalArgumentException("Destination cannot be empty!");
+
+        this.destination = destination;
+    }
+
+    public void setHolidayDescription(String description) throws IllegalArgumentException
+    {
+        this.holidayDescription = description;
+    }
+
+    public void setAvailableBudget(int availableBudget) throws IllegalArgumentException
+    {
+        if(availableBudget <= 0)
+            throw new IllegalArgumentException("Available budget cannot be negative or zero!");
+
+        this.availableBudget = availableBudget;
+    }
+
+    public void setDateOfPost(LocalDate date)
+    {
+        if(date == null)
+            throw new IllegalArgumentException("Date of post cannot be empty!");
+
+        if(this.holidayDuration != null && date.isAfter(this.holidayDuration.getStartDate()))
+            throw new IllegalArgumentException("Date of post cannot be after the start date of the holiday!");
+
+        this.dateOfPost = date;
+    }
+
+    public void setHolidayDuration(Duration duration)
+    {
+        if(duration == null)
+            throw new IllegalArgumentException("Holiday duration cannot be empty!");
+
+        if(this.dateOfPost != null && duration.getStartDate().isBefore(this.dateOfPost))
+            throw new IllegalArgumentException("Holiday duration start date cannot be before the date of post of the announcement!");
+
+        this.holidayDuration = duration;
+    }
+
+    public void setAccommodationType(AccommodationType type) throws IllegalArgumentException
+    {
+        if(type == null)
+            throw new IllegalArgumentException("Accommodation type cannot be empty!");
+
+        this.accommodationType = type;
+    }
+
+    public void setAccommodationQuality(int quality) throws IllegalArgumentException
+    {
+        if(quality < 0 || quality > 5)
+            throw new IllegalArgumentException("Accommodation quality must be in range [0, 5]!");
+
+        this.accommodationQuality = quality;
+    }
+
+    public void setNumOfRoomsRequired(int numOfRooms) throws IllegalArgumentException
+    {
+        if(numOfRooms <= 0)
+            throw new IllegalArgumentException("Number of rooms required cannot be negative or zero!");
+
+        this.numOfRoomsRequired = numOfRooms;
+    }
+
+    public void setTransportType(TransportType type) throws IllegalArgumentException
+    {
+        if(type == null)
+            throw new IllegalArgumentException("Transport type cannot be empty!");
+
+        this.transportType = type;
+    }
+
+    public void setTransportQuality(int quality) throws IllegalArgumentException
+    {
+        if(quality < 0 || quality > 5)
+            throw new IllegalArgumentException("Transport quality must be in range [0, 5]!");
+
+        this.transportQuality = quality;
+    }
+
+    public void setNumOfTravelers(int numOfTravelers) throws IllegalArgumentException
+    {
+        if(numOfTravelers <= 0)
+            throw new IllegalArgumentException("Number of travelers cannot be negative or zero!");
+
+        this.numOfTravelers = numOfTravelers;
+    }
+
+    public void setDepartureLocation(String location) throws IllegalArgumentException
+    {
+        if(location == null || location.isEmpty())
+            throw new IllegalArgumentException("Departure location cannot be empty!");
+
+        this.departureLocation = location;
+    }
+
+    public void setNumOfViews(int numOfViews)
+    {
+        if(numOfViews < 0)
+            throw new IllegalArgumentException("Number of views cannot be negative!");
+
+        this.numOfViews = numOfViews;
+    }
 
 
     // Getters
@@ -71,15 +169,14 @@ public class Announcement {
     public String getDestination()                      { return this.destination; }
     public String getHolidayDescription()               { return this.holidayDescription; }
     public int getAvailableBudget()                     { return this.availableBudget; }
-    public int getNumOfTravelers()                      { return this.numOfTravelers; }
     public LocalDate getDateOfPost()                    { return this.dateOfPost; }
-    public LocalDate getDepartureDate()                 { return this.departureDate; }
-    public LocalDate getReturnDate()                    { return this.returnDate; }
+    public Duration getHolidayDuration()                { return this.holidayDuration; }
     public AccommodationType getAccommodationType()     { return this.accommodationType; }
     public int getAccommodationQuality()                { return this.accommodationQuality; }
     public int getNumOfRoomsRequired()                  { return this.numOfRoomsRequired; }
     public TransportType getTransportType()             { return this.transportType; }
     public int getTransportQuality()                    { return this.transportQuality; }
+    public int getNumOfTravelers()                      { return this.numOfTravelers; }
     public String getDepartureLocation()                { return this.departureLocation; }
     public int getNumOfViews()                          { return this.numOfViews; }
 
