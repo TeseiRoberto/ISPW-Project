@@ -45,7 +45,7 @@ public class HolidayRequirementsDao {
 
 
     // Retrieves the holiday requirements posted by the given user from the db
-    public List<HolidayRequirements> getPostedRequirements(int userId) throws DbException
+    public List<HolidayRequirements> loadRequirementsPostedByUser(int userId) throws DbException
     {
         ArrayList<HolidayRequirements> requirements = new ArrayList<>();
         Connection connection = DbConnection.getInstance().getConnection();
@@ -60,28 +60,7 @@ public class HolidayRequirementsDao {
             {
                 ResultSet rs = getRequirementsProc.getResultSet();
                 while(rs.next())
-                {
-                    HolidayRequirements req = new HolidayRequirements();
-                    req.setId(rs.getInt("id"));
-                    req.setOwner(rs.getString("ownerUsername"));
-                    req.setDestination(rs.getString("destination"));
-                    req.setHolidayDescription(rs.getString("description"));
-                    req.setAvailableBudget(rs.getInt("budget"));
-                    req.setDateOfPost(rs.getDate("dateOfPost").toLocalDate());
-                    req.setDepartureDate(rs.getDate("departureDate").toLocalDate());
-                    req.setReturnDate(rs.getDate("returnDate").toLocalDate());
-                    req.setAccommodationType(AccommodationType.valueOf( rs.getString("accommodationType") ));
-                    req.setAccommodationQuality(rs.getInt("accommodationQuality"));
-                    req.setNumOfRoomsRequired(rs.getInt("numOfRooms"));
-                    req.setTransportType(TransportType.valueOf( rs.getString("transportType") ));
-                    req.setTransportQuality(rs.getInt("transportQuality"));
-                    req.setNumOfTravelers(rs.getInt("numOfTravelers"));
-                    req.setDepartureLocation(rs.getString("departureLocation"));
-                    req.setNumOfViews(rs.getInt("numOfViews"));
-                    req.setSatisfied(rs.getBoolean("isSatisfied"));
-
-                    requirements.add(req);
-                }
+                    requirements.add(createHolidayRequirementsFromResultSet(rs));
 
                 rs.close();
             }
@@ -98,7 +77,7 @@ public class HolidayRequirementsDao {
 
 
     // Removes the holiday requirements with given id from the db (if they exist)
-    public void removeRequirements(int userId, int requirementsId) throws DbException
+    public void removeRequirementsPostedByUser(int userId, int requirementsId) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
@@ -113,5 +92,61 @@ public class HolidayRequirementsDao {
         {
             throw new DbException("Failed to invoke the \"deleteHolidayRequirements\" stored procedure: " + e.getMessage());
         }
+    }
+
+
+    // Retrieves holiday requirements (which id is equal to or grater that start id) from the db
+    public List<HolidayRequirements> loadRequirements(int startId, int maxRequirementsNum) throws DbException
+    {
+        ArrayList<HolidayRequirements> requirements = new ArrayList<>();
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        // Create callable statement and setup parameters to invoke the searchHolidayRequirements stored procedure
+        try (CallableStatement searchRequirementsProc = connection.prepareCall("call searchHolidayRequirements(?)"))
+        {
+            searchRequirementsProc.setInt("startId_in", startId);
+
+            boolean status = searchRequirementsProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = searchRequirementsProc.getResultSet();
+                while (rs.next() && requirements.size() < maxRequirementsNum)
+                    requirements.add(createHolidayRequirementsFromResultSet(rs));
+
+                rs.close();
+            }
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"searchHolidayRequirements\" stored procedure: " + e.getMessage());
+        }
+
+        return requirements;
+    }
+
+
+    // Creates an instance of HolidayRequirements using data contained in a row of the given result set.
+    // Note that the result set must contain all data necessary to
+    private HolidayRequirements createHolidayRequirementsFromResultSet(ResultSet rs) throws SQLException
+    {
+        HolidayRequirements req = new HolidayRequirements();
+        req.setId(rs.getInt("id"));
+        req.setOwner(rs.getString("ownerUsername"));
+        req.setDestination(rs.getString("destination"));
+        req.setHolidayDescription(rs.getString("description"));
+        req.setAvailableBudget(rs.getInt("budget"));
+        req.setDateOfPost(rs.getDate("dateOfPost").toLocalDate());
+        req.setDepartureDate(rs.getDate("departureDate").toLocalDate());
+        req.setReturnDate(rs.getDate("returnDate").toLocalDate());
+        req.setAccommodationType(AccommodationType.valueOf(rs.getString("accommodationType")));
+        req.setAccommodationQuality(rs.getInt("accommodationQuality"));
+        req.setNumOfRoomsRequired(rs.getInt("numOfRooms"));
+        req.setTransportType(TransportType.valueOf(rs.getString("transportType")));
+        req.setTransportQuality(rs.getInt("transportQuality"));
+        req.setNumOfTravelers(rs.getInt("numOfTravelers"));
+        req.setDepartureLocation(rs.getString("departureLocation"));
+        req.setNumOfViews(rs.getInt("numOfViews"));
+        req.setSatisfied(rs.getBoolean("isSatisfied"));
+
+        return req;
     }
 }

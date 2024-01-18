@@ -1,5 +1,8 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Announcement;
+import com.rt.ispwproject.beans.Duration;
+
 import java.time.LocalDate;
 
 public class HolidayRequirements {
@@ -64,60 +67,29 @@ public class HolidayRequirements {
     public String getDepartureLocation()                    { return this.requirements.getTransport().getDepartureLocation(); }
     public boolean isSatisfied()                            { return this.satisfied; }
 
-    /* TODO: This should be moved into the bean class
-    // Verify that the holiday requirements are logically valid, if they are not an exception is thrown
-    public void checkValidity() throws RuntimeException
+
+    // Converts an HolidayRequirements instance into an Announcement instance (model to bean class conversion)
+    // Note: this creates coupling between the 2 classes but alleviates the burden of conversion from the developer and eliminates code duplication
+    public Announcement toAnnouncement() throws IllegalArgumentException
     {
-        boolean areValid = true;
-        String errorMsg = "Holiday requirements are not valid:";
+        Announcement a = new Announcement();
+        a.setId(this.getId());
+        a.setOwner(this.getOwner());
+        a.setDestination(this.getDestination());
+        a.setHolidayDescription(this.getHolidayDescription());
+        a.setAvailableBudget(this.getAvailableBudget());
+        a.setDateOfPost(this.getDateOfPost());
+        a.setHolidayDuration( new Duration(this.getDepartureDate(), this.getReturnDate()) );
+        a.setAccommodationType(this.getAccommodationType());
+        a.setAccommodationQuality(this.getAccommodationQuality());
+        a.setNumOfRoomsRequired(this.getNumOfRoomsRequired());
+        a.setTransportType(this.getTransportType());
+        a.setTransportQuality(this.getTransportQuality());
+        a.setDepartureLocation(this.getDepartureLocation());
+        a.setNumOfTravelers(this.getNumOfTravelers());
+        a.setNumOfViews(this.getNumOfViews());
 
-        if(this.owner.isEmpty())
-        {
-            areValid = false;
-            errorMsg += " owner cannot be empty,";
-        }
-
-        if(this.destination.isEmpty())
-        {
-            areValid = false;
-            errorMsg += " destination cannot be empty,";
-        }
-
-        if(this.availableBudget <= 0)
-        {
-            areValid = false;
-            errorMsg += " available budget cannot be negative,";
-        }
-
-        if(this.numOfTravelers <= 0)
-        {
-            areValid = false;
-            errorMsg += " number of travelers cannot be minor than 1,";
-        }
-
-        if(this.numOfRoomsRequired <= 0)
-        {
-            areValid = false;
-            errorMsg += " number of rooms cannot be minor than 1,";
-        }
-
-        if(!this.departureDate.isBefore(this.returnDate))
-        {
-            areValid = false;
-            errorMsg += " the return date cannot be earlier than the departure date,";
-        }
-
-        if(!this.dateOfPost.isBefore(departureDate))
-        {
-            areValid = false;
-            errorMsg += " the departure date cannot be earlier than the date of post,";
-        }
-
-        if(!areValid)
-        {
-            errorMsg = errorMsg.substring(0, errorMsg.length() - 1) + '.';  // Replace last comma with a dot
-            throw new RuntimeException(errorMsg);
-        }
-    }*/
+        return a;
+    }
 
 }

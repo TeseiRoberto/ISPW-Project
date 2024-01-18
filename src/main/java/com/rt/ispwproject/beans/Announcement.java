@@ -1,6 +1,7 @@
 package com.rt.ispwproject.beans;
 
 import com.rt.ispwproject.model.AccommodationType;
+import com.rt.ispwproject.model.HolidayRequirements;
 import com.rt.ispwproject.model.TransportType;
 
 import java.time.LocalDate;
@@ -179,5 +180,38 @@ public class Announcement {
     public int getNumOfTravelers()                      { return this.numOfTravelers; }
     public String getDepartureLocation()                { return this.departureLocation; }
     public int getNumOfViews()                          { return this.numOfViews; }
+
+
+    // Converts an Announcement instance into an HolidayRequirements instance (bean to model class conversion)
+    // Note: this creates coupling between the 2 classes but alleviates the burden of conversion from the developer and eliminates code duplication
+    public HolidayRequirements toHolidayRequirements()
+    {
+        HolidayRequirements req = new HolidayRequirements();
+
+        req.setId(this.id);
+        req.setOwner(this.owner);
+        req.setDateOfPost(this.dateOfPost);
+        req.setNumOfViews(this.numOfViews);
+        req.setDestination(this.destination);
+        req.setHolidayDescription(this.holidayDescription);
+        req.setAvailableBudget(this.availableBudget);
+        req.setDateOfPost(this.dateOfPost);
+
+        if(this.holidayDuration != null)
+        {
+            req.setDepartureDate(this.holidayDuration.getStartDate());
+            req.setReturnDate(this.holidayDuration.getEndDate());
+        }
+
+        req.setAccommodationType(this.accommodationType);
+        req.setAccommodationQuality(this.accommodationQuality);
+        req.setNumOfRoomsRequired(this.numOfRoomsRequired);
+        req.setTransportType(this.transportType);
+        req.setTransportQuality(this.transportQuality);
+        req.setNumOfTravelers(this.numOfTravelers);
+        req.setDepartureLocation(this.departureLocation);
+
+        return req;
+    }
 
 }

@@ -63,9 +63,8 @@ public class LoginGfxControllerJfx extends Application {
                 break;
 
             case UserRole.TRAVEL_AGENCY:
-                // TODO: Create appropriate graphics controller and load appropriate screen!!!
-                loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session));
-                loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
+                loader.setControllerFactory(c -> new SearchAnnouncementsGfxControllerJfx(session));
+                loader.setLocation(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"));
                 break;
         }
 
