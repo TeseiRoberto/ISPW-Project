@@ -7,20 +7,20 @@ import com.rt.ispwproject.model.Profile;
 
 public class LoginManager {
 
-    public Session login(String username, String password) throws RuntimeException, DbException
+    public Session login(String username, String password) throws IllegalArgumentException, DbException
     {
         if(username == null || username.isEmpty())
-            throw new RuntimeException("Username cannot be empty");
+            throw new IllegalArgumentException("Username cannot be empty");
 
         if(password == null || password.isEmpty())
-            throw new RuntimeException("Password cannot be empty");
+            throw new IllegalArgumentException("Password cannot be empty");
 
         Profile currUser;
         ProfileDao dao = new ProfileDao();
         currUser = dao.getProfile(username, password);
 
         if(currUser == null)
-            throw new RuntimeException("User not found");
+            throw new DbException("User not found");
 
         return new Session(currUser.getUserId(), currUser.getUsername(), currUser.getEmail(), currUser.getUserRole());
     }

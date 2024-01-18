@@ -19,7 +19,7 @@ public class Offer {
         setPrice(price);
         setDestination(destination);
         setDuration(duration);
-        this.duration = duration;
+        setAccommodationOffer(accommodationOffer);
         setTransportOffer(transportOffer);
     }
 

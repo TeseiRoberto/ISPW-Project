@@ -41,7 +41,7 @@ public class LoginGfxControllerJfx extends Application {
         try {
             currSession = loginMan.login(usernameTextfield.getText(), passwordTextfield.getText());
             onLoginSuccess(currSession);
-        } catch(RuntimeException | DbException e)
+        } catch(IllegalArgumentException | DbException e)
         {
             Alert errorMsg = new Alert(Alert.AlertType.ERROR);
             errorMsg.setContentText(e.getMessage());
@@ -55,17 +55,14 @@ public class LoginGfxControllerJfx extends Application {
     {
         FXMLLoader loader = new FXMLLoader();
 
-        switch (session.getUserRole())
+        if (session.getUserRole() == UserRole.SIMPLE_USER)
         {
-            case UserRole.SIMPLE_USER:
-                loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session));
-                loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
-                break;
-
-            case UserRole.TRAVEL_AGENCY:
+            loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session));
+            loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
+        } else if (session.getUserRole() == UserRole.TRAVEL_AGENCY)
+        {
                 loader.setControllerFactory(c -> new SearchAnnouncementsGfxControllerJfx(session));
                 loader.setLocation(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"));
-                break;
         }
 
         try {

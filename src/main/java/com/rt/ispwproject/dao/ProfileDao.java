@@ -34,15 +34,13 @@ public class ProfileDao {
 
             if (!loginProc.wasNull())                                           // If we got not null output parameters
             {
-                try {
-                    UserRole role = UserRole.valueOf(roleAsStr);                // Get user role
-                    newProfile = new Profile(userId, username, email, role);
-                } catch(IllegalArgumentException e)
-                {
-                    throw new DbException("User has been found but cannot recognize his role in the system: " + e.getMessage());
-                }
+                UserRole role = UserRole.valueOf(roleAsStr);                // Get user role
+                newProfile = new Profile(userId, username, email, role);
             }
 
+        } catch(IllegalArgumentException e)
+        {
+            throw new DbException("User has been found but cannot recognize his role in the system: " + e.getMessage());
         } catch (SQLException e) {
             throw new DbException("Failed to invoke the \"login\" stored procedure: " + e.getMessage());
         }
