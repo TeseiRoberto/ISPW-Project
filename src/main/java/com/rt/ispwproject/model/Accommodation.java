@@ -9,30 +9,28 @@ public class Accommodation {
     private String address;
     private int quality;
     private int numOfRooms;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
+    private DateRange checkInOutDates;
 
-    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, LocalDate checkIn, LocalDate checkOut)
+
+    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, DateRange checkInOutDates)
     {
         this.type = type;
         this.name = name;
         this.address = address;
         this.quality = quality;
         this.numOfRooms = numOfRooms;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
+        this.checkInOutDates = checkInOutDates;
     }
 
 
-    public Accommodation()
+    public Accommodation(AccommodationType type, int quality, int numOfRooms)
     {
         this.type = AccommodationType.UNSPECIFIED;
         this.name = "";
         this.address = "";
-        this.quality = 0;
-        this.numOfRooms = 0;
-        this.checkIn = null;
-        this.checkOut = null;
+        this.quality = quality;
+        this.numOfRooms = numOfRooms;
+        this.checkInOutDates = null;
     }
 
 
@@ -42,8 +40,8 @@ public class Accommodation {
     public void setAddress(String address)          { this.address = address; }
     public void setQuality(int quality)             { this.quality = quality; }
     public void setNumOfRooms(int num)              { this.numOfRooms = num; }
-    public void setCheckInDate(LocalDate date)      { this.checkIn = date; }
-    public void setCheckOutDate(LocalDate date)     { this.checkOut = date; }
+    public void setCheckInDate(LocalDate date)      { this.checkInOutDates.setStartDate(date); }
+    public void setCheckOutDate(LocalDate date)     { this.checkInOutDates.setEndDate(date); }
 
 
     // Getters
@@ -52,6 +50,6 @@ public class Accommodation {
     public String getAddress()                      { return this.address; }
     public int getQuality()                         { return this.quality; }
     public int getNumOfRooms()                      { return this.numOfRooms; }
-    public LocalDate getCheckInDate()               { return this.checkIn; }
-    public LocalDate getCheckOutDate()              { return this.checkOut; }
+    public LocalDate getCheckInDate()               { return this.checkInOutDates.getStartDate(); }
+    public LocalDate getCheckOutDate()              { return this.checkInOutDates.getEndDate(); }
 }

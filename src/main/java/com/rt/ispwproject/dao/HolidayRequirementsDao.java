@@ -1,9 +1,7 @@
 package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.model.AccommodationType;
-import com.rt.ispwproject.model.HolidayRequirements;
-import com.rt.ispwproject.model.TransportType;
+import com.rt.ispwproject.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,16 +22,16 @@ public class HolidayRequirementsDao {
             saveRequirementsProc.setString("destination_in", requirements.getDestination());
             saveRequirementsProc.setInt("availableBudget_in", requirements.getAvailableBudget());
             saveRequirementsProc.setString("description_in", requirements.getHolidayDescription());
-            saveRequirementsProc.setDate("dateOfPost_in", Date.valueOf(requirements.getDateOfPost()));
+            saveRequirementsProc.setDate("dateOfPost_in", Date.valueOf(requirements.getMetadata().getDateOfPost()));
             saveRequirementsProc.setDate("departureDate_in", Date.valueOf(requirements.getDepartureDate()));
             saveRequirementsProc.setDate("returnDate_in", Date.valueOf(requirements.getReturnDate()));
-            saveRequirementsProc.setString("accommodationType_in", requirements.getAccommodationType().toString());
-            saveRequirementsProc.setInt("accommodationQuality_in", requirements.getAccommodationQuality());
-            saveRequirementsProc.setInt("numOfRooms_in", requirements.getNumOfRoomsRequired());
-            saveRequirementsProc.setString("transportType_in", requirements.getTransportType().toString());
-            saveRequirementsProc.setInt("transportQuality_in", requirements.getTransportQuality());
-            saveRequirementsProc.setInt("numOfTravelers_in", requirements.getNumOfTravelers());
-            saveRequirementsProc.setString("departureLocation_in", requirements.getDepartureLocation());
+            saveRequirementsProc.setString("accommodationType_in", requirements.getAccommodation().getType().toString());
+            saveRequirementsProc.setInt("accommodationQuality_in", requirements.getAccommodation().getQuality());
+            saveRequirementsProc.setInt("numOfRooms_in", requirements.getAccommodation().getNumOfRooms());
+            saveRequirementsProc.setString("transportType_in", requirements.getTransport().getType().toString());
+            saveRequirementsProc.setInt("transportQuality_in", requirements.getTransport().getQuality());
+            saveRequirementsProc.setInt("numOfTravelers_in", requirements.getTransport().getNumOfTravelers());
+            saveRequirementsProc.setString("departureLocation_in", requirements.getTransport().getDepartureLocation());
 
             saveRequirementsProc.execute();
         } catch(SQLException e)
@@ -125,28 +123,15 @@ public class HolidayRequirementsDao {
 
 
     // Creates an instance of HolidayRequirements using data contained in a row of the given result set.
-    // Note that the result set must contain all data necessary to
     private HolidayRequirements createHolidayRequirementsFromResultSet(ResultSet rs) throws SQLException
     {
-        HolidayRequirements req = new HolidayRequirements();
-        req.setId(rs.getInt("id"));
-        req.setOwner(rs.getString("ownerUsername"));
-        req.setDestination(rs.getString("destination"));
-        req.setHolidayDescription(rs.getString("description"));
-        req.setAvailableBudget(rs.getInt("budget"));
-        req.setDateOfPost(rs.getDate("dateOfPost").toLocalDate());
-        req.setDepartureDate(rs.getDate("departureDate").toLocalDate());
-        req.setReturnDate(rs.getDate("returnDate").toLocalDate());
-        req.setAccommodationType(AccommodationType.valueOf(rs.getString("accommodationType")));
-        req.setAccommodationQuality(rs.getInt("accommodationQuality"));
-        req.setNumOfRoomsRequired(rs.getInt("numOfRooms"));
-        req.setTransportType(TransportType.valueOf(rs.getString("transportType")));
-        req.setTransportQuality(rs.getInt("transportQuality"));
-        req.setNumOfTravelers(rs.getInt("numOfTravelers"));
-        req.setDepartureLocation(rs.getString("departureLocation"));
-        req.setNumOfViews(rs.getInt("numOfViews"));
-        req.setSatisfied(rs.getBoolean("isSatisfied"));
+        HolidayMetadata metadata = new HolidayMetadata(rs.getInt("id"), rs.getString("ownerUsername"), rs.getDate("dateOfPost").toLocalDate(), rs.getInt("numOfViews"));
+        DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
 
-        return req;
+        Accommodation accommodation = new Accommodation(AccommodationType.valueOf(rs.getString("accommodationType")), rs.getInt("accommodationQuality"), rs.getInt("numOfRooms"));
+        Transport transport = new Transport(TransportType.valueOf(rs.getString("transportType")), rs.getInt("transportQuality"),
+                new Route(rs.getString("departureLocation"), rs.getString("destination")), rs.getInt("numOfTravelers"));
+
+        return new HolidayRequirements(metadata, rs.getString("destination"), rs.getString("description"), duration, rs.getInt("budget"), accommodation, transport);
     }
 }

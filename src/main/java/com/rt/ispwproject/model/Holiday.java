@@ -4,20 +4,18 @@ import java.time.LocalDate;
 
 public class Holiday {
 
-    private String destination;
-    private int price;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Accommodation accommodation;
-    private Transport transport;
+    private final HolidayMetadata   metadata;
+    private String                  destination;
+    private DateRange               duration;
+    private Accommodation           accommodation;
+    private Transport               transport;
 
 
-    public Holiday(String destination, int price, LocalDate startDate, LocalDate endDate, Accommodation accommodation, Transport transport)
+    public Holiday(HolidayMetadata metadata, String destination, DateRange duration, Accommodation accommodation, Transport transport)
     {
+        this.metadata = metadata;
         this.destination = destination;
-        this.price = price;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.duration = duration;
         this.accommodation = accommodation;
         this.transport = transport;
     }
@@ -25,17 +23,17 @@ public class Holiday {
 
     // Setters
     public void setDestination(String destination)              { this.destination = destination; }
-    public void setStartDate(LocalDate date)                    { this.startDate = date; }
-    public void setEndDate(LocalDate date)                      { this.endDate = date; }
-    public void setPrice(int price)                             { this.price = price; }
+    public void setDepartureDate(LocalDate date)                { this.duration.setStartDate(date); }
+    public void setReturnDate(LocalDate date)                   { this.duration.setEndDate(date); }
     public void setAccommodation(Accommodation accommodation)   { this.accommodation = accommodation; }
     public void setTransport(Transport transport)               { this.transport = transport; }
 
+
     // Getters
+    public HolidayMetadata getMetadata()                        { return this.metadata; }
     public String getDestination()                              { return this.destination; }
-    public int getPrice()                                       { return this.price; }
-    public LocalDate getStartDate()                             { return this.startDate; }
-    public LocalDate getEndDate()                               { return this.endDate; }
+    public LocalDate getDepartureDate()                         { return this.duration.getStartDate(); }
+    public LocalDate getReturnDate()                            { return this.duration.getEndDate(); }
     public Accommodation getAccommodation()                     { return this.accommodation; }
     public Transport getTransport()                             { return this.transport; }
 }
