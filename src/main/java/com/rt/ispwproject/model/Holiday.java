@@ -6,7 +6,7 @@ public class Holiday {
 
     private final HolidayMetadata   metadata;
     private String                  destination;
-    private DateRange               duration;
+    private final DateRange         duration;
     private Accommodation           accommodation;
     private Transport               transport;
 

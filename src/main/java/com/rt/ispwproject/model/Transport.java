@@ -8,7 +8,7 @@ public class Transport {
     private String          company;
     private int             quality;
     private int             numOfTravelers;
-    private Route           fromToLocation;
+    private final Route     fromToLocation;
     private DateRange       departureAndReturnDates;
 
 

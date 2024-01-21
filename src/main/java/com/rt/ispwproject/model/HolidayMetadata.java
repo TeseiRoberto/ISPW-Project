@@ -23,7 +23,7 @@ public class HolidayMetadata {
 
     // Setters
     public void setHolidayId(int id)                { this.holidayId = id; }
-    public void setOwnerUsername(String username)   { this.ownerUsername = ownerUsername; }
+    public void setOwnerUsername(String username)   { this.ownerUsername = username; }
     public void setDateOfPost(LocalDate date)       { this.dateOfPost = date; }
     public void setNumOfViews(int numOfViews)       { this.numOfViews = numOfViews; }
     public void setSatisfied(boolean isSatisfied)   { this.satisfied = isSatisfied; }
