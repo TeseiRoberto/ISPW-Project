@@ -60,7 +60,7 @@
                   </PasswordField>
                </children>
             </HBox>
-            <Button id="login_btn" fx:id="loginBtn" mnemonicParsing="false" onMouseClicked="#onLoginClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Login" textFill="WHITE">
+            <Button id="login_btn" mnemonicParsing="false" onMouseClicked="#onLoginClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Login" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font></Button>

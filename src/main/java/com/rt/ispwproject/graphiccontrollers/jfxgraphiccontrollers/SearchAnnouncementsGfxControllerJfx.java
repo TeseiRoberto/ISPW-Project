@@ -16,11 +16,11 @@ import java.util.List;
 
 public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
 
-    @FXML TextField searchBarTextfield;
-    @FXML VBox announcementsVbox;
-    private final Session currSession;
-    private List<Announcement> announcements;
-    private static final int MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 10;
+    @FXML TextField             searchBarTextfield;
+    @FXML VBox                  announcementsVbox;
+    private final Session       currSession;
+    private List<Announcement>  announcements;
+    private static final int    MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 10;
 
 
     public SearchAnnouncementsGfxControllerJfx(Session session)

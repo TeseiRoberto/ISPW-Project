@@ -6,15 +6,17 @@ public class Holiday {
 
     private final HolidayMetadata   metadata;
     private String                  destination;
+    protected int                   price;
     private final DateRange         duration;
     private Accommodation           accommodation;
     private Transport               transport;
 
 
-    public Holiday(HolidayMetadata metadata, String destination, DateRange duration, Accommodation accommodation, Transport transport)
+    public Holiday(HolidayMetadata metadata, String destination, int price, DateRange duration, Accommodation accommodation, Transport transport)
     {
         this.metadata = metadata;
         this.destination = destination;
+        this.price = price;
         this.duration = duration;
         this.accommodation = accommodation;
         this.transport = transport;

@@ -28,7 +28,7 @@
          <center>
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="399.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="myAnnouncements_btn" fx:id="myOffersBtn" mnemonicParsing="false" onMouseClicked="#onMyOffersClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="My offers" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="myAnnouncements_btn" mnemonicParsing="false" onMouseClicked="#onMyOffersClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="My offers" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font></Button>
@@ -38,7 +38,7 @@
                            <font>
                               <Font size="18.0" />
                            </font></TextField>
-                        <Button id="search" fx:id="searchAnnouncements_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                        <Button id="search" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                            <graphic>
                               <SVGPath content="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" fill="#ebebeb" onMouseClicked="#onSearchClick" stroke="BLACK" strokeWidth="2.0" />
                            </graphic>
@@ -52,7 +52,7 @@
             </HBox>
          </center>
          <right>
-            <Button id="logout_btn" fx:id="logout_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-shape: &quot;M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z&quot;; -fx-background-color: #2B2B2B;" BorderPane.alignment="CENTER">
+            <Button id="logout_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-shape: &quot;M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z&quot;; -fx-background-color: #2B2B2B;" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="14.0" />
                </BorderPane.margin>
@@ -82,7 +82,7 @@
                   </Text>
                </children>
             </HBox>
-            <ScrollPane id="announcements_scrollPane" fx:id="announcements_scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #FFFFFF;">
+            <ScrollPane id="announcements_scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #FFFFFF;">
                <content>
                   <VBox fx:id="announcementsVbox" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF;">
                      <padding>

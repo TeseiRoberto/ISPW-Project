@@ -17,9 +17,9 @@ import java.util.List;
 
 public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
 
-    @FXML VBox announcementsVbox;
-    private final Session currSession;
-    private List<Announcement> announcements;
+    @FXML VBox                      announcementsVbox;
+    private final Session           currSession;
+    private List<Announcement>      announcements;
 
 
     // Loads all the announcements posted by user and displays them

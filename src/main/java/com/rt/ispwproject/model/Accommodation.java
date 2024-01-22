@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class Accommodation {
 
-    private AccommodationType type;
-    private String name;
-    private String address;
-    private int quality;
-    private int numOfRooms;
-    private DateRange checkInOutDates;
+    private AccommodationType   type;
+    private String              name;
+    private String              address;
+    private int                 quality;
+    private int                 numOfRooms;
+    private final DateRange     checkInOutDates;
 
 
     public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, DateRange checkInOutDates)

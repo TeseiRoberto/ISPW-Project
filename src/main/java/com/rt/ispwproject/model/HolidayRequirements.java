@@ -7,25 +7,23 @@ import com.rt.ispwproject.beans.Duration;
 public class HolidayRequirements extends Holiday {
 
     private String  holidayDescription;
-    private int     availableBudget;
 
 
     public HolidayRequirements(HolidayMetadata metadata, String destination, String description, DateRange duration, int availableBudget, Accommodation accommodation, Transport transport)
     {
-        super(metadata, destination, duration, accommodation, transport);
+        super(metadata, destination, availableBudget, duration, accommodation, transport);
         this.holidayDescription = description;
-        this.availableBudget = availableBudget;
     }
 
 
     // Setters
     public void setHolidayDescription(String description)   { this.holidayDescription = description; }
-    public void setAvailableBudget(int budget)              { this.availableBudget = budget; }
+    public void setAvailableBudget(int budget)              { this.price = budget; }
 
 
     // Getters
     public String getHolidayDescription()       { return this.holidayDescription; }
-    public int getAvailableBudget()             { return this.availableBudget; }
+    public int getAvailableBudget()             { return this.price; }
 
 
     // Converts an HolidayRequirements instance into an Announcement instance (model to bean class conversion)

@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class LoginGfxControllerJfx extends Application {
 
-    @FXML TextField usernameTextfield;
+    @FXML TextField     usernameTextfield;
     @FXML PasswordField passwordTextfield;
 
 
@@ -35,12 +35,11 @@ public class LoginGfxControllerJfx extends Application {
     // Called when login button is clicked
     public void onLoginClick()
     {
-        LoginManager loginMan = new LoginManager();
-        Session currSession;
-
         try {
-            currSession = loginMan.login(usernameTextfield.getText(), passwordTextfield.getText());
+            LoginManager loginManager = new LoginManager();
+            Session currSession = loginManager.login(usernameTextfield.getText(), passwordTextfield.getText());
             onLoginSuccess(currSession);
+
         } catch(IllegalArgumentException | DbException e)
         {
             Alert errorMsg = new Alert(Alert.AlertType.ERROR);
@@ -51,7 +50,7 @@ public class LoginGfxControllerJfx extends Application {
 
 
     // Loads new screen according to user role
-    private void onLoginSuccess(Session session) throws RuntimeException
+    private void onLoginSuccess(Session session)
     {
         FXMLLoader loader = new FXMLLoader();
 
@@ -72,7 +71,9 @@ public class LoginGfxControllerJfx extends Application {
             currStage.setScene(newScene);
         } catch(IOException e)
         {
-            throw new RuntimeException("Change of JavaFx screen failed: " + e.getMessage());
+            Alert errorMsg = new Alert(Alert.AlertType.ERROR);
+            errorMsg.setContentText("Cannot load JavaFX screen, " + e.getMessage());
+            errorMsg.showAndWait();
         }
     }
 }

@@ -20,22 +20,21 @@ import java.time.LocalDate;
 
 public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
 
-    @FXML private TextArea descriptionTextarea;
-    @FXML private TextField destinationTextfield;
-    @FXML private TextField availableBudgetTextfield;
-    @FXML private DatePicker departureDatePicker;
-    @FXML private DatePicker returnDatePicker;
-    @FXML private TextField numOfTravelersTextfield;
-    @FXML private ComboBox<AccommodationType> accommodationTypeCombobox;
-    @FXML private HBox accommodationQualityHbox;
-    private final QualitySelector accommodationQualitySelector = new QualitySelector(0, 5, true);
-    @FXML private TextField numOfRoomsTextfield;
-    @FXML private ComboBox<TransportType> transportTypeCombobox;
-    @FXML private HBox transportQualityHbox;
-    private final QualitySelector transportQualitySelector = new QualitySelector(0, 5, true);
-    @FXML private TextField departureFromTextfield;
-
-    private final Session currSession;
+    @FXML private TextArea                      descriptionTextarea;
+    @FXML private TextField                     destinationTextfield;
+    @FXML private TextField                     availableBudgetTextfield;
+    @FXML private DatePicker                    departureDatePicker;
+    @FXML private DatePicker                    returnDatePicker;
+    @FXML private TextField                     numOfTravelersTextfield;
+    @FXML private ComboBox<AccommodationType>   accommodationTypeCombobox;
+    @FXML private HBox                          accommodationQualityHbox;
+    private final QualitySelector               accommodationQualitySelector = new QualitySelector(0, 5);
+    @FXML private TextField                     numOfRoomsTextfield;
+    @FXML private ComboBox<TransportType>       transportTypeCombobox;
+    @FXML private HBox                          transportQualityHbox;
+    private final QualitySelector               transportQualitySelector = new QualitySelector(0, 5);
+    @FXML private TextField                     departureFromTextfield;
+    private final Session                       currSession;
 
 
     public CreateAnnouncementGfxControllerJfx(Session session)

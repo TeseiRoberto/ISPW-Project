@@ -3,10 +3,12 @@ package com.rt.ispwproject.model;
 import com.rt.ispwproject.config.UserRole;
 
 public class Profile {
-    private final int userId;
-    private final String username;
-    private final String email;
-    private final UserRole role;
+
+    private final int       userId;
+    private final String    username;
+    private final String    email;
+    private final UserRole  role;
+
 
     public Profile(int userId, String username, String email, UserRole role)
     {
@@ -16,6 +18,8 @@ public class Profile {
         this.role = role;
     }
 
+
+    // Getters
     public int getUserId()          { return this.userId; }
     public String getUsername()     { return this.username; }
     public String getEmail()        { return this.email; }

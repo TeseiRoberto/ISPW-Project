@@ -15,9 +15,8 @@ public class LoginManager {
         if(password == null || password.isEmpty())
             throw new IllegalArgumentException("Password cannot be empty");
 
-        Profile currUser;
         ProfileDao dao = new ProfileDao();
-        currUser = dao.getProfile(username, password);
+        Profile currUser = dao.getProfile(username, password);
 
         if(currUser == null)
             throw new DbException("User not found");

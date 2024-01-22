@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 public class HolidayMetadata {
 
-    private int holidayId;
-    private String ownerUsername;
-    private LocalDate dateOfPost;
-    private int numOfViews;
-    private boolean satisfied;
+    private int         holidayId;
+    private String      ownerUsername;
+    private LocalDate   dateOfPost;
+    private int         numOfViews;
+    private boolean     satisfied;
 
 
     public HolidayMetadata(int holidayId, String ownerUsername, LocalDate dateOfPost, int numOfViews)

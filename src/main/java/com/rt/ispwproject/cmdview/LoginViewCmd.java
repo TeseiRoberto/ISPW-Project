@@ -17,7 +17,7 @@ public class LoginViewCmd {
     // Reads username from console
     public String getUsername() throws IOException
     {
-        String username = "";
+        String username;
         BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
         System.out.print("Username: ");
@@ -30,7 +30,7 @@ public class LoginViewCmd {
     // Reads password from console
     public String getPassword() throws IOException
     {
-        String password = "";
+        String password;
         BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
         System.out.print("Password: ");
