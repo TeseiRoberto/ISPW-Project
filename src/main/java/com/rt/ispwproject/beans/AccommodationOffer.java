@@ -9,15 +9,18 @@ public class AccommodationOffer {
     private String              address;
     private int                 quality;
     private int                 numOfRooms;
+    private int                 pricePerNight;
+    private int                 totalPrice;
 
-
-    public AccommodationOffer(AccommodationType type, String name, String address, int quality, int numOfRooms) throws IllegalArgumentException
+    public AccommodationOffer(AccommodationType type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
         setName(name);
         setAddress(address);
         setQuality(quality);
         setNumOfRooms(numOfRooms);
+        setPricePerNight(pricePerNight);
+        setPrice(totalPrice);
     }
 
 
@@ -62,10 +65,28 @@ public class AccommodationOffer {
         this.numOfRooms = numOfRooms;
     }
 
+    public void setPricePerNight(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("Price per night cannot be negative or zero!");
+
+        this.pricePerNight = price;
+    }
+
+    public void setPrice(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("Price cannot be negative or zero!");
+
+        this.totalPrice = price;
+    }
+
     // Getters
     public AccommodationType getType()     { return this.type; }
     public String getName()                { return this.name; }
     public String getAddress()             { return this.address; }
     public int getQuality()                { return this.quality; }
     public int getNumOfRooms()             { return this.numOfRooms; }
+    public int getPricePerNight()          { return this.pricePerNight; }
+    public int getPrice()                  { return this.totalPrice; }
 }

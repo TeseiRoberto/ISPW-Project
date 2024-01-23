@@ -26,7 +26,7 @@ public class BaseGfxControllerJfx {
             stage.setScene(newScene);
         } catch(IOException e)
         {
-            displayError("Change of JavaFX screen failed: " + e.getMessage());
+            displayError("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }
 

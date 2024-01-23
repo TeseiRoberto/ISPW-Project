@@ -9,15 +9,20 @@ public class TransportOffer {
     private int                 quality;
     private int                 numOfTravelers;
     private String              departureLocation;
+    private int                 pricePerTraveler;
+    private int                 totalPrice;
 
 
-    public TransportOffer(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers) throws IllegalArgumentException
+    public TransportOffer(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers,
+                          int pricePerTraveler, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
         setCompanyName(companyName);
         setQuality(quality);
         setDepartureLocation(departureLocation);
         setNumOfTravelers(numOfTravelers);
+        setPricePerTraveler(pricePerTraveler);
+        setPrice(totalPrice);
     }
 
 
@@ -62,6 +67,22 @@ public class TransportOffer {
         this.numOfTravelers = numOfTravelers;
     }
 
+    public void setPricePerTraveler(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("Price per travelers cannot be negative or zero!");
+
+        this.pricePerTraveler = price;
+    }
+
+    public void setPrice(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("Transport price cannot be negative or zero!");
+
+        this.totalPrice = price;
+    }
+
 
     // Getters
     public TransportType getType()             { return this.type; }
@@ -69,5 +90,7 @@ public class TransportOffer {
     public int getQuality()                    { return this.quality; }
     public String getDepartureLocation()       { return this.departureLocation; }
     public int getNumOfTravelers()             { return this.numOfTravelers; }
+    public int getPricePerTraveler()           { return this.pricePerTraveler; }
+    public int getPrice()                      { return this.totalPrice; }
 
 }

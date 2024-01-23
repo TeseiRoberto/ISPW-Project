@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -60,8 +61,8 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when one of the AnnouncementGfxElement is clicked, switches to the "make offer" screen
     public void onAnnouncementSelected(Announcement announce)
     {
-        // TODO: Need to switch to make offers screen
-        System.out.println("CLICKED ON ANNOUNCEMENT ELEMENT: " + announce.getDestination());
+        changeScreen(getClass().getResource("travelAgency/makeOfferScreen.fxml"),
+                (Stage) announcementsVbox.getScene().getWindow(), c -> new MakeOfferGfxControllerJfx(currSession, announce));
     }
 
 

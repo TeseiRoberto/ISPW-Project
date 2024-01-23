@@ -1,6 +1,8 @@
 package com.rt.ispwproject.beans;
 
 
+import java.time.LocalDate;
+
 public class Offer {
 
     private int                 id;
@@ -51,10 +53,13 @@ public class Offer {
         this.destination = destination;
     }
 
-    public void setDuration(Duration duration)
+    public void setDuration(Duration duration) throws IllegalArgumentException
     {
         if(duration == null)
             throw new IllegalArgumentException("Duration cannot be empty!");
+
+        if(!duration.getStartDate().isAfter(LocalDate.now()))
+            throw new IllegalArgumentException("Offer departure date cannot be before (or equal to) the current date!");
 
         this.duration = duration;
     }
@@ -69,7 +74,7 @@ public class Offer {
 
     public void setTransportOffer(TransportOffer offer) throws IllegalArgumentException
     {
-        if(transport == null)
+        if(offer == null)
             throw new IllegalArgumentException("Transport offer cannot be empty!");
 
         this.transport = offer;
@@ -81,7 +86,8 @@ public class Offer {
     public String getBidder()                           { return this.bidderAgencyName; }
     public int getPrice()                               { return this.price; }
     public String getDestination()                      { return this.destination; }
-    public Duration getDuration()                       { return this.duration; }
+    public LocalDate getDepartureDate()                 { return this.duration.getStartDate(); }
+    public LocalDate getReturnDate()                    { return this.duration.getEndDate(); }
     public AccommodationOffer getAccommodationOffer()   { return this.accommodation; }
     public TransportOffer getTransportOffer()           { return this.transport; }
 
