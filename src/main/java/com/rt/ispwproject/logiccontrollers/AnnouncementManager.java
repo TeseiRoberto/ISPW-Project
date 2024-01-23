@@ -14,15 +14,27 @@ public class AnnouncementManager {
     // Inserts a new announcement in the system
     public void postAnnouncement(Session currUser, Announcement announce) throws DbException
     {
-        // Create holiday requirements from the given announcement
+        // Create holiday requirements with data in the given announcement
+        HolidayMetadata metadata = new HolidayMetadata(0, announce.getOwner(), announce.getDateOfPost(), announce.getNumOfViews());
+
+        AccommodationRequirements accommodationReq = new AccommodationRequirements(
+                announce.getAccommodationType(),
+                announce.getAccommodationQuality(),
+                announce.getNumOfRoomsRequired()
+        );
+
+        TransportRequirements transportReq = new TransportRequirements(
+                announce.getTransportType(),
+                announce.getTransportQuality(),
+                announce.getNumOfTravelers(),
+                announce.getDepartureLocation()
+        );
+
+        DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getStartDate(), announce.getHolidayDuration().getEndDate());
+
         HolidayRequirements newReq = new HolidayRequirements(
-                new HolidayMetadata(announce.getId(), announce.getOwner(), announce.getDateOfPost(), announce.getNumOfViews()),
-                announce.getDestination(), announce.getHolidayDescription(),
-                new DateRange(announce.getHolidayDuration().getStartDate(), announce.getHolidayDuration().getEndDate()),
-                announce.getAvailableBudget(),
-                new Accommodation(announce.getAccommodationType(), announce.getAccommodationQuality(), announce.getNumOfRoomsRequired()),
-                new Transport(announce.getTransportType(), announce.getTransportQuality(),
-                        new Route(announce.getDepartureLocation(), announce.getDestination()), announce.getNumOfTravelers())
+                metadata, announce.getDestination(), announce.getHolidayDescription(), holidayDuration,
+                announce.getAvailableBudget(), accommodationReq, transportReq
         );
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();

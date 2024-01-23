@@ -3,27 +3,52 @@ package com.rt.ispwproject.model;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Duration;
 
-
-public class HolidayRequirements extends Holiday {
-
-    private String  holidayDescription;
+import java.time.LocalDate;
 
 
-    public HolidayRequirements(HolidayMetadata metadata, String destination, String description, DateRange duration, int availableBudget, Accommodation accommodation, Transport transport)
+public class HolidayRequirements {
+
+    private final HolidayMetadata       metadata;
+    private String                      holidayDescription;
+    private String                      destination;
+    protected int                       budget;
+    private final DateRange             duration;
+    private AccommodationRequirements   accommodation;
+    private TransportRequirements       transport;
+
+
+    public HolidayRequirements(HolidayMetadata metadata, String destination, String description, DateRange duration, int budget,
+                               AccommodationRequirements accommodationReq, TransportRequirements transportReq)
     {
-        super(metadata, destination, availableBudget, duration, accommodation, transport);
+        this.metadata = metadata;
+        this.destination = destination;
         this.holidayDescription = description;
+        this.duration = duration;
+        this.budget = budget;
+        this.accommodation = accommodationReq;
+        this.transport = transportReq;
     }
 
 
     // Setters
-    public void setHolidayDescription(String description)   { this.holidayDescription = description; }
-    public void setAvailableBudget(int budget)              { this.price = budget; }
+    public void setHolidayDescription(String description)       { this.holidayDescription = description; }
+    public void setDestination(String destination)              { this.destination = destination; }
+    public void setBudget(int budget)                           { this.budget = budget; }
+    public void setDepartureDate(LocalDate date)                { this.duration.setStartDate(date); }
+    public void setReturnDate(LocalDate date)                   { this.duration.setEndDate(date); }
+    public void setAccommodation(AccommodationRequirements req) { this.accommodation = req; }
+    public void setTransport(TransportRequirements req)         { this.transport = req; }
 
 
     // Getters
-    public String getHolidayDescription()       { return this.holidayDescription; }
-    public int getAvailableBudget()             { return this.price; }
+    public HolidayMetadata getMetadata()                    { return this.metadata; }
+    public String getHolidayDescription()                   { return this.holidayDescription; }
+    public String getDestination()                          { return this.destination; }
+    public int getBudget()                                  { return this.budget; }
+    public LocalDate getDepartureDate()                     { return this.duration.getStartDate(); }
+    public LocalDate getReturnDate()                        { return this.duration.getEndDate(); }
+    public AccommodationRequirements getAccommodation()     { return this.accommodation; }
+    public TransportRequirements getTransport()             { return this.transport; }
 
 
     // Converts an HolidayRequirements instance into an Announcement instance (model to bean class conversion)
@@ -31,21 +56,21 @@ public class HolidayRequirements extends Holiday {
     public Announcement toAnnouncement() throws IllegalArgumentException
     {
         Announcement a = new Announcement();
-        a.setId(this.getMetadata().getHolidayId());
-        a.setOwner(this.getMetadata().getOwnerUsername());
-        a.setNumOfViews(this.getMetadata().getNumOfViews());
-        a.setDestination(this.getDestination());
-        a.setHolidayDescription(this.getHolidayDescription());
+        a.setId(this.metadata.getHolidayId());
+        a.setOwner(this.metadata.getOwnerUsername());
+        a.setNumOfViews(this.metadata.getNumOfViews());
+        a.setDestination(this.destination);
+        a.setHolidayDescription(this.holidayDescription);
         a.setHolidayDuration( new Duration(this.getDepartureDate(), this.getReturnDate()) );
-        a.setAvailableBudget(this.getAvailableBudget());
-        a.setDateOfPost(this.getMetadata().getDateOfPost());
-        a.setAccommodationType(this.getAccommodation().getType());
-        a.setAccommodationQuality(this.getAccommodation().getQuality());
-        a.setNumOfRoomsRequired(this.getAccommodation().getNumOfRooms());
-        a.setTransportType(this.getTransport().getType());
-        a.setTransportQuality(this.getTransport().getQuality());
-        a.setDepartureLocation(this.getTransport().getDepartureLocation());
-        a.setNumOfTravelers(this.getTransport().getNumOfTravelers());
+        a.setAvailableBudget(this.budget);
+        a.setDateOfPost(this.metadata.getDateOfPost());
+        a.setAccommodationType(this.accommodation.getType());
+        a.setAccommodationQuality(this.accommodation.getQuality());
+        a.setNumOfRoomsRequired(this.accommodation.getNumOfRooms());
+        a.setTransportType(this.transport.getType());
+        a.setTransportQuality(this.transport.getQuality());
+        a.setDepartureLocation(this.transport.getDepartureLocation());
+        a.setNumOfTravelers(this.transport.getNumOfTravelers());
 
         return a;
     }

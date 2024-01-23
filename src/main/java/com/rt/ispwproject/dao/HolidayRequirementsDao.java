@@ -20,7 +20,7 @@ public class HolidayRequirementsDao {
         {
             saveRequirementsProc.setInt("userId_in", userId);
             saveRequirementsProc.setString("destination_in", requirements.getDestination());
-            saveRequirementsProc.setInt("availableBudget_in", requirements.getAvailableBudget());
+            saveRequirementsProc.setInt("availableBudget_in", requirements.getBudget());
             saveRequirementsProc.setString("description_in", requirements.getHolidayDescription());
             saveRequirementsProc.setDate("dateOfPost_in", Date.valueOf(requirements.getMetadata().getDateOfPost()));
             saveRequirementsProc.setDate("departureDate_in", Date.valueOf(requirements.getDepartureDate()));
@@ -125,13 +125,27 @@ public class HolidayRequirementsDao {
     // Creates an instance of HolidayRequirements using data contained in a row of the given result set.
     private HolidayRequirements createHolidayRequirementsFromResultSet(ResultSet rs) throws SQLException
     {
-        HolidayMetadata metadata = new HolidayMetadata(rs.getInt("id"), rs.getString("ownerUsername"), rs.getDate("dateOfPost").toLocalDate(), rs.getInt("numOfViews"));
+        HolidayMetadata metadata = new HolidayMetadata(rs.getInt("id"),
+                rs.getString("ownerUsername"),
+                rs.getDate("dateOfPost").toLocalDate(),
+                rs.getInt("numOfViews")
+        );
+
         DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
 
-        Accommodation accommodation = new Accommodation(AccommodationType.valueOf(rs.getString("accommodationType")), rs.getInt("accommodationQuality"), rs.getInt("numOfRooms"));
-        Transport transport = new Transport(TransportType.valueOf(rs.getString("transportType")), rs.getInt("transportQuality"),
-                new Route(rs.getString("departureLocation"), rs.getString("destination")), rs.getInt("numOfTravelers"));
+        AccommodationRequirements accommodationReq = new AccommodationRequirements(
+                AccommodationType.valueOf(rs.getString("accommodationType")),
+                rs.getInt("accommodationQuality"),
+                rs.getInt("numOfRooms")
+        );
 
-        return new HolidayRequirements(metadata, rs.getString("destination"), rs.getString("description"), duration, rs.getInt("budget"), accommodation, transport);
+        TransportRequirements transportReq = new TransportRequirements(
+                TransportType.valueOf(rs.getString("transportType")),
+                rs.getInt("transportQuality"),
+                rs.getInt("numOfTravelers"),
+                rs.getString("departureLocation")
+        );
+
+        return new HolidayRequirements(metadata, rs.getString("destination"), rs.getString("description"), duration, rs.getInt("budget"), accommodationReq, transportReq);
     }
 }

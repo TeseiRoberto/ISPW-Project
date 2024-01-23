@@ -10,9 +10,10 @@ public class Accommodation {
     private int                 quality;
     private int                 numOfRooms;
     private final DateRange     checkInOutDates;
+    private int                 pricePerNight;
 
 
-    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, DateRange checkInOutDates)
+    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, DateRange checkInOutDates, int pricePerNight)
     {
         this.type = type;
         this.name = name;
@@ -20,17 +21,7 @@ public class Accommodation {
         this.quality = quality;
         this.numOfRooms = numOfRooms;
         this.checkInOutDates = checkInOutDates;
-    }
-
-
-    public Accommodation(AccommodationType type, int quality, int numOfRooms)
-    {
-        this.type = AccommodationType.UNSPECIFIED;
-        this.name = "";
-        this.address = "";
-        this.quality = quality;
-        this.numOfRooms = numOfRooms;
-        this.checkInOutDates = null;
+        this.pricePerNight = pricePerNight;
     }
 
 
@@ -42,6 +33,7 @@ public class Accommodation {
     public void setNumOfRooms(int num)              { this.numOfRooms = num; }
     public void setCheckInDate(LocalDate date)      { this.checkInOutDates.setStartDate(date); }
     public void setCheckOutDate(LocalDate date)     { this.checkInOutDates.setEndDate(date); }
+    public void setPricePerNight(int price)         { this.pricePerNight = price; }
 
 
     // Getters
@@ -52,4 +44,5 @@ public class Accommodation {
     public int getNumOfRooms()                      { return this.numOfRooms; }
     public LocalDate getCheckInDate()               { return this.checkInOutDates.getStartDate(); }
     public LocalDate getCheckOutDate()              { return this.checkInOutDates.getEndDate(); }
+    public int getPricePerNight()                   { return this.pricePerNight; }
 }

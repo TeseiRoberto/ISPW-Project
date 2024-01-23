@@ -29,17 +29,17 @@ public class Announcement {
         this.owner = "";
         this.destination = "";
         this.holidayDescription = "";
-        this.availableBudget = -1;
+        this.availableBudget = 0;
         this.dateOfPost = LocalDate.now();
         this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
         this.accommodationType = AccommodationType.UNSPECIFIED;
-        this.accommodationQuality = -1;
-        this.numOfRoomsRequired = -1;
+        this.accommodationQuality = 0;
+        this.numOfRoomsRequired = 0;
         this.transportType = TransportType.UNSPECIFIED;
-        this.transportQuality = -1;
+        this.transportQuality = 0;
         this.departureLocation = "";
-        this.numOfTravelers = -1;
-        this.numOfViews = -1;
+        this.numOfTravelers = 0;
+        this.numOfViews = 0;
     }
 
 

@@ -9,28 +9,19 @@ public class Transport {
     private int             quality;
     private int             numOfTravelers;
     private final Route     fromToLocation;
+    private int             pricePerTraveler;
     private DateRange       departureAndReturnDates;
 
 
-    public Transport(TransportType type, String companyName, int quality, Route fromToLocation, int numOfTravelers, DateRange departureAndReturnDates)
+    public Transport(TransportType type, String companyName, int quality, Route fromToLocation, int numOfTravelers, int pricePerTraveler, DateRange departureAndReturnDates)
     {
         this.type = type;
         this.company = companyName;
         this.quality = quality;
         this.fromToLocation = fromToLocation;
         this.numOfTravelers = numOfTravelers;
+        this.pricePerTraveler = pricePerTraveler;
         this.departureAndReturnDates = departureAndReturnDates;
-    }
-
-
-    public Transport(TransportType type, int quality, Route fromToLocation, int numOfTravelers)
-    {
-        this.type = type;
-        this.company = "";
-        this.quality = quality;
-        this.fromToLocation = fromToLocation;
-        this.numOfTravelers = numOfTravelers;
-        this.departureAndReturnDates = null;
     }
 
 
@@ -42,6 +33,7 @@ public class Transport {
     public void setDepartureLocation(String location)                           { this.fromToLocation.setDepartureLocation(location); }
     public void setArrivalLocation(String location)                             { this.fromToLocation.setArrivalLocation(location); }
     public void setDepartureAndReturnDates(DateRange departureAndReturn)        { this.departureAndReturnDates = departureAndReturn; }
+    public void setPricePerTraveler(int price)                                  { this.pricePerTraveler = price; }
 
 
     // Getters
@@ -53,4 +45,5 @@ public class Transport {
     public String getArrivalLocation()                  { return this.fromToLocation.getArrivalLocation(); }
     public LocalDate getDepartureDate()                 { return this.departureAndReturnDates.getStartDate(); }
     public LocalDate getReturnDate()                    { return this.departureAndReturnDates.getEndDate(); }
+    public int getPricePerTraveler()                    { return this.pricePerTraveler; }
 }
