@@ -85,12 +85,14 @@ public class TransportOffer {
 
 
     // Getters
-    public TransportType getType()             { return this.type; }
-    public String getCompanyName()             { return this.companyName; }
-    public int getQuality()                    { return this.quality; }
-    public String getDepartureLocation()       { return this.departureLocation; }
-    public int getNumOfTravelers()             { return this.numOfTravelers; }
-    public int getPricePerTraveler()           { return this.pricePerTraveler; }
-    public int getPrice()                      { return this.totalPrice; }
+    public TransportType getType()              { return this.type; }
+    public String getCompanyName()              { return this.companyName; }
+    public int getQuality()                     { return this.quality; }
+    public String getDepartureLocation()        { return this.departureLocation; }
+    public int getNumOfTravelers()              { return this.numOfTravelers; }
+    public int getPricePerTraveler()            { return this.pricePerTraveler; }
+    public String getPricePerTravelerAsStr()    { return Integer.toString(this.pricePerTraveler) + '€'; }
+    public int getPrice()                       { return this.totalPrice; }
+    public String getPriceAsStr()               { return Integer.toString(this.totalPrice) + '€'; }
 
 }

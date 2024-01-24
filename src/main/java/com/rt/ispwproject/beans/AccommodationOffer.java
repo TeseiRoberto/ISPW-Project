@@ -88,5 +88,7 @@ public class AccommodationOffer {
     public int getQuality()                { return this.quality; }
     public int getNumOfRooms()             { return this.numOfRooms; }
     public int getPricePerNight()          { return this.pricePerNight; }
+    public String getPricePerNightAsStr()  { return Integer.toString(this.pricePerNight) + '€'; }
     public int getPrice()                  { return this.totalPrice; }
+    public String getPriceAsStr()          { return Integer.toString(this.totalPrice) + '€'; }
 }

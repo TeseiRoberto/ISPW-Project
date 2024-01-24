@@ -19,6 +19,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     private final Announcement      currAnnounce;
     private AccommodationOffer      chosenAccommodation = null;
     private TransportOffer          chosenTransport = null;
+    private int                     offerPrice = 0;
 
     // Fields for the user request
     @FXML private Text              announcementOwnerText;
@@ -77,7 +78,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         this.requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getNumOfRoomsRequired()) );
         this.requestedTransportTypeText.setText(currAnnounce.getTransportType().toString());
         this.requestedDepartureLocationText.setText(currAnnounce.getDepartureLocation());
-        this.availableBudgetText.setText( Integer.toString(currAnnounce.getAvailableBudget()) );
+        this.availableBudgetText.setText(currAnnounce.getAvailableBudgetAsStr());
         this.requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getNumOfTravelers()) );
 
         this.requestedAccommodationQuality.setQualityLevel(currAnnounce.getAccommodationQuality());
@@ -87,6 +88,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         this.offeredAccommodationQualityHbox.getChildren().add(this.offeredAccommodationQuality);
         this.offeredTransportQualityHbox.getChildren().add(this.offeredTransportQuality);
+        updateOfferPrice(0);
     }
 
 
@@ -114,7 +116,16 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         offeredAccommodationQuality.setQualityLevel(chosenAccommodation.getQuality());
         offeredAccommodationAddressText.setText(chosenAccommodation.getAddress());
         offeredNumOfRoomsText.setText(Integer.toString(chosenAccommodation.getNumOfRooms()));
-        offeredAccommodationPriceText.setText(Integer.toString(chosenAccommodation.getPricePerNight()));
+        offeredAccommodationPriceText.setText(chosenAccommodation.getPricePerNightAsStr());
+
+        // Recalculate the offer price
+        try {
+            OfferManager offerManager = new OfferManager();
+            updateOfferPrice( offerManager.calculateOfferPrice(chosenAccommodation.getPrice(), chosenTransport == null ? 0 : chosenTransport.getPrice()) );
+
+        } catch (IllegalArgumentException e) {
+            displayError(e.getMessage());
+        }
     }
 
 
@@ -133,8 +144,17 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         offeredTransportCompanyText.setText(chosenTransport.getCompanyName());
         offeredTransportQuality.setQualityLevel(chosenTransport.getQuality());
         offeredDepartureLocationText.setText(chosenTransport.getDepartureLocation());
-        offeredTransportPriceText.setText(Integer.toString(chosenTransport.getPricePerTraveler()));
+        offeredTransportPriceText.setText(chosenTransport.getPricePerTravelerAsStr());
         offeredNumOfTravelersText.setText(Integer.toString(chosenTransport.getNumOfTravelers()));
+
+        // Recalculate the offer price
+        try {
+            OfferManager offerManager = new OfferManager();
+            updateOfferPrice( offerManager.calculateOfferPrice(chosenAccommodation == null ? 0 : chosenAccommodation.getPrice(), chosenTransport.getPrice()) );
+
+        } catch (IllegalArgumentException e) {
+            displayError(e.getMessage());
+        }
     }
 
 
@@ -151,23 +171,30 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     {
         try {
             if(chosenAccommodation == null)
-                throw new IllegalArgumentException("No Accommodation has been selected");
+                throw new IllegalArgumentException("No accommodation has been selected yet...");
 
             if(chosenTransport == null)
-                throw new IllegalArgumentException("No Transport has been selected");
+                throw new IllegalArgumentException("No transport has been selected yet...");
 
-            int offerPrice = chosenAccommodation.getPrice() + chosenTransport.getPrice();
-            Offer newOffer = new Offer(0, currSession.getUsername(), offerPrice, offeredDestinationTextfield.getText(),
+            Offer newOffer = new Offer(0, currSession.getUsername(),offeredDestinationTextfield.getText(),
                     new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue()),
-                    chosenAccommodation, chosenTransport
+                    offerPrice, chosenAccommodation, chosenTransport
             );
 
             OfferManager offerManager = new OfferManager();
-            offerManager.makeOfferToUser(currAnnounce, newOffer);
+            offerManager.makeOfferToUser(currSession, currAnnounce, newOffer);
         } catch(IllegalArgumentException | DbException e)
         {
             displayError(e.getMessage());
         }
+    }
+
+
+    // Updates the current offer price
+    private void updateOfferPrice(int price)
+    {
+        this.offerPrice = price;
+        this.offeredPriceText.setText( Integer.toString(this.offerPrice) + '€' );
     }
 
 

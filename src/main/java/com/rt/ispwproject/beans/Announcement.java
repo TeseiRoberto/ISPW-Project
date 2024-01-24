@@ -168,6 +168,7 @@ public class Announcement {
     public String getDestination()                      { return this.destination; }
     public String getHolidayDescription()               { return this.holidayDescription; }
     public int getAvailableBudget()                     { return this.availableBudget; }
+    public String getAvailableBudgetAsStr()             { return Integer.toString(this.availableBudget) + '€'; }
     public LocalDate getDateOfPost()                    { return this.dateOfPost; }
     public Duration getHolidayDuration()                { return this.holidayDuration; }
     public AccommodationType getAccommodationType()     { return this.accommodationType; }

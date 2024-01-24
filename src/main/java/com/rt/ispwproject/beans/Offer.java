@@ -7,20 +7,20 @@ public class Offer {
 
     private int                 id;
     private String              bidderAgencyName;
-    private int                 price;
     private String              destination;
     private Duration            duration;
+    private int                 price;
     private AccommodationOffer  accommodation;
     private TransportOffer      transport;
 
 
-    public Offer(int id, String agencyName, int price, String destination, Duration duration, AccommodationOffer accommodationOffer, TransportOffer transportOffer) throws IllegalArgumentException
+    public Offer(int id, String agencyName, String destination, Duration duration, int price, AccommodationOffer accommodationOffer, TransportOffer transportOffer) throws IllegalArgumentException
     {
         setId(id);
         setBidder(agencyName);
-        setPrice(price);
         setDestination(destination);
         setDuration(duration);
+        setPrice(price);
         setAccommodationOffer(accommodationOffer);
         setTransportOffer(transportOffer);
     }
@@ -35,14 +35,6 @@ public class Offer {
             throw new IllegalArgumentException("Bidder name cannot be empty!");
 
         this.bidderAgencyName = agencyName;
-    }
-
-    public void setPrice(int price) throws IllegalArgumentException
-    {
-        if(price <= 0)
-            throw new IllegalArgumentException("Price cannot be negative or zero!");
-
-        this.price = price;
     }
 
     public void setDestination(String destination) throws IllegalArgumentException
@@ -62,6 +54,14 @@ public class Offer {
             throw new IllegalArgumentException("Offer departure date cannot be before (or equal to) the current date!");
 
         this.duration = duration;
+    }
+
+    public void setPrice(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("Offer price cannot be negative or zero!");
+
+        this.price = price;
     }
 
     public void setAccommodationOffer(AccommodationOffer offer) throws IllegalArgumentException
@@ -84,10 +84,11 @@ public class Offer {
     // Getters
     public int getId()                                  { return this.id; }
     public String getBidder()                           { return this.bidderAgencyName; }
-    public int getPrice()                               { return this.price; }
     public String getDestination()                      { return this.destination; }
     public LocalDate getDepartureDate()                 { return this.duration.getStartDate(); }
     public LocalDate getReturnDate()                    { return this.duration.getEndDate(); }
+    public int getPrice()                               { return this.price; }
+    public String getPriceAsStr()                       { return Integer.toString(this.price) + '€'; }
     public AccommodationOffer getAccommodationOffer()   { return this.accommodation; }
     public TransportOffer getTransportOffer()           { return this.transport; }
 
