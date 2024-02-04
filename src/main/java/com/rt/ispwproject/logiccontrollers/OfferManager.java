@@ -13,15 +13,19 @@ public class OfferManager {
 
 
     // Inserts a new offer (intended for the given announcement) in the system
-    public void makeOfferToUser(Session currUser, Announcement announce, Offer offer) throws DbException
+    public void makeOfferToUser(Session currUser, Announcement announce, Offer offer) throws DbException, IllegalArgumentException
     {
         HolidayMetadata metadata = new HolidayMetadata(0, offer.getBidder(), LocalDate.now(), 0);
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
+        Location destination = new Location(offer.getDestination());
+        Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
+        Location accommodationLocation = new Location(offer.getAccommodationOffer().getAddress());
+
 
         Accommodation accommodation = new Accommodation(
                 offer.getAccommodationOffer().getType(),
                 offer.getAccommodationOffer().getName(),
-                offer.getAccommodationOffer().getAddress(),
+                accommodationLocation,
                 offer.getAccommodationOffer().getQuality(),
                 offer.getAccommodationOffer().getNumOfRooms(),
                 holidayDuration,
@@ -32,13 +36,13 @@ public class OfferManager {
                 offer.getTransportOffer().getType(),
                 offer.getTransportOffer().getCompanyName(),
                 offer.getTransportOffer().getQuality(),
-                new Route(offer.getTransportOffer().getDepartureLocation(), offer.getDestination()),
+                new Route(departureLocation, destination),
                 offer.getTransportOffer().getNumOfTravelers(),
                 offer.getTransportOffer().getPricePerTraveler(),
                 holidayDuration
         );
 
-        HolidayOffer holidayOffer = new HolidayOffer(metadata, offer.getDestination(), holidayDuration, offer.getPrice(), accommodation, transport);
+        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodation, transport);
         HolidayOfferDao offerDao = new HolidayOfferDao();
         offerDao.postOffer(currUser.getUserId(), announce.getId(), holidayOffer);
     }

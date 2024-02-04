@@ -12,11 +12,13 @@ import java.util.List;
 public class AnnouncementManager {
 
     // Inserts a new announcement in the system
-    public void postAnnouncement(Session currUser, Announcement announce) throws DbException
+    public void postAnnouncement(Session currUser, Announcement announce) throws DbException, IllegalArgumentException
     {
         // Create holiday requirements with data in the given announcement
         HolidayMetadata metadata = new HolidayMetadata(0, announce.getOwner(), announce.getDateOfPost(), announce.getNumOfViews());
         DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getStartDate(), announce.getHolidayDuration().getEndDate());
+        Location destination = new Location(announce.getDestination());
+        Location departureLocation = new Location(announce.getDepartureLocation());
 
         AccommodationRequirements accommodationReq = new AccommodationRequirements(
                 announce.getAccommodationType(),
@@ -28,11 +30,11 @@ public class AnnouncementManager {
                 announce.getTransportType(),
                 announce.getTransportQuality(),
                 announce.getNumOfTravelers(),
-                announce.getDepartureLocation()
+                departureLocation
         );
 
         HolidayRequirements newReq = new HolidayRequirements(
-                metadata, announce.getDestination(), announce.getHolidayDescription(), holidayDuration,
+                metadata, destination, announce.getHolidayDescription(), holidayDuration,
                 announce.getAvailableBudget(), accommodationReq, transportReq
         );
 

@@ -45,6 +45,9 @@ public class ProfileDao {
             throw new DbException("Failed to invoke the \"login\" stored procedure: " + e.getMessage());
         }
 
+        if(newProfile == null)
+            throw new DbException("User not found");
+
         return newProfile;
     }
 }

@@ -2,6 +2,7 @@ package com.rt.ispwproject.model;
 
 public class AccommodationRequirements {
 
+    private int                 id;
     private AccommodationType   type;
     private int                 quality;
     private int                 numOfRooms;
@@ -9,6 +10,14 @@ public class AccommodationRequirements {
 
     public AccommodationRequirements(AccommodationType type, int quality, int numOfRooms)
     {
+        this.type = type;
+        this.quality =  quality;
+        this.numOfRooms = numOfRooms;
+    }
+
+    public AccommodationRequirements(int id, AccommodationType type, int quality, int numOfRooms)
+    {
+        this.id = id;
         this.type = type;
         this.quality =  quality;
         this.numOfRooms = numOfRooms;
@@ -22,6 +31,7 @@ public class AccommodationRequirements {
 
 
     // Getters
+    public int getId()                              { return this.id; }
     public AccommodationType getType()              { return this.type; }
     public int getQuality()                         { return this.quality; }
     public int getNumOfRooms()                      { return this.numOfRooms; }

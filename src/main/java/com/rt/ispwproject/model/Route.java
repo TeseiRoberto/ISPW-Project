@@ -3,20 +3,20 @@ package com.rt.ispwproject.model;
 
 public class Route {
 
-    private String departureLocation;
-    private String arrivalLocation;
+    private Location departureLocation;
+    private Location arrivalLocation;
 
 
-    public Route(String departureFrom, String arrivalTo) throws IllegalArgumentException
+    public Route(Location departureFrom, Location arrivalTo) throws IllegalArgumentException
     {
         setDepartureLocation(departureFrom);
         setArrivalLocation(arrivalTo);
     }
 
 
-    public void setDepartureLocation(String location) throws IllegalArgumentException
+    public void setDepartureLocation(Location location) throws IllegalArgumentException
     {
-        if(location == null || location.isEmpty())
+        if(location == null)
             throw new IllegalArgumentException("Departure location cannot be empty!");
 
         if(location.equals(this.arrivalLocation))
@@ -25,9 +25,9 @@ public class Route {
         this.departureLocation = location;
     }
 
-    public void setArrivalLocation(String location) throws IllegalArgumentException
+    public void setArrivalLocation(Location location) throws IllegalArgumentException
     {
-        if(location == null || location.isEmpty())
+        if(location == null)
             throw new IllegalArgumentException("Arrival location cannot be empty!");
 
         if(location.equals(this.departureLocation))
@@ -36,6 +36,6 @@ public class Route {
         this.arrivalLocation = location;
     }
 
-    public String getDepartureLocation()    { return this.departureLocation; }
-    public String getArrivalLocation()      { return this.arrivalLocation; }
+    public Location getDepartureLocation()    { return this.departureLocation; }
+    public Location getArrivalLocation()      { return this.arrivalLocation; }
 }

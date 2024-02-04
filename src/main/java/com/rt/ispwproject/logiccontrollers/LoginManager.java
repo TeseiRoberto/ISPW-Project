@@ -18,9 +18,6 @@ public class LoginManager {
         ProfileDao dao = new ProfileDao();
         Profile currUser = dao.getProfile(username, password);
 
-        if(currUser == null)
-            throw new DbException("User not found");
-
         return new Session(currUser.getUserId(), currUser.getUsername(), currUser.getEmail(), currUser.getUserRole());
     }
 }
