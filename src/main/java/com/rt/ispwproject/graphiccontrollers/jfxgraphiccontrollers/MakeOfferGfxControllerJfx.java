@@ -23,6 +23,7 @@ import java.util.List;
 
 public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
+    private static final Font       DEFAULT_FONT = new Font("System", 18);
     private final Session           currSession;
     private final Announcement      currAnnounce;
     private AccommodationOffer      chosenAccommodation = null; // Accommodation offer chosen using the search window
@@ -134,8 +135,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the destination then the selected accommodation/transport will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the destination then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -159,8 +159,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenAccommodation != null)
         {
-            if(displayConfirmDialog("If you change the number of rooms then the selected accommodation will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the number of rooms then the selected accommodation will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
             } else {
@@ -183,8 +182,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the number of rooms then the selected transport will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the number of rooms then the selected transport will be lost.") == ButtonType.OK)
             {
                 setChosenTransport(null);
             } else {
@@ -207,8 +205,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the departure location then the selected transport will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the departure location then the selected transport will be lost.") == ButtonType.OK)
             {
                 setChosenTransport(null);
             } else {
@@ -231,8 +228,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the departure date then the selected accommodation/transport will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the departure date then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -256,8 +252,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the return date then the selected accommodation/transport will be lost. "
-                    + "Do you want to proceed?") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the return date then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -312,7 +307,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         {
             Label infoMsg = new Label("No accommodation has been found.");
             infoMsg.setTextAlignment(TextAlignment.CENTER);
-            infoMsg.setFont(new Font("System", 18));
+            infoMsg.setFont(DEFAULT_FONT);
             availableElements.getChildren().add(infoMsg);
         } else {
             for(AccommodationOffer el : availableAccommodations)
@@ -393,7 +388,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         {
             Label infoMsg = new Label("No transport has been found.");
             infoMsg.setTextAlignment(TextAlignment.CENTER);
-            infoMsg.setFont(new Font("System", 18));
+            infoMsg.setFont(DEFAULT_FONT);
             availableElements.getChildren().add(infoMsg);
         } else {
             for (TransportOffer el : availableTransports) {
@@ -440,7 +435,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         }
 
         Text screenTitleText = new Text(screenTitle);
-        screenTitleText.setFont( new Font("System", 18) );
+        screenTitleText.setFont(DEFAULT_FONT);
 
         availableElements = new VBox();
         availableElements.setAlignment(Pos.TOP_CENTER);

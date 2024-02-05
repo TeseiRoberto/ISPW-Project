@@ -26,7 +26,6 @@ public class AccommodationRequirementsDao {
             accommodationReqId = postReqProc.getInt("accommodationReqId_out");
         } catch(SQLException e)
         {
-            System.out.println(e.getMessage());
             throw new DbException("Failed to invoke the \"createAccommodationRequirements\" stored procedure:\n" + e.getMessage());
         }
 

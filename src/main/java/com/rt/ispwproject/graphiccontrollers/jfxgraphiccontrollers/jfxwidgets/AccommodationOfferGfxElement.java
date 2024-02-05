@@ -94,7 +94,6 @@ public class AccommodationOfferGfxElement extends GridPane {
         ImageView accommodationImg = new ImageView();
         accommodationImg.setFitWidth(IMG_WIDTH);
         accommodationImg.setFitHeight(IMG_HEIGHT);
-        //accommodationImg.setPreserveRatio(true);
         accommodationImg.setCache(true);
         accommodationImg.setImage(img);
 

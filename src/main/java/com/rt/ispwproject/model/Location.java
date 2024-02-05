@@ -1,5 +1,7 @@
 package com.rt.ispwproject.model;
 
+import java.security.SecureRandom;
+
 public class Location {
 
     private final String    name;
@@ -45,20 +47,24 @@ public class Location {
     // Checks if the given name actually identify a location on the earth
     private void checkNameValidity(String name) throws IllegalArgumentException
     {
+        if(name == null)
+            throw new IllegalArgumentException("Location name cannot be null!");
+
         // Here we should query an external system to be sure that a location with the given name exists on the earth,
         // for now we assume that all locations will exist
     }
 
 
     // Ensures that a location with the given name exists on the earth and retrieves the latitude and longitude of such location
-    private void retrieveGeographicalCoordinates(String name)
+    private void retrieveGeographicalCoordinates(String name) throws IllegalArgumentException
     {
         checkNameValidity(name);
 
         // Here we should query an external system to obtain the latitude and longitude values for the location with the given name,
         // for now we simply generate some random values
-        this.latitude = -90f + Math.random() * (90f + 90f);
-        this.longitude = -90f + Math.random() * (90f + 90f);
+        SecureRandom random = new SecureRandom();
+        this.latitude = -90.0 + random.nextDouble() * (90.0 + 90.0);
+        this.longitude = -90.0 + random.nextDouble() * (90.0 + 90.0);
     }
 
 }

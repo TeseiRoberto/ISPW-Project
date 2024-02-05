@@ -15,11 +15,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestAnnouncementManager {
+class TestAnnouncementManager {
 
     // Try to post an announcement and verify that the announcement gets inserted in the system
     @Test
-    public void testPostAnnouncement() throws IllegalArgumentException, DbException
+    void testPostAnnouncement() throws IllegalArgumentException, DbException
     {
         Session testSession = createTestSession();
         Announcement testAnnounce = createTestAnnouncement(testSession);
