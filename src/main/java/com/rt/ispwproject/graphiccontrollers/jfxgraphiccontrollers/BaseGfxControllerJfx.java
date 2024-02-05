@@ -3,6 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -26,16 +27,27 @@ public class BaseGfxControllerJfx {
             stage.setScene(newScene);
         } catch(IOException e)
         {
-            displayError("Change of JavaFX screen failed:\n" + e.getMessage());
+            displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }
 
 
     // Displays an error dialog box with the given error message
-    protected void displayError(String errorMsg)
+    protected void displayErrorDialog(String errorMsg)
     {
         Alert msg = new Alert(Alert.AlertType.ERROR);
         msg.setContentText(errorMsg);
         msg.showAndWait();
     }
+
+
+    // Displays a confirmation dialog box and returns the value selected by the user
+    protected ButtonType displayConfirmDialog(String msg)
+    {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setContentText(msg);
+        confirm.showAndWait();
+        return confirm.getResult();
+    }
+
 }

@@ -16,10 +16,10 @@ public class HolidayRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
-        int accommodationReqId = -1;
+        int accommodationReqId = 0;
 
         TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
-        int transportReqId = -1;
+        int transportReqId = 0;
 
         // Create callable statement and setup parameters to invoke the createHolidayRequirements stored procedure
         try (CallableStatement postReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
@@ -46,10 +46,10 @@ public class HolidayRequirementsDao {
             postReqProc.execute();
         } catch(SQLException e)
         {
-            if(accommodationReqId != -1)
+            if(accommodationReqId != 0)
                 accommodationReqDao.removeRequirements(accommodationReqId);
 
-            if(transportReqId != -1)
+            if(transportReqId != 0)
                 transportReqDao.removeRequirements(transportReqId);
 
             throw new DbException("Failed to invoke the \"createHolidayRequirements\" stored procedure:\n" + e.getMessage());

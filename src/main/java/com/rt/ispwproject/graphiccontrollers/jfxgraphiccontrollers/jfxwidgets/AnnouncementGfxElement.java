@@ -32,7 +32,7 @@ public class AnnouncementGfxElement extends VBox {
 
         // Create labels
         Label destinationText = new Label(announce.getDestination());
-        Label departureAndReturnText = new Label(announce.getHolidayDuration().getStartDate().toString() + " - " + announce.getHolidayDuration().getEndDate().toString());
+        Label departureAndReturnText = new Label(announce.getHolidayDuration().getDepartureDate().toString() + " - " + announce.getHolidayDuration().getReturnDate().toString());
         Label budgetText = new Label(announce.getAvailableBudgetAsStr());
         Label dateOfPostText = new Label("published on " + announce.getDateOfPost().toString());
         Label numOfViewsText = new Label( announce.getNumOfViews() + " views");

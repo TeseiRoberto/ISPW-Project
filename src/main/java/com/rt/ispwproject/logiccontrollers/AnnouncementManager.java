@@ -16,7 +16,7 @@ public class AnnouncementManager {
     {
         // Create holiday requirements with data in the given announcement
         HolidayMetadata metadata = new HolidayMetadata(0, announce.getOwner(), announce.getDateOfPost(), announce.getNumOfViews());
-        DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getStartDate(), announce.getHolidayDuration().getEndDate());
+        DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
         Location destination = new Location(announce.getDestination());
         Location departureLocation = new Location(announce.getDepartureLocation());
 

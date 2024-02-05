@@ -38,6 +38,9 @@ public class TransportRequirementsDao {
     // Retrieves the transport requirements associated to the given id from the db
     public TransportRequirements getRequirements(int transportReqId) throws DbException
     {
+        if(transportReqId <= 0)
+            return null;
+
         TransportRequirements transportReq = null;
         Connection connection = DbConnection.getInstance().getConnection();
 
@@ -84,6 +87,9 @@ public class TransportRequirementsDao {
     // Removes the transport requirements associated to the given id from the db
     public void removeRequirements(int transportReqId) throws DbException
     {
+        if(transportReqId <= 0)
+            return;
+
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteTransportRequirements stored procedure

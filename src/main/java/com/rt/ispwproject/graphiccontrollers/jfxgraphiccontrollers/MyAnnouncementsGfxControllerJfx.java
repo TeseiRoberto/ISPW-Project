@@ -37,7 +37,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
             announcements = annManager.getMyAnnouncements(currSession);
         } catch(DbException e)
         {
-            displayError(e.getMessage());
+            displayErrorDialog(e.getMessage());
             announcements.clear();
         }
 

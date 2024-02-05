@@ -2,6 +2,9 @@ package com.rt.ispwproject.beans;
 
 import com.rt.ispwproject.model.AccommodationType;
 
+import java.net.URL;
+import java.util.List;
+
 public class AccommodationOffer {
 
     private AccommodationType   type;
@@ -11,6 +14,8 @@ public class AccommodationOffer {
     private int                 numOfRooms;
     private int                 pricePerNight;
     private int                 totalPrice;
+    private List<URL>           imagesLinks;
+
 
     public AccommodationOffer(AccommodationType type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
     {
@@ -21,6 +26,7 @@ public class AccommodationOffer {
         setNumOfRooms(numOfRooms);
         setPricePerNight(pricePerNight);
         setPrice(totalPrice);
+        imagesLinks = List.of();
     }
 
 
@@ -81,6 +87,12 @@ public class AccommodationOffer {
         this.totalPrice = price;
     }
 
+    public void setImagesLinks(List<URL> links)
+    {
+        this.imagesLinks = links;
+    }
+
+
     // Getters
     public AccommodationType getType()     { return this.type; }
     public String getName()                { return this.name; }
@@ -91,4 +103,5 @@ public class AccommodationOffer {
     public String getPricePerNightAsStr()  { return Integer.toString(this.pricePerNight) + '€'; }
     public int getPrice()                  { return this.totalPrice; }
     public String getPriceAsStr()          { return Integer.toString(this.totalPrice) + '€'; }
+    public List<URL> getImagesLinks()      { return this.imagesLinks; }
 }

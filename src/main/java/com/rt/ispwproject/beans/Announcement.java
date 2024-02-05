@@ -80,7 +80,7 @@ public class Announcement {
         if(date == null)
             throw new IllegalArgumentException("Date of post cannot be empty!");
 
-        if(this.holidayDuration != null && date.isAfter(this.holidayDuration.getStartDate()))
+        if(this.holidayDuration != null && date.isAfter(this.holidayDuration.getDepartureDate()))
             throw new IllegalArgumentException("Date of post cannot be after the departure date of the holiday!");
 
         this.dateOfPost = date;
@@ -91,7 +91,7 @@ public class Announcement {
         if(duration == null)
             throw new IllegalArgumentException("Holiday duration cannot be empty!");
 
-        if(this.dateOfPost != null && duration.getStartDate().isBefore(this.dateOfPost))
+        if(this.dateOfPost != null && duration.getDepartureDate().isBefore(this.dateOfPost))
             throw new IllegalArgumentException("Departure date cannot be before the date of post of the announcement!");
 
         this.holidayDuration = duration;

@@ -34,13 +34,13 @@ public class QualityIndicator extends HBox {
     {
         ObservableList<Node> stars = this.getChildren();
 
-        if(level < currQualityLevel)                            // If the given level is less than the current one
+        if(level < currQualityLevel)                            // If the quality level is minor than the current one
         {
-            for(int i = level; i < currQualityLevel; ++i)       // Remove the not needed stars
-                this.getChildren().remove(stars.get(i));
+            for(int i = currQualityLevel; i > level; i--)       // We need to remove some stars
+                stars.remove(stars.get(i - 1));
         } else {                                                // Otherwise
-            for(int i = currQualityLevel; i < level; ++i)       // Add some stars
-                this.getChildren().add(createStar());
+            for(int i = 0; i < level - currQualityLevel; i++)   // We need to add some stars
+                stars.add(createStar());
         }
 
         this.currQualityLevel = level;
@@ -56,7 +56,6 @@ public class QualityIndicator extends HBox {
         star.setContent(STAR_SHAPE);
         star.setFill(starColor);
         star.setStroke(starColor);
-        //star.setStyle(STAR_STYLE);
 
         return star;
     }

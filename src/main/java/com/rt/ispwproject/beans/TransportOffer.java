@@ -10,11 +10,10 @@ public class TransportOffer {
     private int                 numOfTravelers;
     private String              departureLocation;
     private int                 pricePerTraveler;
-    private int                 totalPrice;
 
 
     public TransportOffer(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers,
-                          int pricePerTraveler, int totalPrice) throws IllegalArgumentException
+                          int pricePerTraveler) throws IllegalArgumentException
     {
         setType(type);
         setCompanyName(companyName);
@@ -22,7 +21,6 @@ public class TransportOffer {
         setDepartureLocation(departureLocation);
         setNumOfTravelers(numOfTravelers);
         setPricePerTraveler(pricePerTraveler);
-        setPrice(totalPrice);
     }
 
 
@@ -75,14 +73,6 @@ public class TransportOffer {
         this.pricePerTraveler = price;
     }
 
-    public void setPrice(int price) throws IllegalArgumentException
-    {
-        if(price <= 0)
-            throw new IllegalArgumentException("Transport price cannot be negative or zero!");
-
-        this.totalPrice = price;
-    }
-
 
     // Getters
     public TransportType getType()              { return this.type; }
@@ -92,7 +82,7 @@ public class TransportOffer {
     public int getNumOfTravelers()              { return this.numOfTravelers; }
     public int getPricePerTraveler()            { return this.pricePerTraveler; }
     public String getPricePerTravelerAsStr()    { return Integer.toString(this.pricePerTraveler) + '€'; }
-    public int getPrice()                       { return this.totalPrice; }
-    public String getPriceAsStr()               { return Integer.toString(this.totalPrice) + '€'; }
+    public int getPrice()                       { return this.pricePerTraveler * this.numOfTravelers; }
+    public String getPriceAsStr()               { return Integer.toString(this.getPrice()) + '€'; }
 
 }

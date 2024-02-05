@@ -4,41 +4,41 @@ import java.time.LocalDate;
 
 public class Duration {
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate departureDate;
+    private LocalDate returnDate;
 
 
     public Duration(LocalDate start, LocalDate end) throws IllegalArgumentException
     {
-        setStartDate(start);
-        setEndDate(end);
+        setDepartureDate(start);
+        setReturnDate(end);
     }
 
 
     // Setters
-    public void setStartDate(LocalDate date) throws IllegalArgumentException
+    public void setDepartureDate(LocalDate date) throws IllegalArgumentException
     {
         if(date == null)
-            throw new IllegalArgumentException("Start date cannot be empty!");
+            throw new IllegalArgumentException("Departure date cannot be empty!");
 
-        if(endDate != null && date.isAfter(this.endDate))
-            throw new IllegalArgumentException("Start date cannot be after the end date!");
+        if(returnDate != null && date.isAfter(this.returnDate))
+            throw new IllegalArgumentException("Departure date cannot be after the return date!");
 
-        this.startDate = date;
+        this.departureDate = date;
     }
 
-    public void setEndDate(LocalDate date) throws IllegalArgumentException
+    public void setReturnDate(LocalDate date) throws IllegalArgumentException
     {
         if(date == null)
-            throw new IllegalArgumentException("End date cannot be empty!");
+            throw new IllegalArgumentException("Return date cannot be empty!");
 
-        if(startDate != null && date.isBefore(startDate))
-            throw new IllegalArgumentException("End date cannot be before the start date!");
+        if(departureDate != null && date.isBefore(departureDate))
+            throw new IllegalArgumentException("Return date cannot be before the departure date!");
 
-        this.endDate = date;
+        this.returnDate = date;
     }
 
     // Getters
-    public LocalDate getStartDate()             { return this.startDate; }
-    public LocalDate getEndDate()               { return this.endDate; }
+    public LocalDate getDepartureDate()         { return this.departureDate; }
+    public LocalDate getReturnDate()            { return this.returnDate; }
 }

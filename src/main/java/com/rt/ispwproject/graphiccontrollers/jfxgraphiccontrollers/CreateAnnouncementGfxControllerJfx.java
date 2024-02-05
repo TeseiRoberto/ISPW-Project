@@ -90,10 +90,10 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
                     (Stage) destinationTextfield.getScene().getWindow(), c -> new MyAnnouncementsGfxControllerJfx(currSession));
         } catch(NumberFormatException e)
         {
-            displayError("Available budget, number of rooms and number of travelers are empty or contains letters!");
+            displayErrorDialog("Available budget, number of rooms and number of travelers are empty or contains letters!");
         } catch(IllegalArgumentException | DbException e)
         {
-            displayError(e.getMessage());
+            displayErrorDialog(e.getMessage());
         }
     }
 

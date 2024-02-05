@@ -38,7 +38,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
             announcements = searchManager.loadAnnouncements(0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
         } catch(DbException e)
         {
-            displayError(e.getMessage());
+            displayErrorDialog(e.getMessage());
             announcements.clear();
         }
 
@@ -77,7 +77,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "search" button is clicked
     public void onSearchClick()
     {
-        displayError("Announcements search functionality has not been implemented yet...");
+        displayErrorDialog("Announcements search functionality has not been implemented yet...");
     }
 
 

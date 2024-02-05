@@ -54,10 +54,10 @@ public class TestAnnouncementManager {
             if(!announce.getDateOfPost().equals(a.getDateOfPost()))
                 continue;
 
-            if(!announce.getHolidayDuration().getStartDate().equals(a.getHolidayDuration().getStartDate()))
+            if(!announce.getHolidayDuration().getDepartureDate().equals(a.getHolidayDuration().getDepartureDate()))
                 continue;
 
-            if(!announce.getHolidayDuration().getEndDate().equals(a.getHolidayDuration().getEndDate()))
+            if(!announce.getHolidayDuration().getReturnDate().equals(a.getHolidayDuration().getReturnDate()))
                 continue;
 
             if(announce.getAccommodationType() != a.getAccommodationType())

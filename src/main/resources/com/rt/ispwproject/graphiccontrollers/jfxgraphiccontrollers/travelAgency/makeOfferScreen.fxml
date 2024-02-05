@@ -174,11 +174,6 @@
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
                            </children>
                            <padding>
                               <Insets top="8.0" />
@@ -196,11 +191,6 @@
                                  </font>
                               </Text>
                               <Text id="returnDateRequest_text" fx:id="requestedReturnDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="00/00/0000">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <Text id="numOfTravelersRequest_text" fx:id="requestedNumOfTravelersText" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -240,11 +230,16 @@
                         <VBox alignment="CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" />
                      </children>
                   </HBox>
-                  <HBox id="accommodation_fields" alignment="CENTER" prefHeight="446.0" prefWidth="680.0">
+                  <HBox id="accommodation_fields" alignment="TOP_CENTER" prefHeight="446.0" prefWidth="680.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="29.0">
+                        <VBox id="titles" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -259,88 +254,94 @@
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                           </children>
-                           <padding>
-                              <Insets top="8.0" />
-                           </padding>
-                        </VBox>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="29.0">
-                           <children>
-                              <Text id="accommodationTypeRequest_text" fx:id="requestedAccommodationTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                              <HBox id="stars_row" fx:id="requestedAccommodationQualityHbox" alignment="CENTER" prefHeight="22.0" prefWidth="200.0" spacing="15.0" />
-                              <Text id="numOfRoomsRequest_text" fx:id="requestedNumOfRoomsText" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price per night">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Text>
                            </children>
                            <padding>
-                              <Insets top="8.0" />
+                              <Insets top="10.0" />
                            </padding>
                         </VBox>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="10.0">
+                        <VBox id="request" alignment="TOP_CENTER" layoutX="237.0" layoutY="10.0" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
                            <children>
-                              <VBox id="accommodation_search" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
-                                 <children>
-                                    <Text id="accommodationTypeOffer_text" fx:id="offeredAccommodationTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Accommodation type">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text id="accommodationNameOffer_text" fx:id="offeredAccommodationNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <HBox id="stars_row" fx:id="offeredAccommodationQualityHbox" alignment="CENTER" prefHeight="35.0" prefWidth="198.0" spacing="15.0" />
-                                    <Text id="accommodationAddressOffer_text" fx:id="offeredAccommodationAddressText" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <HBox id="numOfRooms" alignment="CENTER" prefHeight="35.0" prefWidth="198.0" spacing="5.0">
-                                       <children>
-                                          <Text id="number" fx:id="offeredNumOfRoomsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Num of">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text id="ofRoomsText" strokeType="OUTSIDE" strokeWidth="0.0" text="rooms">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox id="pricePerNight" alignment="CENTER" layoutX="11.0" layoutY="124.0" prefHeight="35.0" prefWidth="198.0" spacing="5.0">
-                                       <children>
-                                          <Text id="priceOffer" fx:id="offeredAccommodationPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text id="perNightText" strokeType="OUTSIDE" strokeWidth="0.0" text="per night">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <Button id="searchAccommodation_btn" mnemonicParsing="false" onMouseClicked="#onSearchAccommodationClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Search" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                 </children>
-                              </VBox>
+                              <Text fx:id="requestedAccommodationTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="separator" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <HBox fx:id="requestedAccommodationQualityHbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="15.0" />
+                              <Text fx:id="requestedNumOfRoomsText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="separator" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="separator" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
                            </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox id="offer" alignment="TOP_CENTER" layoutX="350.0" layoutY="10.0" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
+                           <children>
+                              <Text fx:id="offeredAccommodationTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Not selected yet..." textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="offeredAccommodationNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Not selected yet..." textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <HBox fx:id="offeredAccommodationQualityHbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="15.0" />
+                              <TextField id="destinationOffer_textfield" fx:id="offeredNumOfRoomsTextfield" prefHeight="41.0" prefWidth="226.0" promptText="Num. of rooms" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="-11.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Text fx:id="offeredAccommodationAddressText" strokeType="OUTSIDE" strokeWidth="0.0" text="Not selected yet..." textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="priceOffer" fx:id="offeredAccommodationPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0€">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Button id="searchAccommodation_btn" mnemonicParsing="false" onMouseClicked="#onSearchAccommodationClick" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Search" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                         </VBox>
                      </children>
                   </HBox>
@@ -360,11 +361,16 @@
                         <VBox alignment="CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" />
                      </children>
                   </HBox>
-                  <HBox id="transport_fields" alignment="CENTER" prefHeight="204.0" prefWidth="600.0">
+                  <HBox id="transport_fields" alignment="TOP_CENTER" prefHeight="446.0" prefWidth="680.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="29.0">
+                        <VBox id="titles" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Company name">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -374,98 +380,107 @@
                                     <Font size="18.0" />
                                  </font>
                               </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure from">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                           </children>
-                           <padding>
-                              <Insets top="8.0" />
-                           </padding>
-                        </VBox>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="29.0">
-                           <children>
-                              <Text id="transportTypeRequest_text" fx:id="requestedTransportTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <HBox id="stars_row" fx:id="requestedTransportQualityHbox" alignment="CENTER" prefHeight="28.0" prefWidth="200.0" spacing="15.0" />
-                              <Text id="departureFromRequest_text" fx:id="requestedDepartureLocationText" strokeType="OUTSIDE" strokeWidth="0.0" text="somewhere">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price per traveler">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Text>
                            </children>
                            <padding>
-                              <Insets top="8.0" />
+                              <Insets top="10.0" />
                            </padding>
                         </VBox>
-                        <VBox alignment="TOP_CENTER" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0" spacing="10.0">
+                        <VBox id="request" alignment="TOP_CENTER" layoutX="237.0" layoutY="10.0" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
                            <children>
-                              <VBox id="transport_search" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
-                                 <children>
-                                    <Text id="transportTypeOffer_text" fx:id="offeredTransportTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Transport type">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <Text id="transportCompanyNameOffer_text" fx:id="offeredTransportCompanyText" strokeType="OUTSIDE" strokeWidth="0.0" text="Company name">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <HBox id="stars_row" fx:id="offeredTransportQualityHbox" alignment="CENTER" prefHeight="35.0" prefWidth="198.0" spacing="15.0" />
-                                    <Text id="departureFromOfferText" fx:id="offeredDepartureLocationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure from">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                    <HBox id="numOfTravelersOffer" alignment="CENTER" layoutX="11.0" layoutY="124.0" prefHeight="35.0" prefWidth="198.0" spacing="5.0">
-                                       <children>
-                                          <Text id="numOfTravelersOffer" fx:id="offeredNumOfTravelersText" strokeType="OUTSIDE" strokeWidth="0.0" text="Num. of">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text id="travelersText" layoutX="60.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="travelers">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox id="transportPrice" alignment="CENTER" layoutX="11.0" layoutY="80.0" prefHeight="35.0" prefWidth="198.0" spacing="5.0">
-                                       <children>
-                                          <Text id="transportPriceOffer_text" fx:id="offeredTransportPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                          <Text id="perTravelerText" layoutX="60.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="per traveler">
-                                             <font>
-                                                <Font size="18.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <Button id="searchTransport_btn" mnemonicParsing="false" onMouseClicked="#onSearchTransportClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Search" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                 </children>
-                              </VBox>
+                              <Text fx:id="requestedTransportTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="separator" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <HBox fx:id="requestedTransportQualityHbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="15.0" />
+                              <Text fx:id="requestedNumOfTravelersText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="requestedDepartureLocationText" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text id="separator" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
                            </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox id="offer" alignment="TOP_CENTER" layoutX="350.0" layoutY="10.0" prefHeight="200.0" prefWidth="226.0" spacing="35.0">
+                           <children>
+                              <Text fx:id="offeredTransportTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Not selected yet..." textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="offeredTransportCompanyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Not selected yet..." textAlignment="CENTER" wrappingWidth="200.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <HBox fx:id="offeredTransportQualityHbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" spacing="15.0" />
+                              <TextField id="numOfTravelers" fx:id="offeredNumOfTravelersTextfield" prefHeight="41.0" prefWidth="226.0" promptText="Num. of travelers" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="-11.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <TextField id="departureFrom" fx:id="offeredDepartureLocationTextfield" prefHeight="41.0" prefWidth="226.0" promptText="Departure from" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="-18.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Text id="priceOffer" fx:id="offeredTransportPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0€">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="-6.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Button id="searchTransportBtn" mnemonicParsing="false" onMouseClicked="#onSearchTransportClick" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Search" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                         </VBox>
                      </children>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
                   </HBox>
                   <HBox id="economicDetails_title" alignment="CENTER" prefHeight="82.0" prefWidth="680.0">
                      <children>

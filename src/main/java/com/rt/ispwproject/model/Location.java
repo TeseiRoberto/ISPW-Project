@@ -45,12 +45,6 @@ public class Location {
     // Checks if the given name actually identify a location on the earth
     private void checkNameValidity(String name) throws IllegalArgumentException
     {
-        for(int i = 0; i < name.length(); ++i)
-        {
-            if(Character.isDigit(name.charAt(i)))
-                throw new IllegalArgumentException("Name of Location cannot contain digits");
-        }
-
         // Here we should query an external system to be sure that a location with the given name exists on the earth,
         // for now we assume that all locations will exist
     }

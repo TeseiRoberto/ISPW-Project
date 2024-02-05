@@ -37,6 +37,9 @@ public class AccommodationRequirementsDao {
     // Retrieves the accommodation requirements associated to the given id from the db
     public AccommodationRequirements getRequirements(int accommodationReqId) throws DbException
     {
+        if(accommodationReqId <= 0)
+            return null;
+
         AccommodationRequirements accommodationReq = null;
         Connection connection = DbConnection.getInstance().getConnection();
 
@@ -75,6 +78,9 @@ public class AccommodationRequirementsDao {
     // Removes the accommodation requirements associated to the given id from the db
     public void removeRequirements(int accommodationReqId) throws DbException
     {
+        if(accommodationReqId <= 0)
+            return;
+
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteAccommodationRequirements stored procedure

@@ -50,7 +50,7 @@ public class Offer {
         if(duration == null)
             throw new IllegalArgumentException("Duration cannot be empty!");
 
-        if(!duration.getStartDate().isAfter(LocalDate.now()))
+        if(!duration.getDepartureDate().isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Offer departure date cannot be before (or equal to) the current date!");
 
         this.duration = duration;
@@ -85,8 +85,8 @@ public class Offer {
     public int getId()                                  { return this.id; }
     public String getBidder()                           { return this.bidderAgencyName; }
     public String getDestination()                      { return this.destination; }
-    public LocalDate getDepartureDate()                 { return this.duration.getStartDate(); }
-    public LocalDate getReturnDate()                    { return this.duration.getEndDate(); }
+    public LocalDate getDepartureDate()                 { return this.duration.getDepartureDate(); }
+    public LocalDate getReturnDate()                    { return this.duration.getReturnDate(); }
     public int getPrice()                               { return this.price; }
     public String getPriceAsStr()                       { return Integer.toString(this.price) + '€'; }
     public AccommodationOffer getAccommodationOffer()   { return this.accommodation; }
