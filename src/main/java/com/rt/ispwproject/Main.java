@@ -32,6 +32,7 @@ public class Main {
             LoginGfxControllerCmd loginCtrl = new LoginGfxControllerCmd();
             loginCtrl.start();
         }
+
     }
 
 

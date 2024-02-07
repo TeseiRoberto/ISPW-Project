@@ -11,7 +11,7 @@ public class AccommodationRequirementsDao {
     // Stores given accommodation requirements in db and returns the id that identifies those requirements
     public int postRequirements(AccommodationRequirements req) throws DbException
     {
-        int accommodationReqId = -1;
+        int accommodationReqId = 0;
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createAccommodationRequirements stored procedure

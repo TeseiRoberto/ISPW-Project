@@ -1,6 +1,7 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
 import com.rt.ispwproject.beans.*;
+import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.AccommodationOfferGfxElement;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
@@ -182,7 +183,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         if(chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the number of rooms then the selected transport will be lost.") == ButtonType.OK)
+            if(displayConfirmDialog("If you change the number of travelers then the selected transport will be lost.") == ButtonType.OK)
             {
                 setChosenTransport(null);
             } else {
@@ -275,10 +276,11 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "search accommodation" button is clicked
     public void onSearchAccommodationClick()
     {
-        String destination = offeredDestinationTextfield.getText();
-        String numOfRoomsAsStr = offeredNumOfRoomsTextfield.getText();
         int numOfRooms = 0;
         Duration checkInOutDates = null;
+        String destination = offeredDestinationTextfield.getText();
+        String numOfRoomsAsStr = offeredNumOfRoomsTextfield.getText();
+        List<AccommodationOffer> availableAccommodations = null;
 
         try {
             if(destination == null || destination.isEmpty())
@@ -288,21 +290,29 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("Please insert the number of rooms required to get the available accommodations.");
 
             numOfRooms = Integer.parseInt(numOfRoomsAsStr);
+            if(numOfRooms <= 0)
+                throw new IllegalArgumentException("The number of rooms required cannot be negative or zero.");
+
             checkInOutDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
             createSearchWindow("Accommodation selector", "Available accommodations", 550, 480);
 
-        } catch(IllegalArgumentException e)
+            // Get list of the available accommodations and display it in the search window
+            OfferManager offerManager = new OfferManager();
+            availableAccommodations = offerManager.getAvailableAccommodations(destination, checkInOutDates, numOfRooms);
+
+        } catch(IllegalArgumentException e)                     // Some parameter is not set or is invalid
         {
             displayErrorDialog(e.getMessage());
             return;
-        } catch(IllegalStateException e)                    // The search window was already open
+        } catch(IllegalStateException e)                        // The search window is already open
         {
             return;
+        } catch(ApiException e)                                 // Errors during the retrieval of the available  accommodations
+        {
+            displayErrorDialog(e.getMessage());
         }
 
-        // Get list of the available accommodations and display it in the search window
-        OfferManager offerManager = new OfferManager();
-        List<AccommodationOffer> availableAccommodations = offerManager.getAvailableAccommodations(destination, checkInOutDates, numOfRooms);
+        // Creates graphic elements for the accommodation offers
         if(availableAccommodations == null || availableAccommodations.isEmpty())
         {
             Label infoMsg = new Label("No accommodation has been found.");
@@ -350,11 +360,12 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "search transport" button is clicked
     public void onSearchTransportClick()
     {
+        int numOfTravelers = 0;
+        Duration departureAndReturnDates = null;
+        List<TransportOffer> availableTransports = null;
         String destination = offeredDestinationTextfield.getText();
         String departureLocation = offeredDepartureLocationTextfield.getText();
         String numOfTravelersAsStr = offeredNumOfTravelersTextfield.getText();
-        int numOfTravelers = 0;
-        Duration departureAndReturnDates = null;
 
         try {
             if(destination == null || destination.isEmpty())
@@ -367,22 +378,27 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("Please insert the number of travelers to get the available transports.");
 
             numOfTravelers = Integer.parseInt(numOfTravelersAsStr);
+            if(numOfTravelers <= 0)
+                throw new IllegalArgumentException("The number of travelers cannot be negative or zero.");
+
             departureAndReturnDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
             createSearchWindow("Transport selector", "Available transports", 550, 480);
 
-        } catch(IllegalArgumentException e)
+            // Get list of the available transports and display it in the search window
+            OfferManager offerManager = new OfferManager();
+            availableTransports = offerManager.getAvailableTransports(departureLocation, destination, departureAndReturnDates, numOfTravelers);
+
+        } catch(IllegalArgumentException e)                     // Some parameter is not set or is invalid
         {
             displayErrorDialog(e.getMessage());
             return;
-        } catch(IllegalStateException e)                    // The search window was already open
+        } catch(IllegalStateException e)                        // The search window is already open
         {
             return;
+        } catch(ApiException e)                                 // Errors during the retrieval of the available transports
+        {
+            displayErrorDialog(e.getMessage());
         }
-
-        // Get list of the available transports and display it in the search window
-        OfferManager offerManager = new OfferManager();
-        List<TransportOffer> availableTransports = offerManager.getAvailableTransports(
-                departureLocation, destination, departureAndReturnDates, numOfTravelers);
 
         if(availableTransports == null || availableTransports.isEmpty())
         {

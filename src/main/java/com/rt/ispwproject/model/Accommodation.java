@@ -1,6 +1,7 @@
 package com.rt.ispwproject.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Accommodation {
 
@@ -45,4 +46,13 @@ public class Accommodation {
     public LocalDate getCheckInDate()               { return this.checkInOutDates.getStartDate(); }
     public LocalDate getCheckOutDate()              { return this.checkInOutDates.getEndDate(); }
     public int getPricePerNight()                   { return this.pricePerNight; }
+
+    public int getPrice()
+    {
+        if(this.checkInOutDates == null)
+            return 0;
+
+        int numOfNights = Period.between(checkInOutDates.getStartDate(), checkInOutDates.getEndDate()).getDays();
+        return numOfNights * pricePerNight * numOfRooms;
+    }
 }

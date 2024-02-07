@@ -10,7 +10,7 @@ public class TransportRequirementsDao {
     // Stores given transport requirements in db and returns the id that identifies those requirements
     public int postRequirements(TransportRequirements req) throws DbException
     {
-        int transportReqId = -1;
+        int transportReqId = 0;
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createTransportRequirements stored procedure

@@ -1,6 +1,7 @@
 package com.rt.ispwproject.beans;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Duration {
 
@@ -41,4 +42,11 @@ public class Duration {
     // Getters
     public LocalDate getDepartureDate()         { return this.departureDate; }
     public LocalDate getReturnDate()            { return this.returnDate; }
+
+
+    // Returns the number of days between the departure and return dates
+    public int getDurationInDays()
+    {
+        return Period.between(departureDate, returnDate).getDays();
+    }
 }

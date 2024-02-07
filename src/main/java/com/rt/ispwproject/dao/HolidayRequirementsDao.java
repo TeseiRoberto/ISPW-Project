@@ -55,10 +55,10 @@ public class HolidayRequirementsDao {
             throw new DbException("Failed to invoke the \"createHolidayRequirements\" stored procedure:\n" + e.getMessage());
         } catch(DbException e)
         {
-            if(accommodationReqId != -1)
+            if(accommodationReqId != 0)
                 accommodationReqDao.removeRequirements(accommodationReqId);
 
-            if(transportReqId != -1)
+            if(transportReqId != 0)
                 transportReqDao.removeRequirements(transportReqId);
             throw new DbException("Cannot post holiday requirements:\n" + e.getMessage());
         }
