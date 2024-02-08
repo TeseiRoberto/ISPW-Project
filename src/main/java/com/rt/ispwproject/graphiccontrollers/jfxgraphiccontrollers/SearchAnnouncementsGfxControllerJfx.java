@@ -35,8 +35,8 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     {
         try {
             SearchAnnouncementsManager searchManager = new SearchAnnouncementsManager();
-            announcements = searchManager.loadAnnouncements(0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
-        } catch(DbException e)
+            announcements = searchManager.loadAnnouncements(currSession, 0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
+        } catch(DbException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
             announcements.clear();

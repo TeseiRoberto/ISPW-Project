@@ -519,10 +519,9 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             return;
         }
 
-        /* Switch to my offers screen
-        changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
-                (Stage) announcementOwnerText.getScene().getWindow(), c -> null);*/
-        System.out.println("OFFER MADE SUCCESSFULLY!");
+        displayInfoDialog("Offer sent correctly!");
+        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+                (Stage) announcementOwnerText.getScene().getWindow(), c -> new SearchAnnouncementsGfxControllerJfx(currSession));
     }
 
 

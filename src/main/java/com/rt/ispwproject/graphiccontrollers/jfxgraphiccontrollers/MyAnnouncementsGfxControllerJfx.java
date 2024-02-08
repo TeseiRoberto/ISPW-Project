@@ -35,7 +35,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
         try {
             AnnouncementManager annManager = new AnnouncementManager();
             announcements = annManager.getMyAnnouncements(currSession);
-        } catch(DbException e)
+        } catch(DbException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
             announcements.clear();

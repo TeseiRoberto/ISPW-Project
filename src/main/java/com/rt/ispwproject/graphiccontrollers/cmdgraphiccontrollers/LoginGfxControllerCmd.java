@@ -24,7 +24,7 @@ public class LoginGfxControllerCmd {
             LoginManager loginMan = new LoginManager();
             Session currSession = loginMan.login(username, password);
 
-            System.out.println("LOGGED AS: " + currSession.getUsername() + " - " + currSession.getEmail() + " - " + currSession.getUserRole().toString());
+            System.out.println("LOGGED AS: " + currSession.getUsername() + " - " + " - " + currSession.getUserRole().toString());
             // TODO: Need to switch to new "screen" according to user role
 
         } catch(RuntimeException | DbException | IOException e)

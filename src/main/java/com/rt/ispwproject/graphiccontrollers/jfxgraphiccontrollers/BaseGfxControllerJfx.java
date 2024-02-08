@@ -50,4 +50,13 @@ public class BaseGfxControllerJfx {
         return confirm.getResult();
     }
 
+
+    // Displays an info dialog box
+    protected void displayInfoDialog(String msg)
+    {
+        Alert confirm = new Alert(Alert.AlertType.INFORMATION);
+        confirm.setContentText(msg);
+        confirm.showAndWait();
+    }
+
 }

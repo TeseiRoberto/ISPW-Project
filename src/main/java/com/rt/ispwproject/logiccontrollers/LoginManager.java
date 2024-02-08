@@ -1,23 +1,13 @@
 package com.rt.ispwproject.logiccontrollers;
 
 import com.rt.ispwproject.beans.Session;
-import com.rt.ispwproject.dao.ProfileDao;
+import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.model.Profile;
 
 public class LoginManager {
 
     public Session login(String username, String password) throws IllegalArgumentException, DbException
     {
-        if(username == null || username.isEmpty())
-            throw new IllegalArgumentException("Username cannot be empty");
-
-        if(password == null || password.isEmpty())
-            throw new IllegalArgumentException("Password cannot be empty");
-
-        ProfileDao dao = new ProfileDao();
-        Profile currUser = dao.getProfile(username, password);
-
-        return new Session(currUser.getUserId(), currUser.getUsername(), currUser.getEmail(), currUser.getUserRole());
+        return SessionManager.getInstance().createNewSession(username, password);
     }
 }
