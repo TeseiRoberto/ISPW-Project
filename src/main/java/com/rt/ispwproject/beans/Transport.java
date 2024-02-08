@@ -2,7 +2,7 @@ package com.rt.ispwproject.beans;
 
 import com.rt.ispwproject.model.TransportType;
 
-public class TransportOffer {
+public class Transport {
 
     private TransportType       type;
     private String              companyName;
@@ -12,8 +12,9 @@ public class TransportOffer {
     private int                 pricePerTraveler;
 
 
-    public TransportOffer(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers,
-                          int pricePerTraveler) throws IllegalArgumentException
+    // Constructor used to create transport offer
+    public Transport(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers,
+                     int pricePerTraveler) throws IllegalArgumentException
     {
         setType(type);
         setCompanyName(companyName);
@@ -21,6 +22,16 @@ public class TransportOffer {
         setDepartureLocation(departureLocation);
         setNumOfTravelers(numOfTravelers);
         setPricePerTraveler(pricePerTraveler);
+    }
+
+
+    // Constructor used to create transport requirements
+    public Transport(TransportType type, int quality, String departureLocation, int numOfTravelers) throws IllegalArgumentException
+    {
+        setType(type);
+        setQuality(quality);
+        setDepartureLocation(departureLocation);
+        setNumOfTravelers(numOfTravelers);
     }
 
 

@@ -1,24 +1,24 @@
 package com.rt.ispwproject.apiboundaries;
 
-import com.rt.ispwproject.beans.TransportOffer;
+import com.rt.ispwproject.beans.Transport;
 import com.rt.ispwproject.exceptions.ApiException;
 
 // This class interacts with the external transports API to book transports
 public class TransportBooker {
 
-    public void bookTransport(TransportOffer offer) throws ApiException
+    public void bookTransport(Transport offer) throws ApiException
     {
         if(isTransportAvailable(offer))
         {
-            throw new ApiException("TransportApi", "Transport is available but booking is not implemented yet");
+            throw new ApiException("TransportApi", "TransportOffer is available but booking is not implemented yet");
             // TODO: Add implementation
         }
 
-        throw new ApiException("TransportApi", "Transport is not available anymore");
+        throw new ApiException("TransportApi", "TransportOffer is not available anymore");
     }
 
 
-    public boolean isTransportAvailable(TransportOffer offer)
+    public boolean isTransportAvailable(Transport offer)
     {
         // Here we should query the external transport API to ensure that the given offer ,that was made
         // by the travel agency, is still valid.

@@ -14,18 +14,18 @@ public class TransportRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createTransportRequirements stored procedure
-        try (CallableStatement postReqProc = connection.prepareCall("call createTransportRequirements(?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createReqProc = connection.prepareCall("call createTransportRequirements(?, ?, ?, ?, ?, ?, ?)"))
         {
-            postReqProc.setString("transportType_in", req.getType().toString());
-            postReqProc.setInt("transportQuality_in", req.getQuality());
-            postReqProc.setInt("numOfTravelers_in", req.getNumOfTravelers());
-            postReqProc.setString("departureLocationName_in", req.getDepartureLocation().getName());
-            postReqProc.setDouble("departureLocationLatitude_in", req.getDepartureLocation().getLatitude());
-            postReqProc.setDouble("departureLocationLongitude_in", req.getDepartureLocation().getLongitude());
-            postReqProc.registerOutParameter("transportReqId_out", Types.INTEGER);
+            createReqProc.setString(  "transportType_in", req.getType().toString());
+            createReqProc.setInt(     "transportQuality_in", req.getQuality());
+            createReqProc.setInt(     "numOfTravelers_in", req.getNumOfTravelers());
+            createReqProc.setString(  "departureLocationAddress_in", req.getDepartureLocation().getAddress());
+            createReqProc.setDouble(  "departureLocationLatitude_in", req.getDepartureLocation().getLatitude());
+            createReqProc.setDouble(  "departureLocationLongitude_in", req.getDepartureLocation().getLongitude());
+            createReqProc.registerOutParameter("transportReqId_out", Types.INTEGER);
 
-            postReqProc.execute();
-            transportReqId = postReqProc.getInt("transportReqId_out");
+            createReqProc.execute();
+            transportReqId = createReqProc.getInt("transportReqId_out");
         } catch(SQLException e)
         {
             throw new DbException("Failed to invoke the \"createTransportRequirements\" stored procedure:\n" + e.getMessage());
@@ -55,7 +55,7 @@ public class TransportRequirementsDao {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
                 {
-                    Location departureLocation = new Location(rs.getString("departureLocationName"),
+                    Location departureLocation = new Location(rs.getString("departureLocationAddress"),
                             rs.getDouble("departureLocationLatitude"),
                             rs.getDouble("departureLocationLongitude"));
 

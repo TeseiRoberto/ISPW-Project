@@ -25,7 +25,7 @@ public class OfferManager {
         Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
         Location accommodationLocation = new Location(offer.getAccommodationOffer().getAddress());
 
-        Accommodation accommodation = new Accommodation(
+        AccommodationOffer accommodation = new AccommodationOffer(
                 offer.getAccommodationOffer().getType(),
                 offer.getAccommodationOffer().getName(),
                 accommodationLocation,
@@ -35,7 +35,7 @@ public class OfferManager {
                 offer.getAccommodationOffer().getPricePerNight()
         );
 
-        Transport transport = new Transport(
+        TransportOffer transportOffer = new TransportOffer(
                 offer.getTransportOffer().getType(),
                 offer.getTransportOffer().getCompanyName(),
                 offer.getTransportOffer().getQuality(),
@@ -45,14 +45,14 @@ public class OfferManager {
                 holidayDuration
         );
 
-        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodation, transport);
+        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodation, transportOffer);
         HolidayOfferDao offerDao = new HolidayOfferDao();
         offerDao.postOffer(currUser.getUserId(), announce.getId(), holidayOffer);
     }
 
 
     // Queries the accommodation API and returns a list of the available accommodations
-    public List<AccommodationOffer> getAvailableAccommodations(String destination, Duration checkInOutDates, int numOfRooms) throws ApiException
+    public List<Accommodation> getAvailableAccommodations(String destination, Duration checkInOutDates, int numOfRooms) throws ApiException
     {
         AccommodationSearcher searcher = new AccommodationSearcher();
         return searcher.searchAccommodations(destination, checkInOutDates, numOfRooms);
@@ -60,8 +60,8 @@ public class OfferManager {
 
 
     // Queries the transportation API and returns a list of the available transports
-    public List<TransportOffer> getAvailableTransports(String departureLocation, String destination,
-                                                       Duration departureAndReturnDates, int numOfTravelers) throws ApiException
+    public List<Transport> getAvailableTransports(String departureLocation, String destination,
+                                                  Duration departureAndReturnDates, int numOfTravelers) throws ApiException
     {
         TransportSearcher searcher = new TransportSearcher();
         return searcher.searchTransports(departureLocation, destination, departureAndReturnDates, numOfTravelers);
@@ -69,7 +69,7 @@ public class OfferManager {
 
 
     // Calculates the price of the offer according to the accommodation and transport prices and the travel agency percentage
-    public int calculateOfferPrice(AccommodationOffer accommodation, TransportOffer transport) throws IllegalArgumentException
+    public int calculateOfferPrice(Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         int price = 0;
         if(accommodation != null)

@@ -1,6 +1,6 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets;
 
-import com.rt.ispwproject.beans.TransportOffer;
+import com.rt.ispwproject.beans.Transport;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,7 +20,7 @@ public class TransportOfferGfxElement extends GridPane {
     private static final float  HEIGHT = 100.0f;
 
 
-    public TransportOfferGfxElement(TransportOffer offer, EventHandler<MouseEvent> onClick)
+    public TransportOfferGfxElement(Transport offer, EventHandler<MouseEvent> onClick)
     {
         super();
         setStyle("-fx-background-color: #EBEBEB;" +
@@ -61,7 +61,7 @@ public class TransportOfferGfxElement extends GridPane {
 
 
     // Creates text elements placed one next to the other to display the transport details
-    private void createTransportDetails(TransportOffer offer)
+    private void createTransportDetails(Transport offer)
     {
         // Create text elements
         Text transportType = new Text(offer.getType().toString());

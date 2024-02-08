@@ -4,31 +4,31 @@ import java.security.SecureRandom;
 
 public class Location {
 
-    private final String    name;
+    private final String    address;
     private double          latitude;
     private double          longitude;
 
 
-    public Location(String name, double latitude, double longitude) throws IllegalArgumentException
+    public Location(String address, double latitude, double longitude) throws IllegalArgumentException
     {
         checkCoordinatesValidity(latitude, longitude);
-        checkNameValidity(name);
+        checkAddressValidity(address);
 
-        this.name = name;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
 
-    public Location(String name) throws IllegalArgumentException
+    public Location(String address) throws IllegalArgumentException
     {
-        retrieveGeographicalCoordinates(name);
-        this.name = name;
+        retrieveGeographicalCoordinates(address);
+        this.address = address;
     }
 
 
     // Getters
-    public String getName()         { return this.name; }
+    public String getAddress()      { return this.address; }
     public double getLatitude()     { return this.latitude; }
     public double getLongitude()    { return this.longitude; }
 
@@ -44,23 +44,23 @@ public class Location {
     }
 
 
-    // Checks if the given name actually identify a location on the earth
-    private void checkNameValidity(String name) throws IllegalArgumentException
+    // Checks if the given address actually identify a location on the earth
+    private void checkAddressValidity(String name) throws IllegalArgumentException
     {
         if(name == null)
-            throw new IllegalArgumentException("Location name cannot be null!");
+            throw new IllegalArgumentException("Location address cannot be null!");
 
-        // Here we should query an external system to be sure that a location with the given name exists on the earth,
+        // Here we should query an external system to be sure that a location with the given address exists on the earth,
         // for now we assume that all locations will exist
     }
 
 
-    // Ensures that a location with the given name exists on the earth and retrieves the latitude and longitude of such location
-    private void retrieveGeographicalCoordinates(String name) throws IllegalArgumentException
+    // Ensures that a location with the given address exists on the earth and retrieves the latitude and longitude of such location
+    private void retrieveGeographicalCoordinates(String address) throws IllegalArgumentException
     {
-        checkNameValidity(name);
+        checkAddressValidity(address);
 
-        // Here we should query an external system to obtain the latitude and longitude values for the location with the given name,
+        // Here we should query an external system to obtain the latitude and longitude values for the location with the given address,
         // for now we simply generate some random values
         SecureRandom random = new SecureRandom();
         this.latitude = -90.0 + random.nextDouble() * (90.0 + 90.0);

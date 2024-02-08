@@ -1,24 +1,24 @@
 package com.rt.ispwproject.apiboundaries;
 
-import com.rt.ispwproject.beans.AccommodationOffer;
+import com.rt.ispwproject.beans.Accommodation;
 import com.rt.ispwproject.exceptions.ApiException;
 
 // This class interacts with the external accommodation API to book accommodations
 public class AccommodationBooker {
 
-    public void bookAccommodation(AccommodationOffer offer) throws ApiException
+    public void bookAccommodation(Accommodation offer) throws ApiException
     {
         if(isAccommodationAvailable(offer))
         {
-            throw new ApiException("AccommodationApi", "Accommodation is available but booking is not implemented yet");
+            throw new ApiException("AccommodationApi", "AccommodationOffer is available but booking is not implemented yet");
             // TODO: Add implementation
         }
 
-        throw new ApiException("AccommodationApi", "Accommodation is not available anymore");
+        throw new ApiException("AccommodationApi", "AccommodationOffer is not available anymore");
     }
 
 
-    public boolean isAccommodationAvailable(AccommodationOffer offer)
+    public boolean isAccommodationAvailable(Accommodation offer)
     {
         // Here we should query the external accommodation API to ensure that the given offer ,that was made
         // by the travel agency, is still valid (has rooms left to book).

@@ -8,6 +8,7 @@ import java.sql.*;
 
 public class AccommodationRequirementsDao {
 
+
     // Stores given accommodation requirements in db and returns the id that identifies those requirements
     public int postRequirements(AccommodationRequirements req) throws DbException
     {
@@ -15,15 +16,15 @@ public class AccommodationRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createAccommodationRequirements stored procedure
-        try (CallableStatement postReqProc = connection.prepareCall("call createAccommodationRequirements(?, ?, ?, ?)"))
+        try (CallableStatement createReqProc = connection.prepareCall("call createAccommodationRequirements(?, ?, ?, ?)"))
         {
-            postReqProc.setString("accommodationType_in", req.getType().toString());
-            postReqProc.setInt("accommodationQuality_in", req.getQuality());
-            postReqProc.setInt("numOfRooms_in", req.getNumOfRooms());
-            postReqProc.registerOutParameter("accommodationReqId_out", Types.INTEGER);
+            createReqProc.setString(  "accommodationType_in", req.getType().toString());
+            createReqProc.setInt(     "accommodationQuality_in", req.getQuality());
+            createReqProc.setInt(     "numOfRooms_in", req.getNumOfRooms());
+            createReqProc.registerOutParameter("accommodationReqId_out", Types.INTEGER);
 
-            postReqProc.execute();
-            accommodationReqId = postReqProc.getInt("accommodationReqId_out");
+            createReqProc.execute();
+            accommodationReqId = createReqProc.getInt("accommodationReqId_out");
         } catch(SQLException e)
         {
             throw new DbException("Failed to invoke the \"createAccommodationRequirements\" stored procedure:\n" + e.getMessage());

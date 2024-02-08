@@ -27,8 +27,8 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     private static final Font       DEFAULT_FONT = new Font("System", 18);
     private final Session           currSession;
     private final Announcement      currAnnounce;
-    private AccommodationOffer      chosenAccommodation = null; // Accommodation offer chosen using the search window
-    private TransportOffer          chosenTransport = null;     // Transport offer chosen using the search window
+    private Accommodation chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
+    private Transport chosenTransport = null;     // TransportOffer offer chosen using the search window
     private Stage                   searchWindow = null;        // Window used to display a list of the available accommodations/transports
     private VBox                    availableElements = null;   // Vbox used in the search window to contain the available accommodations/transports
 
@@ -110,16 +110,16 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         requestedDestinationText.setText(currAnnounce.getDestination());
         requestedDepartureDateText.setText(currAnnounce.getHolidayDuration().getDepartureDate().toString());
         requestedReturnDateText.setText(currAnnounce.getHolidayDuration().getReturnDate().toString());
-        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationType().toString());
-        requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getNumOfRoomsRequired()) );
-        requestedTransportTypeText.setText(currAnnounce.getTransportType().toString());
-        requestedDepartureLocationText.setText(currAnnounce.getDepartureLocation());
+        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType().toString());
+        requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getAccommodationRequirements().getNumOfRooms()) );
+        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType().toString());
+        requestedDepartureLocationText.setText(currAnnounce.getTransportRequirements().getDepartureLocation());
         availableBudgetText.setText(currAnnounce.getAvailableBudgetAsStr());
-        requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getNumOfTravelers()) );
+        requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getTransportRequirements().getNumOfTravelers()) );
 
-        requestedAccommodationQuality.setQualityLevel(currAnnounce.getAccommodationQuality());
+        requestedAccommodationQuality.setQualityLevel(currAnnounce.getAccommodationRequirements().getQuality());
         requestedAccommodationQualityHbox.getChildren().add(this.requestedAccommodationQuality);
-        requestedTransportQuality.setQualityLevel(currAnnounce.getTransportQuality());
+        requestedTransportQuality.setQualityLevel(currAnnounce.getTransportRequirements().getQuality());
         requestedTransportQualityHbox.getChildren().add(this.requestedTransportQuality);
     }
 
@@ -280,7 +280,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         Duration checkInOutDates = null;
         String destination = offeredDestinationTextfield.getText();
         String numOfRoomsAsStr = offeredNumOfRoomsTextfield.getText();
-        List<AccommodationOffer> availableAccommodations = null;
+        List<Accommodation> availableAccommodations = null;
 
         try {
             if(destination == null || destination.isEmpty())
@@ -294,7 +294,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("The number of rooms required cannot be negative or zero.");
 
             checkInOutDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
-            createSearchWindow("Accommodation selector", "Available accommodations", 550, 480);
+            createSearchWindow("AccommodationOffer selector", "Available accommodations", 550, 480);
 
             // Get list of the available accommodations and display it in the search window
             OfferManager offerManager = new OfferManager();
@@ -320,7 +320,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             infoMsg.setFont(DEFAULT_FONT);
             availableElements.getChildren().add(infoMsg);
         } else {
-            for(AccommodationOffer el : availableAccommodations)
+            for(Accommodation el : availableAccommodations)
             {
                 availableElements.getChildren().add(new AccommodationOfferGfxElement(el, e -> {
                             setChosenAccommodation(el);
@@ -335,7 +335,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
 
     // Sets the given accommodation offer as the chosen one, updates UI and closes the search window
-    public void setChosenAccommodation(AccommodationOffer accommodation)
+    public void setChosenAccommodation(Accommodation accommodation)
     {
         chosenAccommodation = accommodation;
         if(accommodation == null)
@@ -362,7 +362,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     {
         int numOfTravelers = 0;
         Duration departureAndReturnDates = null;
-        List<TransportOffer> availableTransports = null;
+        List<Transport> availableTransports = null;
         String destination = offeredDestinationTextfield.getText();
         String departureLocation = offeredDepartureLocationTextfield.getText();
         String numOfTravelersAsStr = offeredNumOfTravelersTextfield.getText();
@@ -382,7 +382,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("The number of travelers cannot be negative or zero.");
 
             departureAndReturnDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
-            createSearchWindow("Transport selector", "Available transports", 550, 480);
+            createSearchWindow("TransportOffer selector", "Available transports", 550, 480);
 
             // Get list of the available transports and display it in the search window
             OfferManager offerManager = new OfferManager();
@@ -407,7 +407,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             infoMsg.setFont(DEFAULT_FONT);
             availableElements.getChildren().add(infoMsg);
         } else {
-            for (TransportOffer el : availableTransports) {
+            for (Transport el : availableTransports) {
                 availableElements.getChildren().add(new TransportOfferGfxElement(el, e -> {
                             setChosenTransport(el);
                             destroySearchWindow();
@@ -419,7 +419,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
 
     // Sets the given transport offer as the chosen one, updates UI and closes the search window
-    public void setChosenTransport(TransportOffer transport)
+    public void setChosenTransport(Transport transport)
     {
         chosenTransport = transport;
         if(transport == null)
@@ -434,7 +434,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             offeredTransportTypeText.setText(transport.getType().toString());
             offeredTransportCompanyNameText.setText(transport.getCompanyName());
             offeredTransportQuality.setQualityLevel(transport.getQuality());
-            offeredTransportPriceText.setText(transport.getPriceAsStr());
+            offeredTransportPriceText.setText(transport.getPricePerTravelerAsStr());
         }
         updateOfferPrice();
     }
@@ -494,7 +494,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "make offer" button is clicked
+    // Invoked when the "make offer" button is clicked, sends the offer to the user and switches to the "my offers" screen
     public void onMakeOfferClick()
     {
         try {
@@ -516,7 +516,13 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         } catch(IllegalArgumentException | DbException e)
         {
             displayErrorDialog(e.getMessage());
+            return;
         }
+
+        /* Switch to my offers screen
+        changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
+                (Stage) announcementOwnerText.getScene().getWindow(), c -> null);*/
+        System.out.println("OFFER MADE SUCCESSFULLY!");
     }
 
 

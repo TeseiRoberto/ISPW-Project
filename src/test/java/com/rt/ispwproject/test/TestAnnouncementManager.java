@@ -1,8 +1,6 @@
 package com.rt.ispwproject.test;
 
-import com.rt.ispwproject.beans.Announcement;
-import com.rt.ispwproject.beans.Duration;
-import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
@@ -60,25 +58,25 @@ class TestAnnouncementManager {
             if(!announce.getHolidayDuration().getReturnDate().equals(a.getHolidayDuration().getReturnDate()))
                 continue;
 
-            if(announce.getAccommodationType() != a.getAccommodationType())
+            if(announce.getAccommodationRequirements().getType() != a.getAccommodationRequirements().getType())
                 continue;
 
-            if(announce.getAccommodationQuality() != a.getAccommodationQuality())
+            if(announce.getAccommodationRequirements().getQuality() != a.getAccommodationRequirements().getQuality())
                 continue;
 
-            if(announce.getNumOfRoomsRequired() != a.getNumOfRoomsRequired())
+            if(announce.getAccommodationRequirements().getNumOfRooms() != a.getAccommodationRequirements().getNumOfRooms())
                 continue;
 
-            if(announce.getTransportType() != a.getTransportType())
+            if(announce.getTransportRequirements().getType() != a.getTransportRequirements().getType())
                 continue;
 
-            if(announce.getTransportQuality() != a.getTransportQuality())
+            if(announce.getTransportRequirements().getQuality() != a.getTransportRequirements().getQuality())
                 continue;
 
-            if(announce.getNumOfTravelers() != a.getNumOfTravelers())
+            if(announce.getTransportRequirements().getNumOfTravelers() != a.getTransportRequirements().getNumOfTravelers())
                 continue;
 
-            if(!announce.getDepartureLocation().equals(a.getDepartureLocation()))
+            if(!announce.getTransportRequirements().getDepartureLocation().equals(a.getTransportRequirements().getDepartureLocation()))
                 continue;
 
             return true;
@@ -98,18 +96,16 @@ class TestAnnouncementManager {
     // Creates a test announcement
     private Announcement createTestAnnouncement(Session user) throws IllegalArgumentException
     {
+        Accommodation accommodationReq = new Accommodation(AccommodationType.HOTEL, 4, 1);
+        Transport transportReq = new Transport(TransportType.AIRPLANE, 3, "Rome", 1);
+
         Announcement announce = new Announcement();
         announce.setOwner(user.getUsername());
         announce.setDestination("London");
         announce.setHolidayDescription("This is a test announcement");
         announce.setAvailableBudget(3000);
-        announce.setAccommodationType(AccommodationType.HOTEL);
-        announce.setAccommodationQuality(4);
-        announce.setNumOfRoomsRequired(1);
-        announce.setTransportType(TransportType.AIRPLANE);
-        announce.setTransportQuality(3);
-        announce.setNumOfTravelers(1);
-        announce.setDepartureLocation("Rome");
+        announce.setAccommodationRequirements(accommodationReq);
+        announce.setTransportRequirements(transportReq);
 
         Duration duration = new Duration(LocalDate.now().plusDays(31), LocalDate.now().plusDays(41));
         announce.setHolidayDuration(duration);

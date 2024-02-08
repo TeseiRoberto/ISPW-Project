@@ -1,6 +1,6 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets;
 
-import com.rt.ispwproject.beans.AccommodationOffer;
+import com.rt.ispwproject.beans.Accommodation;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,7 +27,7 @@ public class AccommodationOfferGfxElement extends GridPane {
     private static final float  IMG_HEIGHT = HEIGHT - 40.0f;
 
 
-    public AccommodationOfferGfxElement(AccommodationOffer offer, EventHandler<MouseEvent> onClick)
+    public AccommodationOfferGfxElement(Accommodation offer, EventHandler<MouseEvent> onClick)
     {
         super();
         setStyle("-fx-background-color: #EBEBEB;" +
@@ -68,7 +68,7 @@ public class AccommodationOfferGfxElement extends GridPane {
 
 
     // Creates an image view that displays an image of the accommodation
-    private ImageView createAccommodationImage(AccommodationOffer offer)
+    private ImageView createAccommodationImage(Accommodation offer)
     {
         Image img = null;
 
@@ -102,7 +102,7 @@ public class AccommodationOfferGfxElement extends GridPane {
 
 
     // Creates text elements placed one on top of the other to display the accommodation details
-    private VBox createAccommodationDetails(AccommodationOffer offer)
+    private VBox createAccommodationDetails(Accommodation offer)
     {
         Text accommodationType = new Text(offer.getType().toString());
         Text accommodationName = new Text(offer.getName());

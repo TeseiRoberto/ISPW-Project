@@ -1,8 +1,6 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
-import com.rt.ispwproject.beans.Announcement;
-import com.rt.ispwproject.beans.Duration;
-import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualitySelector;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
@@ -66,22 +64,29 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "post announcement" button is clicked, this method posts a new announcement and returns to the "my announcements" screen
     public void onPostAnnouncementClick()
     {
-        Announcement announce = new Announcement();
-
         try {
+            Accommodation accommodationReq = new Accommodation(
+                    accommodationTypeCombobox.getValue(),
+                    accommodationQualitySelector.getQualityLevel(),
+                    Integer.parseInt(numOfRoomsTextfield.getText())
+            );
+
+            Transport transportReq = new Transport(
+                    transportTypeCombobox.getValue(),
+                    transportQualitySelector.getQualityLevel(),
+                    departureFromTextfield.getText(),
+                    Integer.parseInt(numOfTravelersTextfield.getText())
+            );
+
+            Announcement announce = new Announcement();
             announce.setOwner(currSession.getUsername());
             announce.setDestination(destinationTextfield.getText());
             announce.setHolidayDescription(descriptionTextarea.getText());
             announce.setAvailableBudget( Integer.parseInt(availableBudgetTextfield.getText()) );
             announce.setDateOfPost(LocalDate.now());
             announce.setHolidayDuration( new Duration(departureDatePicker.getValue(), returnDatePicker.getValue()) );
-            announce.setAccommodationType(accommodationTypeCombobox.getValue());
-            announce.setAccommodationQuality(accommodationQualitySelector.getQualityLevel());
-            announce.setNumOfRoomsRequired( Integer.parseInt(numOfRoomsTextfield.getText()) );
-            announce.setTransportType(transportTypeCombobox.getValue());
-            announce.setTransportQuality(transportQualitySelector.getQualityLevel());
-            announce.setDepartureLocation(departureFromTextfield.getText());
-            announce.setNumOfTravelers( Integer.parseInt(numOfTravelersTextfield.getText()) );
+            announce.setAccommodationRequirements(accommodationReq);
+            announce.setTransportRequirements(transportReq);
 
             AnnouncementManager annManager = new AnnouncementManager();
             annManager.postAnnouncement(currSession, announce);

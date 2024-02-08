@@ -1,7 +1,9 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Accommodation;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Duration;
+import com.rt.ispwproject.beans.Transport;
 
 import java.time.LocalDate;
 
@@ -13,8 +15,8 @@ public class HolidayRequirements {
     private Location                    destination;
     protected int                       budget;
     private final DateRange             duration;
-    private AccommodationRequirements   accommodation;
-    private TransportRequirements       transport;
+    private AccommodationRequirements   accommodationReq;
+    private TransportRequirements       transportReq;
 
 
     public HolidayRequirements(HolidayMetadata metadata, Location destination, String description, DateRange duration, int budget,
@@ -25,8 +27,8 @@ public class HolidayRequirements {
         this.holidayDescription = description;
         this.duration = duration;
         this.budget = budget;
-        this.accommodation = accommodationReq;
-        this.transport = transportReq;
+        this.accommodationReq = accommodationReq;
+        this.transportReq = transportReq;
     }
 
 
@@ -36,8 +38,8 @@ public class HolidayRequirements {
     public void setBudget(int budget)                           { this.budget = budget; }
     public void setDepartureDate(LocalDate date)                { this.duration.setStartDate(date); }
     public void setReturnDate(LocalDate date)                   { this.duration.setEndDate(date); }
-    public void setAccommodation(AccommodationRequirements req) { this.accommodation = req; }
-    public void setTransport(TransportRequirements req)         { this.transport = req; }
+    public void setAccommodation(AccommodationRequirements req) { this.accommodationReq = req; }
+    public void setTransport(TransportRequirements req)         { this.transportReq = req; }
 
 
     // Getters
@@ -47,30 +49,38 @@ public class HolidayRequirements {
     public int getBudget()                                  { return this.budget; }
     public LocalDate getDepartureDate()                     { return this.duration.getStartDate(); }
     public LocalDate getReturnDate()                        { return this.duration.getEndDate(); }
-    public AccommodationRequirements getAccommodation()     { return this.accommodation; }
-    public TransportRequirements getTransport()             { return this.transport; }
+    public AccommodationRequirements getAccommodation()     { return this.accommodationReq; }
+    public TransportRequirements getTransport()             { return this.transportReq; }
 
 
     // Converts an HolidayRequirements instance into an Announcement instance (model to bean class conversion)
     // Note: this creates coupling between the 2 classes but alleviates the burden of conversion from the developer and eliminates code duplication
     public Announcement toAnnouncement() throws IllegalArgumentException
     {
+        Accommodation accommodation = new Accommodation(
+                accommodationReq.getType(),
+                accommodationReq.getQuality(),
+                accommodationReq.getNumOfRooms()
+        );
+
+        Transport transport = new Transport(
+            transportReq.getType(),
+            transportReq.getQuality(),
+            transportReq.getDepartureLocation().getAddress(),
+            transportReq.getNumOfTravelers()
+        );
+
         Announcement a = new Announcement();
         a.setId(this.metadata.getHolidayId());
         a.setOwner(this.metadata.getOwnerUsername());
         a.setNumOfViews(this.metadata.getNumOfViews());
-        a.setDestination(this.destination.getName());
+        a.setDestination(this.destination.getAddress());
         a.setHolidayDescription(this.holidayDescription);
         a.setHolidayDuration( new Duration(this.getDepartureDate(), this.getReturnDate()) );
         a.setAvailableBudget(this.budget);
         a.setDateOfPost(this.metadata.getDateOfPost());
-        a.setAccommodationType(this.accommodation.getType());
-        a.setAccommodationQuality(this.accommodation.getQuality());
-        a.setNumOfRoomsRequired(this.accommodation.getNumOfRooms());
-        a.setTransportType(this.transport.getType());
-        a.setTransportQuality(this.transport.getQuality());
-        a.setDepartureLocation(this.transport.getDepartureLocation().getName());
-        a.setNumOfTravelers(this.transport.getNumOfTravelers());
+        a.setAccommodationRequirements(accommodation);
+        a.setTransportRequirements(transport);
 
         return a;
     }

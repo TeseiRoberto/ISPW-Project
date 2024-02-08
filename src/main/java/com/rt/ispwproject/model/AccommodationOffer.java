@@ -3,10 +3,12 @@ package com.rt.ispwproject.model;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Accommodation {
+public class AccommodationOffer {
 
+    private int                 id;                             // Internal identifier used to locate the offer in our persistence layer
     private AccommodationType   type;
     private String              name;
+    private int                 accommodationId;                // External identifier used by the accommodation api
     private Location            location;
     private int                 quality;
     private int                 numOfRooms;
@@ -14,8 +16,10 @@ public class Accommodation {
     private int                 pricePerNight;
 
 
-    public Accommodation(AccommodationType type, String name, Location address, int quality, int numOfRooms, DateRange checkInOutDates, int pricePerNight)
+    public AccommodationOffer(AccommodationType type, String name, Location address, int quality, int numOfRooms, DateRange checkInOutDates, int pricePerNight)
     {
+        this.id = 0;
+        this.accommodationId = 0;
         this.type = type;
         this.name = name;
         this.location = address;
@@ -27,6 +31,8 @@ public class Accommodation {
 
 
     // Setters
+    public void setId(int id)                       { this.id = id; }
+    public void setAccommodationId(int id)          { this.accommodationId = id; }
     public void setType(AccommodationType type)     { this.type = type; }
     public void setName(String name)                { this.name = name; }
     public void setLocation(Location address)       { this.location = address; }
@@ -38,6 +44,8 @@ public class Accommodation {
 
 
     // Getters
+    public int getId()                              { return this.id; }
+    public int getAccommodationId()                 { return this.accommodationId; }
     public AccommodationType getType()              { return this.type; }
     public String getName()                         { return this.name; }
     public Location getLocation()                   { return this.location; }

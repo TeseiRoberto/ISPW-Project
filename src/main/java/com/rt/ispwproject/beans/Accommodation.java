@@ -5,7 +5,7 @@ import com.rt.ispwproject.model.AccommodationType;
 import java.net.URL;
 import java.util.List;
 
-public class AccommodationOffer {
+public class Accommodation {
 
     private AccommodationType   type;
     private String              name;
@@ -17,7 +17,7 @@ public class AccommodationOffer {
     private List<URL>           imagesLinks;
 
 
-    public AccommodationOffer(AccommodationType type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
+    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
         setName(name);
@@ -27,6 +27,14 @@ public class AccommodationOffer {
         setPricePerNight(pricePerNight);
         setPrice(totalPrice);
         imagesLinks = List.of();
+    }
+
+
+    public Accommodation(AccommodationType type, int quality, int numOfRooms) throws IllegalArgumentException
+    {
+        setType(type);
+        setQuality(quality);
+        setNumOfRooms(numOfRooms);
     }
 
 

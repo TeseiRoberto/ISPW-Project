@@ -3,7 +3,7 @@ package com.rt.ispwproject.apiboundaries;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.rt.ispwproject.beans.AccommodationOffer;
+import com.rt.ispwproject.beans.Accommodation;
 import com.rt.ispwproject.beans.Duration;
 import com.rt.ispwproject.exceptions.ApiException;
 
@@ -38,7 +38,7 @@ public class AccommodationSearcher {
 
 
     // Returns the available accommodations that matches the given criteria as a json string
-    public List<AccommodationOffer> searchAccommodations(String destination, Duration checkInOutDates, int numOfRoomsRequired) throws ApiException
+    public List<Accommodation> searchAccommodations(String destination, Duration checkInOutDates, int numOfRoomsRequired) throws ApiException
     {
         if(destination == null || checkInOutDates == null || numOfRoomsRequired <= 0)
             return null;
@@ -48,11 +48,11 @@ public class AccommodationSearcher {
         // accommodation offers with random properties
 
         String apiResults = generateRandomAccommodationsJson(checkInOutDates.getDurationInDays(), numOfRoomsRequired);
-        List<AccommodationOffer> offers = null;
+        List<Accommodation> offers = null;
 
         // Parse json content and create list of bean classes
         try {
-            Type collectionType = new TypeToken<List<AccommodationOffer>>(){}.getType();
+            Type collectionType = new TypeToken<List<Accommodation>>(){}.getType();
             Gson gson = new Gson();
             offers = gson.fromJson(apiResults, collectionType);
         } catch(JsonSyntaxException e)
@@ -73,6 +73,7 @@ public class AccommodationSearcher {
 
         for(int i = 0; i < accommodationsNum; ++i)                          // Generate all the accommodations
         {
+            int accommodationId = random.nextInt();
             String type = "HOTEL";
             String name = "Hotel" + i;
             int quality = random.nextInt(1, 5);
@@ -82,6 +83,7 @@ public class AccommodationSearcher {
 
             // Let's build the current json entry
             jsonResult.append("\t{\n");
+            jsonResult.append("\t\t'accommodationId': '").append(accommodationId).append("',\n");
             jsonResult.append("\t\t'type': '").append(type).append("',\n");
             jsonResult.append("\t\t'name': '").append(name).append("',\n");
             jsonResult.append("\t\t'quality': ").append(quality).append(",\n");

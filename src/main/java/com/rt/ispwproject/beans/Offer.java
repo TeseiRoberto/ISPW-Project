@@ -10,19 +10,19 @@ public class Offer {
     private String              destination;
     private Duration            duration;
     private int                 price;
-    private AccommodationOffer  accommodation;
-    private TransportOffer      transport;
+    private Accommodation       accommodation;
+    private Transport           transport;
 
 
-    public Offer(int id, String agencyName, String destination, Duration duration, int price, AccommodationOffer accommodationOffer, TransportOffer transportOffer) throws IllegalArgumentException
+    public Offer(int id, String agencyName, String destination, Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         setId(id);
         setBidder(agencyName);
         setDestination(destination);
         setDuration(duration);
         setPrice(price);
-        setAccommodationOffer(accommodationOffer);
-        setTransportOffer(transportOffer);
+        setAccommodationOffer(accommodation);
+        setTransportOffer(transport);
     }
 
 
@@ -64,7 +64,7 @@ public class Offer {
         this.price = price;
     }
 
-    public void setAccommodationOffer(AccommodationOffer offer) throws IllegalArgumentException
+    public void setAccommodationOffer(Accommodation offer) throws IllegalArgumentException
     {
         if(offer == null)
             throw new IllegalArgumentException("Accommodation offer cannot be empty!");
@@ -72,7 +72,7 @@ public class Offer {
         this.accommodation = offer;
     }
 
-    public void setTransportOffer(TransportOffer offer) throws IllegalArgumentException
+    public void setTransportOffer(Transport offer) throws IllegalArgumentException
     {
         if(offer == null)
             throw new IllegalArgumentException("Transport offer cannot be empty!");
@@ -89,7 +89,7 @@ public class Offer {
     public LocalDate getReturnDate()                    { return this.duration.getReturnDate(); }
     public int getPrice()                               { return this.price; }
     public String getPriceAsStr()                       { return Integer.toString(this.price) + '€'; }
-    public AccommodationOffer getAccommodationOffer()   { return this.accommodation; }
-    public TransportOffer getTransportOffer()           { return this.transport; }
+    public Accommodation getAccommodationOffer()        { return this.accommodation; }
+    public Transport getTransportOffer()                { return this.transport; }
 
 }

@@ -22,7 +22,7 @@ public class HolidayRequirementsDao {
         int transportReqId = 0;
 
         // Create callable statement and setup parameters to invoke the createHolidayRequirements stored procedure
-        try (CallableStatement postReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             // Use accommodation requirements dao to post the accommodation requirements
             accommodationReqId = accommodationReqDao.postRequirements(req.getAccommodation());
@@ -31,19 +31,19 @@ public class HolidayRequirementsDao {
             transportReqId = transportReqDao.postRequirements(req.getTransport());
 
             // Post holiday requirements
-            postReqProc.setInt("userId_in", userId);
-            postReqProc.setString("destinationName_in", req.getDestination().getName());
-            postReqProc.setDouble("destinationLatitude_in", req.getDestination().getLatitude());
-            postReqProc.setDouble("destinationLongitude_in", req.getDestination().getLongitude());
-            postReqProc.setInt("availableBudget_in", req.getBudget());
-            postReqProc.setString("description_in", req.getHolidayDescription());
-            postReqProc.setDate("dateOfPost_in", Date.valueOf(req.getMetadata().getDateOfPost()) );
-            postReqProc.setDate("departureDate_in", Date.valueOf(req.getDepartureDate()) );
-            postReqProc.setDate("returnDate_in", Date.valueOf(req.getReturnDate()) );
-            postReqProc.setInt("accommodationReqId_in", accommodationReqId);
-            postReqProc.setInt("transportReqId_in", transportReqId);
+            createReqProc.setInt(     "userId_in", userId);
+            createReqProc.setString(  "destinationAddress_in", req.getDestination().getAddress());
+            createReqProc.setDouble(  "destinationLatitude_in", req.getDestination().getLatitude());
+            createReqProc.setDouble(  "destinationLongitude_in", req.getDestination().getLongitude());
+            createReqProc.setInt(     "availableBudget_in", req.getBudget());
+            createReqProc.setString(  "description_in", req.getHolidayDescription());
+            createReqProc.setDate(    "dateOfPost_in", Date.valueOf(req.getMetadata().getDateOfPost()) );
+            createReqProc.setDate(    "departureDate_in", Date.valueOf(req.getDepartureDate()) );
+            createReqProc.setDate(    "returnDate_in", Date.valueOf(req.getReturnDate()) );
+            createReqProc.setInt(     "accommodationReqId_in", accommodationReqId);
+            createReqProc.setInt(     "transportReqId_in", transportReqId);
 
-            postReqProc.execute();
+            createReqProc.execute();
         } catch(SQLException e)
         {
             if(accommodationReqId != 0)
@@ -180,7 +180,7 @@ public class HolidayRequirementsDao {
                     rs.getInt("numOfViews")
             );
 
-            Location destination = new Location(rs.getString("destinationName"), rs.getDouble("destinationLatitude"), rs.getDouble("destinationLongitude"));
+            Location destination = new Location(rs.getString("destinationAddress"), rs.getDouble("destinationLatitude"), rs.getDouble("destinationLongitude"));
             DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
             AccommodationRequirements accommodationReq = accommodationReqDao.getRequirements(rs.getInt("accommodationReqId"));
             TransportRequirements transportReq = transportReqDao.getRequirements(rs.getInt("transportReqId"));
