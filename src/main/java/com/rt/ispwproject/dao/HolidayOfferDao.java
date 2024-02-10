@@ -60,7 +60,7 @@ public class HolidayOfferDao {
     }
 
 
-    // Loads all the holiday offers made by travel agencies to the holiday requirements associated to the given holidayReqId
+    // Retrieves all the holiday offers made by travel agencies to the holiday requirements associated to the given holidayReqId
     public List<HolidayOffer> getOffersForHolidayRequirements(int holidayReqId) throws DbException
     {
         List<HolidayOffer> holidayOffers = null;
@@ -79,12 +79,42 @@ public class HolidayOfferDao {
 
         } catch(SQLException e)
         {
-            System.out.println(e.getMessage());
             throw new DbException("Failed to invoke the \"getHolidayOffersForRequirements\" stored procedure:\n\"" + e.getMessage());
         } catch (DbException e)
         {
             System.out.println(e.getMessage());
             throw new DbException("Cannot load holiday offers for the given holiday requirements:\n" + e.getMessage());
+        }
+
+        return holidayOffers;
+    }
+
+
+    // Retrieves all the holiday offers made by the user associated to the given userId
+    public List<HolidayOffer> getOffersMadeByUser(int userId) throws DbException
+    {
+        List<HolidayOffer> holidayOffers = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        try (CallableStatement getOffersProc = connection.prepareCall("call getHolidayOffersPostedByUser(?)"))
+        {
+            getOffersProc.setInt("userId_in", userId);
+            boolean status = getOffersProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getOffersProc.getResultSet();
+                holidayOffers = createHolidayOffersFromResultSet(rs);
+                rs.close();
+            }
+
+        } catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DbException("Failed to invoke the \"getHolidayOffersPostedByUser\" stored procedure:\n\"" + e.getMessage());
+        } catch (DbException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DbException("Cannot load holiday offers made by the given user:\n" + e.getMessage());
         }
 
         return holidayOffers;

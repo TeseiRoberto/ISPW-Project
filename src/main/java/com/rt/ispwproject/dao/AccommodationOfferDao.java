@@ -102,7 +102,6 @@ public class AccommodationOfferDao {
     public void removeOffer(int offerId) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
-        // TODO: Should I check that the offer exists before trying to delete it?
 
         // Create callable statement and setup parameters to invoke the deleteAccommodationOffer stored procedure
         try (CallableStatement deleteOfferProc = connection.prepareCall("call deleteAccommodationOffer(?)"))

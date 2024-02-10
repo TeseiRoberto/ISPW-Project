@@ -1,9 +1,7 @@
 package com.rt.ispwproject.model;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 
 public class AccommodationOffer {
 

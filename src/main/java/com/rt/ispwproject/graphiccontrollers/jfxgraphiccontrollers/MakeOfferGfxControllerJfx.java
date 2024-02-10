@@ -265,14 +265,6 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "close announcement" button is clicked, switches to the "search announcements" screen
-    public void onCloseAnnouncementClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) announcementDescriptionTextarea.getScene().getWindow(), c -> new SearchAnnouncementsGfxControllerJfx(currSession));
-    }
-
-
     // Invoked when the "search accommodation" button is clicked
     public void onSearchAccommodationClick()
     {
@@ -486,11 +478,19 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
+    // Invoked when the "close announcement" button is clicked, switches to the "search announcements" screen
+    public void onCloseAnnouncementClick()
+    {
+        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+                (Stage) announcementDescriptionTextarea.getScene().getWindow(), c -> new SearchAnnouncementsGfxControllerJfx(currSession));
+    }
+
+
     // Invoked when the "my offers" button is clicked, switches to the "my offers" screen
     public void onMyOffersClick()
     {
-        // TODO: Need to switch to my offers screen
-        System.out.println("CLICKED ON MY OFFERS BUTTON!");
+        changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
+                (Stage) announcementDescriptionTextarea.getScene().getWindow(), c -> new MyOffersGfxControllerJfx(currSession));
     }
 
 
@@ -513,7 +513,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             );
 
             offerManager.makeOfferToUser(currSession, currAnnounce, newOffer);
-        } catch(IllegalArgumentException | DbException e)
+        } catch(IllegalCallerException | IllegalArgumentException | DbException e)
         {
             displayErrorDialog(e.getMessage());
             return;

@@ -2,7 +2,6 @@ package com.rt.ispwproject.test;
 
 import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.SessionManager;
-import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 import com.rt.ispwproject.model.AccommodationType;

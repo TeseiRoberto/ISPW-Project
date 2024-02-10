@@ -3,7 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.AnnouncementGfxElement;
+import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.DetailsBannerGfxElement;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -29,13 +29,13 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Load the announcements posted by the user and creates an AnnouncementGfxElement for each of them
+    // Load the announcements posted by the user and creates a DetailsBannerGfxElement for each of them
     @FXML void initialize()
     {
         try {
             AnnouncementManager annManager = new AnnouncementManager();
             announcements = annManager.getMyAnnouncements(currSession);
-        } catch(DbException | IllegalArgumentException e)
+        } catch(DbException | IllegalCallerException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
             announcements.clear();
@@ -50,7 +50,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
         } else {
             for(Announcement el : announcements)
             {
-                AnnouncementGfxElement gfxEl = new AnnouncementGfxElement(el, e -> onAnnouncementSelected(el), false);
+                DetailsBannerGfxElement gfxEl = new DetailsBannerGfxElement(el, e -> onAnnouncementSelected(el), false);
                 announcementsVbox.getChildren().add(gfxEl);
             }
         }
@@ -65,7 +65,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when an AnnouncementGfxElement is clicked, switches to the "announcement details" screen
+    // Invoked when a DetailsBannerGfxElement is clicked, switches to the "announcement details" screen
     public void onAnnouncementSelected(Announcement announce)
     {
         changeScreen(getClass().getResource("user/announcementDetailsScreen.fxml"),

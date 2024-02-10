@@ -4,6 +4,7 @@ import com.rt.ispwproject.apiboundaries.AccommodationSearcher;
 import com.rt.ispwproject.apiboundaries.TransportSearcher;
 import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.SessionManager;
+import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayOfferDao;
 import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
@@ -19,11 +20,14 @@ public class OfferManager {
 
 
     // Inserts a new offer (intended for the given announcement) in the system
-    public void makeOfferToUser(Session currSession, Announcement announce, Offer offer) throws DbException, IllegalArgumentException
+    public void makeOfferToUser(Session currSession, Announcement announce, Offer offer) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)                                        // Check if currSession is valid
-            throw new IllegalArgumentException("You must be logged in to make an offer to another user");
+            throw new IllegalCallerException("You must be logged in to make an offer to another user");
+
+        if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
+            throw new IllegalCallerException("Only travel agencies can make offers to users");
 
         HolidayOfferMetadata metadata = new HolidayOfferMetadata(announce.getId(), user.getUsername(), user.getUserId());
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
@@ -57,20 +61,19 @@ public class OfferManager {
     }
 
 
-    // Retrieves all the offers made by the given user (the user must be a travel agency otherwise an empty list is returned)
-    public List<Offer> getMyOffers(Session currSession) throws DbException, IllegalArgumentException
+    // Retrieves all the offers made by the travel agency associated to the given session
+    public List<Offer> getMyOffers(Session currSession) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)                                        // Check if currSession is valid
-            throw new IllegalArgumentException("You must be logged in to retrieve your offers");
+            throw new IllegalCallerException("You must be logged in to retrieve your offers");
 
-        // TODO: Add implementation...
-        /*if(currUser.getUserRole() != UserRole.TRAVEL_AGENCY)
-            return List.of();
+        if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
+            throw new IllegalCallerException("Only travel agencies can retrieve offers they made");
 
         List<HolidayOffer> holidayOffers = null;
         HolidayOfferDao offerDao = new HolidayOfferDao();
-        holidayOffers = offerDao.getOffersMadeByUser(currUser.getUserId());
+        holidayOffers = offerDao.getOffersMadeByUser(user.getUserId());
 
         ArrayList<Offer> offers = new ArrayList<>();
         try {
@@ -81,9 +84,7 @@ public class OfferManager {
             throw new DbException("Db returned invalid data for an offer:\n" + e.getMessage());
         }
 
-        return offers;*/
-        System.out.println("getMyOffers() INVOKED!");
-        return List.of();
+        return offers;
     }
 
 
@@ -92,7 +93,7 @@ public class OfferManager {
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)
-            throw new IllegalArgumentException("You must be logged in to retrieve the offers received for your announcement");
+            throw new IllegalCallerException("You must be logged in to retrieve the offers received for your announcement");
 
         List<HolidayOffer> holidayOffers = null;
         HolidayOfferDao offerDao = new HolidayOfferDao();

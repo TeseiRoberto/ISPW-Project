@@ -3,6 +3,7 @@ package com.rt.ispwproject.logiccontrollers;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.config.SessionManager;
+import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayRequirementsDao;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.*;
@@ -13,11 +14,14 @@ import java.util.List;
 public class AnnouncementManager {
 
     // Inserts a new announcement in the system
-    public void postAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalArgumentException
+    public void postAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)                                        // Check if currSession is valid
-            throw new IllegalArgumentException("You must be logged in to post an announcement");
+            throw new IllegalCallerException("You must be logged in to post an announcement");
+
+        if(user.getUserRole() != UserRole.SIMPLE_USER)
+            throw new IllegalCallerException("Only simple users can post an announcement");
 
         // Create holiday requirements with data in the given announcement
         HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(0, currSession.getUsername(), announce.getDateOfPost(), announce.getNumOfViews());
@@ -49,11 +53,14 @@ public class AnnouncementManager {
 
 
     // Removes an existing announcement from the system
-    public void removeAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalArgumentException
+    public void removeAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)                                        // Check if currSession is valid
-            throw new IllegalArgumentException("You must be logged in to remove an announcement");
+            throw new IllegalCallerException("You must be logged in to remove an announcement");
+
+        if(user.getUserRole() != UserRole.SIMPLE_USER)
+            throw new IllegalCallerException("Only simple users can remove an announcement");
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
         requirementsDao.removeRequirementsPostedByUser(user.getUserId(), announce.getId());
@@ -61,11 +68,14 @@ public class AnnouncementManager {
 
 
     // Retrieves the announcements published by the given user
-    public List<Announcement> getMyAnnouncements(Session currSession) throws DbException, IllegalArgumentException
+    public List<Announcement> getMyAnnouncements(Session currSession) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)                                        // Check if currSession is valid
             throw new IllegalArgumentException("You must be logged in to get your announcements");
+
+        if(user.getUserRole() != UserRole.SIMPLE_USER)
+            throw new IllegalCallerException("Only simple users can retrieve their announcements");
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
         List<HolidayRequirements> requirements = requirementsDao.getRequirementsPostedByUser(user.getUserId());
