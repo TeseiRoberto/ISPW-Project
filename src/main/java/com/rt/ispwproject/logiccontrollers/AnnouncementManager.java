@@ -20,7 +20,7 @@ public class AnnouncementManager {
             throw new IllegalArgumentException("You must be logged in to post an announcement");
 
         // Create holiday requirements with data in the given announcement
-        HolidayMetadata metadata = new HolidayMetadata(0, currSession.getUsername(), announce.getDateOfPost(), announce.getNumOfViews());
+        HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(0, currSession.getUsername(), announce.getDateOfPost(), announce.getNumOfViews());
         DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
         Location destination = new Location(announce.getDestination());
         Location departureLocation = new Location(announce.getTransportRequirements().getDepartureLocation());
@@ -68,7 +68,7 @@ public class AnnouncementManager {
             throw new IllegalArgumentException("You must be logged in to get your announcements");
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
-        List<HolidayRequirements> requirements = requirementsDao.loadRequirementsPostedByUser(user.getUserId());
+        List<HolidayRequirements> requirements = requirementsDao.getRequirementsPostedByUser(user.getUserId());
 
         ArrayList<Announcement> announcements = new ArrayList<>();
         for(HolidayRequirements req : requirements)         // Convert model instances to beans

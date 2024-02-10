@@ -1,6 +1,7 @@
 package com.rt.ispwproject.test;
 
 import com.rt.ispwproject.beans.*;
+import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
@@ -87,9 +88,9 @@ class TestAnnouncementManager {
 
 
     // Creates a test session
-    private Session createTestSession() throws IllegalArgumentException
+    private Session createTestSession() throws IllegalArgumentException, DbException
     {
-        return new Session(4, "testUser", "test_user@email.com", UserRole.SIMPLE_USER);
+        return SessionManager.getInstance().createNewSession("testUser", "0000");
     }
 
 

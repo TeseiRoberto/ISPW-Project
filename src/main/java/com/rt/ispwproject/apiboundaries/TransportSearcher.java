@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.util.List;
 
 // This class is responsible for the interaction with the external transport API but for now we don't
-// use any real API instead we generate randomly the data that we need
+// use any real API instead we generate transports with random properties
 public class TransportSearcher {
 
     // List of the available transport types

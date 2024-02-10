@@ -27,8 +27,8 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     private static final Font       DEFAULT_FONT = new Font("System", 18);
     private final Session           currSession;
     private final Announcement      currAnnounce;
-    private Accommodation chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
-    private Transport chosenTransport = null;     // TransportOffer offer chosen using the search window
+    private Accommodation           chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
+    private Transport               chosenTransport = null;     // TransportOffer offer chosen using the search window
     private Stage                   searchWindow = null;        // Window used to display a list of the available accommodations/transports
     private VBox                    availableElements = null;   // Vbox used in the search window to contain the available accommodations/transports
 
@@ -294,7 +294,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("The number of rooms required cannot be negative or zero.");
 
             checkInOutDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
-            createSearchWindow("AccommodationOffer selector", "Available accommodations", 550, 480);
+            createSearchWindow("Accommodation selector", "Available accommodations", 550, 480);
 
             // Get list of the available accommodations and display it in the search window
             OfferManager offerManager = new OfferManager();
@@ -382,7 +382,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
                 throw new IllegalArgumentException("The number of travelers cannot be negative or zero.");
 
             departureAndReturnDates = new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue());
-            createSearchWindow("TransportOffer selector", "Available transports", 550, 480);
+            createSearchWindow("Transport selector", "Available transports", 550, 480);
 
             // Get list of the available transports and display it in the search window
             OfferManager offerManager = new OfferManager();

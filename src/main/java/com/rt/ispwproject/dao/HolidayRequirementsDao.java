@@ -67,7 +67,7 @@ public class HolidayRequirementsDao {
 
 
     // Retrieves the holiday requirements posted by the given user from the db
-    public List<HolidayRequirements> loadRequirementsPostedByUser(int userId) throws DbException
+    public List<HolidayRequirements> getRequirementsPostedByUser(int userId) throws DbException
     {
         List<HolidayRequirements> requirements = null;
         Connection connection = DbConnection.getInstance().getConnection();
@@ -86,10 +86,10 @@ public class HolidayRequirementsDao {
             }
 
         } catch (SQLException e) {
-            throw new DbException("Failed to invoke the \"getUserHolidayRequirements\" stored procedure:\n" + e.getMessage());
+            throw new DbException("Failed to invoke the \"getHolidayRequirements\" stored procedure:\n" + e.getMessage());
         } catch(IllegalArgumentException e)
         {
-            throw new DbException("\"getUserHolidayRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
+            throw new DbException("\"getHolidayRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
         }
 
         return requirements;
@@ -103,7 +103,7 @@ public class HolidayRequirementsDao {
 
         // We need to check that the holiday requirements associated to the given id exists and were actually
         // posted by the user associated with the given user id
-        List<HolidayRequirements> reqs = loadRequirementsPostedByUser(userId);
+        List<HolidayRequirements> reqs = getRequirementsPostedByUser(userId);
 
         for(HolidayRequirements req : reqs)
         {
@@ -132,7 +132,7 @@ public class HolidayRequirementsDao {
 
 
     // Retrieves holiday requirements which id is equal to or grater than start id from the db
-    public List<HolidayRequirements> loadRequirements(int startId, int maxRequirementsNum) throws DbException
+    public List<HolidayRequirements> searchRequirements(int startId, int maxRequirementsNum) throws DbException
     {
         List<HolidayRequirements> requirements = null;
         Connection connection = DbConnection.getInstance().getConnection();
@@ -174,7 +174,7 @@ public class HolidayRequirementsDao {
             if(maxReqNum != -1 && result.size() == maxReqNum)
                 break;
 
-            HolidayMetadata metadata = new HolidayMetadata(rs.getInt("id"),
+            HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(rs.getInt("id"),
                     rs.getString("ownerUsername"),
                     rs.getDate("dateOfPost").toLocalDate(),
                     rs.getInt("numOfViews")

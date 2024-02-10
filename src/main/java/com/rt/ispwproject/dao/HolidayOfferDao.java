@@ -1,18 +1,17 @@
 package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.model.HolidayOffer;
+import com.rt.ispwproject.model.*;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HolidayOfferDao {
 
 
     // Stores given holiday offer in db
-    public void postOffer(int bidderId, int announcementId, HolidayOffer offer) throws DbException
+    public void postOffer(HolidayOffer offer) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
@@ -30,8 +29,8 @@ public class HolidayOfferDao {
             // Use transport offer dao to post the accommodation offer
             transportOfferId = transportOfferDao.postOffer(offer.getTransport());
 
-            createOfferProc.setInt("requirementsId_in", announcementId);
-            createOfferProc.setInt("bidderAgencyId_in", bidderId);
+            createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRequirementsId());
+            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getBidderAgencyId());
             createOfferProc.setInt("holidayPrice_in", offer.getPrice());
             createOfferProc.setDate("holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
             createOfferProc.setDate("holidayEndDate_in", Date.valueOf(offer.getReturnDate()));
@@ -58,6 +57,72 @@ public class HolidayOfferDao {
 
             throw new DbException("Cannot post holiday offer:\n" + e.getMessage());
         }
+    }
+
+
+    // Loads all the holiday offers made by travel agencies to the holiday requirements associated to the given holidayReqId
+    public List<HolidayOffer> getOffersForHolidayRequirements(int holidayReqId) throws DbException
+    {
+        List<HolidayOffer> holidayOffers = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        try (CallableStatement getOffersProc = connection.prepareCall("call getHolidayOffersForRequirements(?)"))
+        {
+            getOffersProc.setInt("requirementsId_in", holidayReqId);
+            boolean status = getOffersProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getOffersProc.getResultSet();
+                holidayOffers = createHolidayOffersFromResultSet(rs);
+                rs.close();
+            }
+
+        } catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DbException("Failed to invoke the \"getHolidayOffersForRequirements\" stored procedure:\n\"" + e.getMessage());
+        } catch (DbException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DbException("Cannot load holiday offers for the given holiday requirements:\n" + e.getMessage());
+        }
+
+        return holidayOffers;
+    }
+
+
+    // Creates a list of HolidayOffer using data contained in the given result set.
+    private List<HolidayOffer> createHolidayOffersFromResultSet(ResultSet rs) throws SQLException, IllegalArgumentException, DbException
+    {
+        ArrayList<HolidayOffer> result = new ArrayList<>();
+        AccommodationOfferDao accommodationOfferDao = new AccommodationOfferDao();
+        TransportOfferDao transportOfferDao = new TransportOfferDao();
+
+        while(rs.next())
+        {
+            HolidayOfferMetadata metadata = new HolidayOfferMetadata(
+                rs.getInt("id"),
+                rs.getInt("relativeRequirementsId"),
+                rs.getString("bidderAgencyName"),
+                rs.getInt("bidderAgencyId"),
+                HolidayOfferState.fromPersistenceType(rs.getString("offerState"))
+            );
+
+            DateRange duration = new DateRange(
+                    rs.getDate("holidayStartDate").toLocalDate(),
+                    rs.getDate("holidayEndDate").toLocalDate()
+            );
+
+            int accommodationOfferId = rs.getInt("accommodationOfferId");
+            int transportOfferId = rs.getInt("transportOfferId");
+            AccommodationOffer accommodationOffer = accommodationOfferDao.getOffer(accommodationOfferId);
+            TransportOffer transportOffer = transportOfferDao.getOffer(transportOfferId);
+
+            Location destination = transportOffer.getArrivalLocation();
+            result.add(new HolidayOffer(metadata, destination, duration, rs.getInt("holidayPrice"), accommodationOffer, transportOffer));
+        }
+
+        return result;
     }
 
 }

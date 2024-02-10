@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class HolidayRequirements {
 
-    private final HolidayMetadata       metadata;
+    private final HolidayRequirementsMetadata metadata;
     private String                      holidayDescription;
     private Location                    destination;
     protected int                       budget;
@@ -19,7 +19,7 @@ public class HolidayRequirements {
     private TransportRequirements       transportReq;
 
 
-    public HolidayRequirements(HolidayMetadata metadata, Location destination, String description, DateRange duration, int budget,
+    public HolidayRequirements(HolidayRequirementsMetadata metadata, Location destination, String description, DateRange duration, int budget,
                                AccommodationRequirements accommodationReq, TransportRequirements transportReq)
     {
         this.metadata = metadata;
@@ -43,7 +43,7 @@ public class HolidayRequirements {
 
 
     // Getters
-    public HolidayMetadata getMetadata()                    { return this.metadata; }
+    public HolidayRequirementsMetadata getMetadata()                    { return this.metadata; }
     public String getHolidayDescription()                   { return this.holidayDescription; }
     public Location getDestination()                        { return this.destination; }
     public int getBudget()                                  { return this.budget; }

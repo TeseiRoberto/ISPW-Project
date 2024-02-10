@@ -16,7 +16,7 @@ public class TransportRequirementsDao {
         // Create callable statement and setup parameters to invoke the createTransportRequirements stored procedure
         try (CallableStatement createReqProc = connection.prepareCall("call createTransportRequirements(?, ?, ?, ?, ?, ?, ?)"))
         {
-            createReqProc.setString(  "transportType_in", req.getType().toString());
+            createReqProc.setString(  "transportType_in", req.getType().toPersistenceType());
             createReqProc.setInt(     "transportQuality_in", req.getQuality());
             createReqProc.setInt(     "numOfTravelers_in", req.getNumOfTravelers());
             createReqProc.setString(  "departureLocationAddress_in", req.getDepartureLocation().getAddress());
@@ -60,7 +60,7 @@ public class TransportRequirementsDao {
                             rs.getDouble("departureLocationLongitude"));
 
                     transportReq = new TransportRequirements(rs.getInt("id"),
-                            TransportType.valueOf(rs.getString("transportType")),
+                            TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getInt("transportQuality"),
                             rs.getInt("numOfTravelers"),
                             departureLocation);
@@ -71,7 +71,7 @@ public class TransportRequirementsDao {
 
         } catch(SQLException e)
         {
-            throw new DbException("Failed to invoke the \"createTransportRequirements\" stored procedure:\n" + e.getMessage());
+            throw new DbException("Failed to invoke the \"getTransportRequirements\" stored procedure:\n" + e.getMessage());
         } catch(IllegalArgumentException e)
         {
             throw new DbException("\"getTransportRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());

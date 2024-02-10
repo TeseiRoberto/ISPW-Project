@@ -1,7 +1,9 @@
 package com.rt.ispwproject.model;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class AccommodationOffer {
 
@@ -54,6 +56,7 @@ public class AccommodationOffer {
     public LocalDate getCheckInDate()               { return this.checkInOutDates.getStartDate(); }
     public LocalDate getCheckOutDate()              { return this.checkInOutDates.getEndDate(); }
     public int getPricePerNight()                   { return this.pricePerNight; }
+
 
     public int getPrice()
     {

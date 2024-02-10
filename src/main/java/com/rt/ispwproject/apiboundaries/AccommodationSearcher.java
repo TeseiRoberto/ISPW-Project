@@ -13,8 +13,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-// This class is responsible for the interaction with the external accommodation API but for now we don't
-// use any real API instead we generate randomly the data that we need
+// This class is responsible for the interaction with the external accommodation API, for now we don't
+// use any real API instead we generate accommodations with random properties
 public class AccommodationSearcher {
 
     private static final int    MAX_ACCOMMODATIONS_NUM = 15;    // Max number of accommodations that can be generated randomly
@@ -64,6 +64,17 @@ public class AccommodationSearcher {
     }
 
 
+    // Returns a list of links to images associated to the given accommodation
+    public List<URL> getAccommodationImages(int accommodationId)
+    {
+        // Here we should make a query to the external accommodation API to get the accommodation images URLs
+        // associated to the given accommodationId.
+        // For now, we simulate the existence of the API by selecting some random URLs that refers to dummy images in the file system
+
+        return generateRandomImages();
+    }
+
+
     // Generates a json that contains accommodation offers with random properties
     private String generateRandomAccommodationsJson(int numOfNights, int numOfRooms)
     {
@@ -88,19 +99,46 @@ public class AccommodationSearcher {
             jsonResult.append("\t\t'name': '").append(name).append("',\n");
             jsonResult.append("\t\t'quality': ").append(quality).append(",\n");
             jsonResult.append("\t\t'address': '").append(address).append("',\n");
+            jsonResult.append("\t\t'numOfRooms': '").append(numOfRooms).append("',\n");
             jsonResult.append("\t\t'pricePerNight': ").append(pricePerNight).append(",\n");
             jsonResult.append("\t\t'totalPrice': ").append(totalPrice).append(",\n");
 
-            // Select a random image for the accommodation and put it in the json
-            int imageIndex = random.nextInt(0, availableImages.size() - 1);
-            jsonResult.append("\t\t'imagesLinks': [\n");
-            jsonResult.append("\t\t'").append(availableImages.get(imageIndex)).append("'\n\t\t]\n\t}");
+            // Select some random images for the accommodation and put it in the json
+
+            List<URL> images = generateRandomImages();
+            if(images.isEmpty())
+            {
+                jsonResult.append("\t\t'imagesLinks': []\n}");
+            } else {
+                jsonResult.append("\t\t'imagesLinks': [\n");
+                for(URL img : images)
+                    jsonResult.append("\t\t\t'").append(img).append("',\n");
+
+                jsonResult.replace(jsonResult.length() - 2, jsonResult.length() - 1, "]\n\t}");
+            }
 
             jsonResult.append(",\n");
         }
 
         jsonResult.replace(jsonResult.length() - 2, jsonResult.length() - 1, "\n]");
         return jsonResult.toString();
+    }
+
+
+    // Selects some random images from the available ones in the file system
+    private List<URL> generateRandomImages()
+    {
+        SecureRandom random = new SecureRandom();
+        int imagesNum = random.nextInt(0, 4);
+        ArrayList<URL> urls = new ArrayList<>();
+
+        for(int i = 0; i < imagesNum; ++i)
+        {
+            int imgIndex = random.nextInt(0, IMAGES_NUM);
+            urls.add(availableImages.get(imgIndex));
+        }
+
+        return urls;
     }
 
 }

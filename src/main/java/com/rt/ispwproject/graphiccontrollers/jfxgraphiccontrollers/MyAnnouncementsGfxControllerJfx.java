@@ -65,11 +65,11 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when an AnnouncementGfxElement is clicked
-    public void onAnnouncementSelected(Announcement announcement)
+    // Invoked when an AnnouncementGfxElement is clicked, switches to the "announcement details" screen
+    public void onAnnouncementSelected(Announcement announce)
     {
-        // TODO: Pass to "announcementDetails" screen
-        System.out.println("CLICKED ANNOUNCEMENT WITH DESTINATION: " + announcement.getDestination());
+        changeScreen(getClass().getResource("user/announcementDetailsScreen.fxml"),
+                (Stage) announcementsVbox.getScene().getWindow(), c -> new AnnouncementDetailsGfxControllerJfx(currSession, announce));
     }
 
 }

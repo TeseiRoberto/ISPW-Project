@@ -18,7 +18,7 @@ public class AccommodationRequirementsDao {
         // Create callable statement and setup parameters to invoke the createAccommodationRequirements stored procedure
         try (CallableStatement createReqProc = connection.prepareCall("call createAccommodationRequirements(?, ?, ?, ?)"))
         {
-            createReqProc.setString(  "accommodationType_in", req.getType().toString());
+            createReqProc.setString(  "accommodationType_in", req.getType().toPersistenceType());
             createReqProc.setInt(     "accommodationQuality_in", req.getQuality());
             createReqProc.setInt(     "numOfRooms_in", req.getNumOfRooms());
             createReqProc.registerOutParameter("accommodationReqId_out", Types.INTEGER);
@@ -54,7 +54,7 @@ public class AccommodationRequirementsDao {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
                     accommodationReq = new AccommodationRequirements(rs.getInt("id"),
-                            AccommodationType.valueOf(rs.getString("accommodationType")),
+                            AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getInt("accommodationQuality"), rs.getInt("numOfRooms"));
 
                 rs.close();

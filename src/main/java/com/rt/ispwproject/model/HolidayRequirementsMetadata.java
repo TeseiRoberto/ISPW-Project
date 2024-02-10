@@ -2,7 +2,7 @@ package com.rt.ispwproject.model;
 
 import java.time.LocalDate;
 
-public class HolidayMetadata {
+public class HolidayRequirementsMetadata {
 
     private int         holidayId;
     private String      ownerUsername;
@@ -11,7 +11,7 @@ public class HolidayMetadata {
     private boolean     satisfied;
 
 
-    public HolidayMetadata(int holidayId, String ownerUsername, LocalDate dateOfPost, int numOfViews)
+    public HolidayRequirementsMetadata(int holidayId, String ownerUsername, LocalDate dateOfPost, int numOfViews)
     {
         this.holidayId = holidayId;
         this.ownerUsername = ownerUsername;

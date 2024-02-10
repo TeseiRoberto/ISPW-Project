@@ -72,8 +72,8 @@ public class AccommodationOfferGfxElement extends GridPane {
     {
         Image img = null;
 
-        // Here we should download the image from the given links but for now all the links to images will be path to files
-        // in the file system, so we simply load the image from the file system
+        // Here we should download an image from the given links but for now all the links to images will be path to files
+        // in the file system, so we simply load one of the image from the file system
         List<URL> imageLinks = offer.getImagesLinks();
         URL imgUrl = null;
 

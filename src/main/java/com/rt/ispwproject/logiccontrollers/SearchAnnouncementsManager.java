@@ -23,7 +23,7 @@ public class SearchAnnouncementsManager {
         List<HolidayRequirements> requirements;
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
-        requirements = requirementsDao.loadRequirements(startId, maxAnnouncementsNum);
+        requirements = requirementsDao.searchRequirements(startId, maxAnnouncementsNum);
 
         for(HolidayRequirements req : requirements)
         {

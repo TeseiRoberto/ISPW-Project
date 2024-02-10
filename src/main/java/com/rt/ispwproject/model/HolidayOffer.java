@@ -6,15 +6,16 @@ import java.time.LocalDate;
 
 public class HolidayOffer {
 
-    private final HolidayMetadata   metadata;
-    private Location                destination;
-    protected int                   price;
-    private final DateRange         duration;
-    private AccommodationOffer      accommodationOffer;
-    private TransportOffer          transportOffer;
+    private final HolidayOfferMetadata  metadata;
+    private Location                    destination;
+    protected int                       price;
+    private final DateRange             duration;
+    private AccommodationOffer          accommodationOffer;
+    private TransportOffer              transportOffer;
 
 
-    public HolidayOffer(HolidayMetadata metadata, Location destination, DateRange duration, int price, AccommodationOffer accommodationOffer, TransportOffer transportOffer)
+    public HolidayOffer(HolidayOfferMetadata metadata, Location destination, DateRange duration, int price,
+                        AccommodationOffer accommodationOffer, TransportOffer transportOffer)
     {
         this.metadata = metadata;
         this.destination = destination;
@@ -35,7 +36,7 @@ public class HolidayOffer {
 
 
     // Getters
-    public HolidayMetadata getMetadata()                        { return this.metadata; }
+    public HolidayOfferMetadata getMetadata()                   { return this.metadata; }
     public Location getDestination()                            { return this.destination; }
     public int getPrice()                                       { return this.price; }
     public LocalDate getDepartureDate()                         { return this.duration.getStartDate(); }
@@ -68,8 +69,8 @@ public class HolidayOffer {
         );
 
         return new Offer(
-                metadata.getHolidayId(),
-                metadata.getOwnerUsername(),
+                metadata.getOfferId(),
+                metadata.getBidderAgencyName(),
                 destination.getAddress(),
                 new Duration(duration.getStartDate(), duration.getEndDate()),
                 price,
