@@ -1,5 +1,7 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Transport;
+
 import java.time.LocalDate;
 
 public class TransportOffer {
@@ -54,4 +56,12 @@ public class TransportOffer {
     public LocalDate getDepartureDate()                 { return this.departureAndReturnDates.getStartDate(); }
     public LocalDate getReturnDate()                    { return this.departureAndReturnDates.getEndDate(); }
     public int getPricePerTraveler()                    { return this.pricePerTraveler; }
+    public int getPrice()                               { return this.pricePerTraveler * this.numOfTravelers; }
+
+
+    // Converts a TransportOffer instance into a Transport instance (model to bean class conversion)
+    public Transport toTransportBean() throws IllegalArgumentException
+    {
+        return new Transport(type.toViewType(), company, quality, getDepartureLocation().getAddress(), numOfTravelers, pricePerTraveler);
+    }
 }

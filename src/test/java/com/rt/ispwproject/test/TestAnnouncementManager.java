@@ -4,8 +4,6 @@ import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
-import com.rt.ispwproject.model.AccommodationType;
-import com.rt.ispwproject.model.TransportType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -58,7 +56,7 @@ class TestAnnouncementManager {
             if(!announce.getHolidayDuration().getReturnDate().equals(a.getHolidayDuration().getReturnDate()))
                 continue;
 
-            if(announce.getAccommodationRequirements().getType() != a.getAccommodationRequirements().getType())
+            if(!announce.getAccommodationRequirements().getType().equals(a.getAccommodationRequirements().getType()))
                 continue;
 
             if(announce.getAccommodationRequirements().getQuality() != a.getAccommodationRequirements().getQuality())
@@ -67,7 +65,7 @@ class TestAnnouncementManager {
             if(announce.getAccommodationRequirements().getNumOfRooms() != a.getAccommodationRequirements().getNumOfRooms())
                 continue;
 
-            if(announce.getTransportRequirements().getType() != a.getTransportRequirements().getType())
+            if(!announce.getTransportRequirements().getType().equals(a.getTransportRequirements().getType()))
                 continue;
 
             if(announce.getTransportRequirements().getQuality() != a.getTransportRequirements().getQuality())
@@ -96,8 +94,8 @@ class TestAnnouncementManager {
     // Creates a test announcement
     private Announcement createTestAnnouncement(Session user) throws IllegalArgumentException
     {
-        Accommodation accommodationReq = new Accommodation(AccommodationType.HOTEL, 4, 1);
-        Transport transportReq = new Transport(TransportType.AIRPLANE, 3, "Rome", 1);
+        Accommodation accommodationReq = new Accommodation("Hotel", 4, 1);
+        Transport transportReq = new Transport("Airplane", 3, "Rome", 1);
 
         Announcement announce = new Announcement();
         announce.setOwner(user.getUsername());

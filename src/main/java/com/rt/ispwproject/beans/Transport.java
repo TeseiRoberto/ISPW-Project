@@ -1,19 +1,18 @@
 package com.rt.ispwproject.beans;
 
-import com.rt.ispwproject.model.TransportType;
 
 public class Transport {
 
-    private TransportType       type;
-    private String              companyName;
-    private int                 quality;
-    private int                 numOfTravelers;
-    private String              departureLocation;
-    private int                 pricePerTraveler;
+    private String      type;
+    private String      companyName;
+    private int         quality;
+    private int         numOfTravelers;
+    private String      departureLocation;
+    private int         pricePerTraveler;
 
 
     // Constructor used to create transport offer
-    public Transport(TransportType type, String companyName, int quality, String departureLocation, int numOfTravelers,
+    public Transport(String type, String companyName, int quality, String departureLocation, int numOfTravelers,
                      int pricePerTraveler) throws IllegalArgumentException
     {
         setType(type);
@@ -26,7 +25,7 @@ public class Transport {
 
 
     // Constructor used to create transport requirements
-    public Transport(TransportType type, int quality, String departureLocation, int numOfTravelers) throws IllegalArgumentException
+    public Transport(String type, int quality, String departureLocation, int numOfTravelers) throws IllegalArgumentException
     {
         setType(type);
         setQuality(quality);
@@ -36,9 +35,9 @@ public class Transport {
 
 
     // Setters
-    public void setType(TransportType type) throws IllegalArgumentException
+    public void setType(String type) throws IllegalArgumentException
     {
-        if(type == null)
+        if(type == null || type.isEmpty())
             throw new IllegalArgumentException("Transport type cannot be empty!");
 
         this.type = type;
@@ -86,7 +85,7 @@ public class Transport {
 
 
     // Getters
-    public TransportType getType()              { return this.type; }
+    public String getType()                     { return this.type; }
     public String getCompanyName()              { return this.companyName; }
     public int getQuality()                     { return this.quality; }
     public String getDepartureLocation()        { return this.departureLocation; }

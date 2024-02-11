@@ -7,17 +7,17 @@ import java.util.List;
 
 public class Accommodation {
 
-    private AccommodationType   type;
-    private String              name;
-    private String              address;
-    private int                 quality;
-    private int                 numOfRooms;
-    private int                 pricePerNight;
-    private int                 totalPrice;
-    private List<URL>           imagesLinks;
+    private String      type;
+    private String      name;
+    private String      address;
+    private int         quality;
+    private int         numOfRooms;
+    private int         pricePerNight;
+    private int         totalPrice;
+    private List<URL>   imagesLinks;
 
 
-    public Accommodation(AccommodationType type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
+    public Accommodation(String type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
         setName(name);
@@ -30,7 +30,7 @@ public class Accommodation {
     }
 
 
-    public Accommodation(AccommodationType type, int quality, int numOfRooms) throws IllegalArgumentException
+    public Accommodation(String type, int quality, int numOfRooms) throws IllegalArgumentException
     {
         setType(type);
         setQuality(quality);
@@ -39,9 +39,9 @@ public class Accommodation {
 
 
     // Setters
-    public void setType(AccommodationType type) throws IllegalArgumentException
+    public void setType(String type) throws IllegalArgumentException
     {
-        if(type == null)
+        if(type == null || type.isEmpty())
             throw new IllegalArgumentException("Accommodation type name cannot be empty!");
 
         this.type = type;
@@ -102,14 +102,14 @@ public class Accommodation {
 
 
     // Getters
-    public AccommodationType getType()     { return this.type; }
-    public String getName()                { return this.name; }
-    public String getAddress()             { return this.address; }
-    public int getQuality()                { return this.quality; }
-    public int getNumOfRooms()             { return this.numOfRooms; }
-    public int getPricePerNight()          { return this.pricePerNight; }
-    public String getPricePerNightAsStr()  { return Integer.toString(this.pricePerNight) + '€'; }
-    public int getPrice()                  { return this.totalPrice; }
-    public String getPriceAsStr()          { return Integer.toString(this.totalPrice) + '€'; }
-    public List<URL> getImagesLinks()      { return this.imagesLinks; }
+    public String getType()                 { return this.type; }
+    public String getName()                 { return this.name; }
+    public String getAddress()              { return this.address; }
+    public int getQuality()                 { return this.quality; }
+    public int getNumOfRooms()              { return this.numOfRooms; }
+    public int getPricePerNight()           { return this.pricePerNight; }
+    public String getPricePerNightAsStr()   { return Integer.toString(this.pricePerNight) + '€'; }
+    public int getPrice()                   { return this.totalPrice; }
+    public String getPriceAsStr()           { return Integer.toString(this.totalPrice) + '€'; }
+    public List<URL> getImagesLinks()       { return this.imagesLinks; }
 }

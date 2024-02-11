@@ -85,7 +85,7 @@ public class AccommodationSearcher {
         for(int i = 0; i < accommodationsNum; ++i)                          // Generate all the accommodations
         {
             int accommodationId = random.nextInt();
-            String type = "HOTEL";
+            String type = "Hotel";
             String name = "Hotel" + i;
             int quality = random.nextInt(1, 5);
             String address = "unreal avenue " + random.nextInt(1, 1000);

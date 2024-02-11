@@ -47,29 +47,12 @@ public class HolidayOffer {
 
     // Converts an HolidayOffer instance into an Offer instance (model to bean class conversion)
     // Note: this creates coupling between the 2 classes but alleviates the burden of conversion from the developer and eliminates code duplication
-    public Offer toOffer() throws IllegalArgumentException
+    public Offer toOfferBean() throws IllegalArgumentException
     {
-        Accommodation accommodation = new Accommodation(
-                accommodationOffer.getType(),
-                accommodationOffer.getName(),
-                accommodationOffer.getLocation().getAddress(),
-                accommodationOffer.getQuality(),
-                accommodationOffer.getNumOfRooms(),
-                accommodationOffer.getPricePerNight(),
-                accommodationOffer.getPrice()
-        );
+        Accommodation accommodation = accommodationOffer.toAccommodationBean();
+        Transport transport = transportOffer.toTransportBean();
 
-        Transport transport = new Transport(
-                transportOffer.getType(),
-                transportOffer.getCompany(),
-                transportOffer.getQuality(),
-                transportOffer.getDepartureLocation().getAddress(),
-                transportOffer.getNumOfTravelers(),
-                transportOffer.getPricePerTraveler()
-        );
-
-        return new Offer(
-                metadata.getOfferId(),
+        Offer newOffer =  new Offer(
                 metadata.getBidderAgencyName(),
                 destination.getAddress(),
                 new Duration(duration.getStartDate(), duration.getEndDate()),
@@ -77,6 +60,10 @@ public class HolidayOffer {
                 accommodation,
                 transport
         );
+
+        newOffer.setId(metadata.getOfferId());
+
+        return newOffer;
     }
 
 }

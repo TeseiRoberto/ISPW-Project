@@ -7,6 +7,7 @@ public class Offer {
 
     private int                 id;
     private String              bidderAgencyName;
+    private String              offerStatus;
     private String              destination;
     private Duration            duration;
     private int                 price;
@@ -14,10 +15,9 @@ public class Offer {
     private Transport           transport;
 
 
-    public Offer(int id, String agencyName, String destination, Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
+    public Offer(String bidderAgencyName, String destination, Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
-        setId(id);
-        setBidder(agencyName);
+        setBidder(bidderAgencyName);
         setDestination(destination);
         setDuration(duration);
         setPrice(price);
@@ -35,6 +35,14 @@ public class Offer {
             throw new IllegalArgumentException("Bidder name cannot be empty!");
 
         this.bidderAgencyName = agencyName;
+    }
+
+    public void setOfferStatus(String status) throws IllegalArgumentException
+    {
+        if(status == null || status.isEmpty())
+            throw new IllegalArgumentException("Offer status cannot be empty!");
+
+        this.offerStatus = status;
     }
 
     public void setDestination(String destination) throws IllegalArgumentException
@@ -84,6 +92,7 @@ public class Offer {
     // Getters
     public int getId()                                  { return this.id; }
     public String getBidder()                           { return this.bidderAgencyName; }
+    public String getOfferStatus()                      { return this.offerStatus; }
     public String getDestination()                      { return this.destination; }
     public LocalDate getDepartureDate()                 { return this.duration.getDepartureDate(); }
     public LocalDate getReturnDate()                    { return this.duration.getReturnDate(); }

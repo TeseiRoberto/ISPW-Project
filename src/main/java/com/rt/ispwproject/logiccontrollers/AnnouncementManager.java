@@ -30,13 +30,13 @@ public class AnnouncementManager {
         Location departureLocation = new Location(announce.getTransportRequirements().getDepartureLocation());
 
         AccommodationRequirements accommodationReq = new AccommodationRequirements(
-                announce.getAccommodationRequirements().getType(),
+                AccommodationType.fromViewType(announce.getAccommodationRequirements().getType()),
                 announce.getAccommodationRequirements().getQuality(),
                 announce.getAccommodationRequirements().getNumOfRooms()
         );
 
         TransportRequirements transportReq = new TransportRequirements(
-                announce.getTransportRequirements().getType(),
+                TransportType.fromViewType(announce.getTransportRequirements().getType()),
                 announce.getTransportRequirements().getQuality(),
                 announce.getTransportRequirements().getNumOfTravelers(),
                 departureLocation
@@ -84,7 +84,7 @@ public class AnnouncementManager {
         for(HolidayRequirements req : requirements)         // Convert model instances to beans
         {
             try {
-                Announcement announce = req.toAnnouncement();
+                Announcement announce = req.toAnnouncementBean();
                 announcements.add(announce);
             }
             catch (IllegalArgumentException e) {

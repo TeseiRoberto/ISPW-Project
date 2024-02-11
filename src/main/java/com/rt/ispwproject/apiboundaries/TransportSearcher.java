@@ -16,7 +16,7 @@ import java.util.List;
 public class TransportSearcher {
 
     // List of the available transport types
-    private static final List<String>   availableTransportTypes = List.of("AIRPLANE", "TRAIN", "FERRY", "BUS");
+    private static final List<String>   availableTransportTypes = List.of("Airplane", "Train", "Ferry", "Bus");
     private static final int            MAX_TRANSPORTS_NUM = 15;    // Max number of transports that can be generated randomly
 
 
@@ -62,9 +62,9 @@ public class TransportSearcher {
             int quality = random.nextInt(1, 5);
 
             int pricePerTraveler = switch (type) {
-                case "TRAIN" -> quality * random.nextInt(40, 300);
-                case "FERRY" -> quality * random.nextInt(100, 350);
-                case "BUS" -> quality * random.nextInt(20, 100);
+                case "Tai" -> quality * random.nextInt(40, 300);
+                case "Ferry" -> quality * random.nextInt(100, 350);
+                case "Bus" -> quality * random.nextInt(20, 100);
                 default -> quality * random.nextInt(100, 1000);
             };
 

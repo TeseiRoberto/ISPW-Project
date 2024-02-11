@@ -1,5 +1,7 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Transport;
+
 public class TransportRequirements {
 
     private int             id;
@@ -28,10 +30,10 @@ public class TransportRequirements {
 
 
     // Setters
-    public void setType(TransportType type)                                     { this.type = type; }
-    public void setQuality(int quality)                                         { this.quality = quality; }
-    public void setNumOfTravelers(int num)                                      { this.numOfTravelers = num; }
-    public void setDepartureLocation(Location location)                         { this.departureLocation = location; }
+    public void setType(TransportType type)             { this.type = type; }
+    public void setQuality(int quality)                 { this.quality = quality; }
+    public void setNumOfTravelers(int num)              { this.numOfTravelers = num; }
+    public void setDepartureLocation(Location location) { this.departureLocation = location; }
 
 
     // Getters
@@ -40,4 +42,11 @@ public class TransportRequirements {
     public int getQuality()                             { return this.quality; }
     public int getNumOfTravelers()                      { return this.numOfTravelers; }
     public Location getDepartureLocation()              { return this.departureLocation; }
+
+
+    // Converts a TransportRequirements instance into a Transport instance (model to bean class conversion)
+    public Transport toTransportBean() throws IllegalArgumentException
+    {
+        return new Transport(type.toViewType(), quality, departureLocation.getAddress(), numOfTravelers);
+    }
 }

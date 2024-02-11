@@ -110,9 +110,9 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         requestedDestinationText.setText(currAnnounce.getDestination());
         requestedDepartureDateText.setText(currAnnounce.getHolidayDuration().getDepartureDate().toString());
         requestedReturnDateText.setText(currAnnounce.getHolidayDuration().getReturnDate().toString());
-        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType().toString());
+        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType());
         requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getAccommodationRequirements().getNumOfRooms()) );
-        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType().toString());
+        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType());
         requestedDepartureLocationText.setText(currAnnounce.getTransportRequirements().getDepartureLocation());
         availableBudgetText.setText(currAnnounce.getAvailableBudgetAsStr());
         requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getTransportRequirements().getNumOfTravelers()) );
@@ -339,7 +339,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             offeredNumOfRoomsTextfield.setPromptText("Num. of rooms");
             offeredAccommodationPriceText.setText("0€");
         } else {
-            offeredAccommodationTypeText.setText(accommodation.getType().toString());
+            offeredAccommodationTypeText.setText(accommodation.getType());
             offeredAccommodationNameText.setText(accommodation.getName());
             offeredAccommodationQuality.setQualityLevel(accommodation.getQuality());
             offeredAccommodationAddressText.setText(accommodation.getAddress());
@@ -423,7 +423,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             offeredNumOfTravelersTextfield.setPromptText("Num. of travelers");
             offeredTransportPriceText.setText("0€");
         } else {
-            offeredTransportTypeText.setText(transport.getType().toString());
+            offeredTransportTypeText.setText(transport.getType());
             offeredTransportCompanyNameText.setText(transport.getCompanyName());
             offeredTransportQuality.setQualityLevel(transport.getQuality());
             offeredTransportPriceText.setText(transport.getPricePerTravelerAsStr());
@@ -507,7 +507,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             OfferManager offerManager = new OfferManager();
             int offerPrice = offerManager.calculateOfferPrice(chosenAccommodation, chosenTransport);
 
-            Offer newOffer = new Offer(0, currSession.getUsername(), offeredDestinationTextfield.getText(),
+            Offer newOffer = new Offer(currSession.getUsername(), offeredDestinationTextfield.getText(),
                     new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue()),
                     offerPrice, chosenAccommodation, chosenTransport
             );

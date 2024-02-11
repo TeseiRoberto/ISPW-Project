@@ -43,7 +43,7 @@ public class HolidayRequirements {
 
 
     // Getters
-    public HolidayRequirementsMetadata getMetadata()                    { return this.metadata; }
+    public HolidayRequirementsMetadata getMetadata()        { return this.metadata; }
     public String getHolidayDescription()                   { return this.holidayDescription; }
     public Location getDestination()                        { return this.destination; }
     public int getBudget()                                  { return this.budget; }
@@ -55,20 +55,10 @@ public class HolidayRequirements {
 
     // Converts an HolidayRequirements instance into an Announcement instance (model to bean class conversion)
     // Note: this creates coupling between the 2 classes but alleviates the burden of conversion from the developer and eliminates code duplication
-    public Announcement toAnnouncement() throws IllegalArgumentException
+    public Announcement toAnnouncementBean() throws IllegalArgumentException
     {
-        Accommodation accommodation = new Accommodation(
-                accommodationReq.getType(),
-                accommodationReq.getQuality(),
-                accommodationReq.getNumOfRooms()
-        );
-
-        Transport transport = new Transport(
-            transportReq.getType(),
-            transportReq.getQuality(),
-            transportReq.getDepartureLocation().getAddress(),
-            transportReq.getNumOfTravelers()
-        );
+        Accommodation accommodation = accommodationReq.toAccommodationBean();
+        Transport transport = transportReq.toTransportBean();
 
         Announcement a = new Announcement();
         a.setId(this.metadata.getHolidayId());

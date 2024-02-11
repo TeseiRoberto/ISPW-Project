@@ -4,8 +4,6 @@ import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualitySelector;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
-import com.rt.ispwproject.model.AccommodationType;
-import com.rt.ispwproject.model.TransportType;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -15,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
 
@@ -24,16 +23,19 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private DatePicker                    departureDatePicker;
     @FXML private DatePicker                    returnDatePicker;
     @FXML private TextField                     numOfTravelersTextfield;
-    @FXML private ComboBox<AccommodationType>   accommodationTypeCombobox;
+    @FXML private ComboBox<String>              accommodationTypeCombobox;
     @FXML private HBox                          accommodationQualityHbox;
     private final QualitySelector               accommodationQualitySelector = new QualitySelector(0, 5);
     @FXML private TextField                     numOfRoomsTextfield;
-    @FXML private ComboBox<TransportType>       transportTypeCombobox;
+    @FXML private ComboBox<String>              transportTypeCombobox;
     @FXML private HBox                          transportQualityHbox;
     private final QualitySelector               transportQualitySelector = new QualitySelector(0, 5);
     @FXML private TextField                     departureFromTextfield;
     private final Session                       currSession;
 
+    // Available values for accommodation and transport types combo boxes
+    private List<String>    availableAccommodationTypes = List.of("Not specified", "Hotel");
+    private List<String>    availabletransportTypes = List.of("Not specified", "Airplane", "Train", "Ferry", "Bus");
 
     public CreateAnnouncementGfxControllerJfx(Session session)
     {
@@ -48,8 +50,8 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
         transportQualityHbox.getChildren().add(transportQualitySelector);
 
         // Set available values for accommodation and transport type combo boxes
-        accommodationTypeCombobox.getItems().addAll(AccommodationType.values());
-        transportTypeCombobox.getItems().addAll(TransportType.values());
+        accommodationTypeCombobox.getItems().addAll(availableAccommodationTypes);
+        transportTypeCombobox.getItems().addAll(availabletransportTypes);
     }
 
 

@@ -36,7 +36,7 @@ public class OfferManager {
         Location accommodationLocation = new Location(offer.getAccommodationOffer().getAddress());
 
         AccommodationOffer accommodation = new AccommodationOffer(
-                offer.getAccommodationOffer().getType(),
+                AccommodationType.fromViewType(offer.getAccommodationOffer().getType()),
                 offer.getAccommodationOffer().getName(),
                 accommodationLocation,
                 offer.getAccommodationOffer().getQuality(),
@@ -46,7 +46,7 @@ public class OfferManager {
         );
 
         TransportOffer transportOffer = new TransportOffer(
-                offer.getTransportOffer().getType(),
+                TransportType.fromViewType(offer.getTransportOffer().getType()),
                 offer.getTransportOffer().getCompanyName(),
                 offer.getTransportOffer().getQuality(),
                 new Route(departureLocation, destination),
@@ -78,7 +78,7 @@ public class OfferManager {
         ArrayList<Offer> offers = new ArrayList<>();
         try {
             for(HolidayOffer o : holidayOffers)                 // Convert model classes to beans
-                offers.add(o.toOffer());
+                offers.add(o.toOfferBean());
 
         } catch (IllegalArgumentException e) {
             throw new DbException("Db returned invalid data for an offer:\n" + e.getMessage());
@@ -107,7 +107,7 @@ public class OfferManager {
             {
                 List<URL> accommodationImgs = searcher.getAccommodationImages(o.getAccommodation().getAccommodationId());
 
-                Offer newOffer = o.toOffer();
+                Offer newOffer = o.toOfferBean();
                 newOffer.getAccommodationOffer().setImagesLinks(accommodationImgs);
                 offers.add(newOffer);
             }

@@ -34,7 +34,7 @@ public class SearchAnnouncementsManager {
         for(HolidayRequirements req : requirements)
         {
             try {
-                announcements.add(req.toAnnouncement());
+                announcements.add(req.toAnnouncementBean());
             }
             catch (IllegalArgumentException e) {
                 throw new DbException("Db returned invalid data for an announcement: " + e.getMessage());

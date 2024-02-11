@@ -1,5 +1,7 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Accommodation;
+
 public class AccommodationRequirements {
 
     private int                 id;
@@ -35,5 +37,12 @@ public class AccommodationRequirements {
     public AccommodationType getType()              { return this.type; }
     public int getQuality()                         { return this.quality; }
     public int getNumOfRooms()                      { return this.numOfRooms; }
+
+
+    // Converts an AccommodationRequirements instance into an Accommodation instance (model to bean class conversion)
+    public Accommodation toAccommodationBean() throws IllegalArgumentException
+    {
+        return new Accommodation(type.toViewType(), quality, numOfRooms);
+    }
 
 }

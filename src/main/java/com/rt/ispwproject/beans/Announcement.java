@@ -1,6 +1,5 @@
 package com.rt.ispwproject.beans;
 
-import com.rt.ispwproject.model.*;
 
 import java.time.LocalDate;
 
@@ -27,8 +26,8 @@ public class Announcement {
         this.availableBudget = 0;
         this.dateOfPost = LocalDate.now();
         this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
-        this.accommodationReq = new Accommodation(AccommodationType.UNSPECIFIED, 1, 1);
-        this.transportReq = new Transport(TransportType.UNSPECIFIED, 1, "unknown", 1);
+        this.accommodationReq = new Accommodation("Not specified", 1, 1);
+        this.transportReq = new Transport("Not specified", 1, "Not specified", 1);
         this.numOfViews = 0;
     }
 

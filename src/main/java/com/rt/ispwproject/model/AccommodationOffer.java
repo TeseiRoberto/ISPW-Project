@@ -1,5 +1,7 @@
 package com.rt.ispwproject.model;
 
+import com.rt.ispwproject.beans.Accommodation;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -63,5 +65,12 @@ public class AccommodationOffer {
 
         int numOfNights = Period.between(checkInOutDates.getStartDate(), checkInOutDates.getEndDate()).getDays();
         return numOfNights * pricePerNight * numOfRooms;
+    }
+
+
+    // Converts an AccommodationOffer instance into an Accommodation instance (model to bean class conversion)
+    public Accommodation toAccommodationBean() throws IllegalArgumentException
+    {
+        return new Accommodation(type.toViewType(), name, location.getAddress(), quality, numOfRooms, pricePerNight, getPrice());
     }
 }
