@@ -20,13 +20,13 @@ public class HolidayOfferMetadata {
     }
 
 
-    public HolidayOfferMetadata(int requirementsId, String bidderAgencyName, int bidderAgencyId)
+    public HolidayOfferMetadata(int requirementsId, String bidderAgencyName, int bidderAgencyId, HolidayOfferState state)
     {
         this.offerId = 0;
         this.requirementsId = requirementsId;
         this.bidderAgencyName = bidderAgencyName;
         this.bidderAgencyId = bidderAgencyId;
-        this.offerState = HolidayOfferState.PENDING;
+        this.offerState = state;
     }
 
 

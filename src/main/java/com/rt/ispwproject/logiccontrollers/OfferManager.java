@@ -29,7 +29,7 @@ public class OfferManager {
         if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
             throw new IllegalCallerException("Only travel agencies can make offers to users");
 
-        HolidayOfferMetadata metadata = new HolidayOfferMetadata(announce.getId(), user.getUsername(), user.getUserId());
+        HolidayOfferMetadata metadata = new HolidayOfferMetadata(announce.getId(), user.getUsername(), user.getUserId(), HolidayOfferState.PENDING);
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
         Location destination = new Location(offer.getDestination());
         Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
@@ -56,6 +56,7 @@ public class OfferManager {
         );
 
         HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodation, transportOffer);
+
         HolidayOfferDao offerDao = new HolidayOfferDao();
         offerDao.postOffer(holidayOffer);
     }
@@ -89,7 +90,7 @@ public class OfferManager {
 
 
     // Retrieves all the offers made by travel agencies to the given announcement
-    public List<Offer> getOffersForAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalArgumentException
+    public List<Offer> getOffersForAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         Profile user = SessionManager.getInstance().getProfile(currSession);
         if(user == null)
@@ -117,6 +118,21 @@ public class OfferManager {
         }
 
         return offers;
+    }
+
+
+    // Marks the given offer as rejected
+    public void rejectOffer(Session currSession, Offer currOffer) throws DbException, IllegalCallerException
+    {
+        Profile user = SessionManager.getInstance().getProfile(currSession);
+        if(user == null)
+            throw new IllegalCallerException("You must be logged in to reject an offer");
+
+        if(user.getUserRole() != UserRole.SIMPLE_USER)
+            throw new IllegalCallerException("Only simple users can reject offers");
+
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        offerDao.updateOfferState(currOffer.getId(), HolidayOfferState.REJECTED);
     }
 
 

@@ -121,6 +121,24 @@ public class HolidayOfferDao {
     }
 
 
+    // Updates the state of the holiday offer associated to the given offerId
+    public void updateOfferState(int offerId, HolidayOfferState newState) throws DbException
+    {
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateHolidayOfferState(?, ?)"))
+        {
+            updateOfferProc.setInt("offerId_in", offerId);
+            updateOfferProc.setString("newState_in", newState.toPersistenceType());
+
+            updateOfferProc.execute();
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"updateHolidayOfferState\" stored procedure:\n\"" + e.getMessage());
+        }
+    }
+
+
     // Creates a list of HolidayOffer using data contained in the given result set.
     private List<HolidayOffer> createHolidayOffersFromResultSet(ResultSet rs) throws SQLException, IllegalArgumentException, DbException
     {

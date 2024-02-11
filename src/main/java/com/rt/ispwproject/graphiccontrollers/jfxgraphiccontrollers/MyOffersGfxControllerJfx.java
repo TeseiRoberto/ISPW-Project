@@ -64,8 +64,8 @@ public class MyOffersGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "search button" is clicked, switches to the "search announcements" screen
-    public void onSearchClick()
+    // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
+    public void onSearchAnnouncementsClick()
     {
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
                 (Stage) offersVbox.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));

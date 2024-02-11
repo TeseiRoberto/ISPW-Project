@@ -9,7 +9,7 @@ public enum HolidayOfferState {
     REJECTED;               // Simple user has rejected the holiday offer made by the travel agency
 
 
-    // Converts the offer state from the system representation to the representation used in the persistence layer
+    // Converts the offer state from the model representation to the representation used in the persistence layer
     public String toPersistenceType()
     {
         return switch(this)
@@ -23,7 +23,7 @@ public enum HolidayOfferState {
     }
 
 
-    // Converts the offer state from the representation used in the persistence layer to the system representation
+    // Converts the offer state from the representation used in the persistence layer to the model representation
     public static HolidayOfferState fromPersistenceType(String state) throws IllegalArgumentException
     {
         return switch(state)
@@ -38,14 +38,14 @@ public enum HolidayOfferState {
     }
 
 
-    // Converts the offer state to a user readable message (this is used in the view layer)
-    public String getAsString()
+    // Converts the offer state from the model representation to the view representation
+    public String toViewType()
     {
         return switch(this)
         {
             case PENDING ->                 "Offer has not been evaluated yet...";
             case REQUESTED_CHANGES ->       "Changes has been requested on the offer.";
-            case PENDING_WITH_CHANGES ->    "Changes hsa been made .";
+            case PENDING_WITH_CHANGES ->    "Waiting for the user to evaluate the proposed changes";
             case ACCEPTED ->                "Offer has been accepted!";
             case REJECTED ->                "Offer has been rejected!";
         };

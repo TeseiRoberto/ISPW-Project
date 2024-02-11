@@ -435,7 +435,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Text>
-                              <Button id="nextOffer" fx:id="nextOfferBtn" mnemonicParsing="false" onMouseClicked="#onNextOfferClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
+                              <Button id="nextOffer" mnemonicParsing="false" onMouseClicked="#onNextOfferClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -445,7 +445,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <VBox id="offerFields" fx:id="offerContainerVbox1" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <VBox id="offerFields" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <GridPane id="generalAndTransportFields" gridLinesVisible="true" prefHeight="350.0" prefWidth="720.0">
                                  <columnConstraints>
@@ -789,7 +789,7 @@
                                        <children>
                                           <HBox id="accommodationImages" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0">
                                              <children>
-                                                <Button id="prevImage" mnemonicParsing="false" onMouseClicked="#onPrevAccommodationImageClick" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
+                                                <Button id="prevImage" mnemonicParsing="false" onMouseClicked="#onPrevAccommodationImageClick" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
@@ -797,8 +797,8 @@
                                                       <SVGPath content="M14 8L10 12L14 16" fill="WHITE" scaleX="3.5" scaleY="3.5" stroke="#2b2b2b" strokeWidth="0.0" translateX="-1.8" />
                                                    </graphic>
                                                 </Button>
-                                                <ImageView fx:id="accommodationImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                                                <Button id="nextImage" mnemonicParsing="false" onMouseClicked="#onNextAccommodationImageClick" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
+                                                <ImageView fx:id="accommodationImageView" fitHeight="180.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true" />
+                                                <Button id="nextImage" mnemonicParsing="false" onMouseClicked="#onNextAccommodationImageClick" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>

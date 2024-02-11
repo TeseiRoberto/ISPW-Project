@@ -544,10 +544,11 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "search" button is clicked
-    public void onSearchClick()
+    // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
+    public void onSearchAnnouncementsClick()
     {
-        displayErrorDialog("Announcements search functionality has not been implemented yet...");
+        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+                (Stage) announcementOwnerText.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
     }
 
 }

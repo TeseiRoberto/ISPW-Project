@@ -20,7 +20,6 @@ public class LoginGfxControllerJfx extends Application {
     @FXML TextField     usernameTextfield;
     @FXML PasswordField passwordTextfield;
 
-
     @Override
     public void start(Stage stage) throws IOException
     {

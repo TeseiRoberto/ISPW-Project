@@ -29,7 +29,6 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     private int                     offerIndex = 0;             // Index in the offers list for the offer that is currently being shown
 
     @FXML private VBox              mainContainerVbox;
-    @FXML private VBox              offerContainerVbox;         // Note that the offerContainerVbox gets deleted if no offer is found during initialization so the offer fields become invalid
 
     @FXML private Text              announceDateOfPostText;
     @FXML private Text              announceNumOfViewsText;
@@ -47,6 +46,10 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private HBox              requestedTransportQualityHbox;
     @FXML private Text              requestedDepartureLocationText;
     @FXML private Text              requestedNumOfTravelersText;
+
+    // Note that this vbox gets deleted if no offer is found during initialization, so the offered* fields become all invalid.
+    // It is easier to delete the elements when their not needed than to build them from scratch when we need them
+    @FXML private VBox              offerContainerVbox;
 
     // Fields for the travel agency offer
     @FXML private Text              bidderAgencyNameText;
@@ -122,9 +125,9 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
         availableBudgetText.setText(currAnnounce.getAvailableBudgetAsStr());
         requestedDepartureDateText.setText(currAnnounce.getHolidayDuration().getDepartureDate().toString());
         requestedReturnDateText.setText(currAnnounce.getHolidayDuration().getReturnDate().toString());
-        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType().toString());
+        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType());
         requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getAccommodationRequirements().getNumOfRooms()) );
-        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType().toString());
+        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType());
         requestedDepartureLocationText.setText(currAnnounce.getTransportRequirements().getDepartureLocation());
         requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getTransportRequirements().getNumOfTravelers()) );
 
@@ -142,16 +145,16 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
             return;
 
         bidderAgencyNameText.setText(offer.getBidder());
-        offerStatusText.setText("BOH"); // TODO: How do we handle the offer status???
+        offerStatusText.setText(offer.getOfferStatus());
         offeredDestinationText.setText(offer.getDestination());
         offeredPriceText.setText(offer.getPriceAsStr());
         offeredDepartureDateText.setText(offer.getDepartureDate().toString());
         offeredReturnDateText.setText(offer.getReturnDate().toString());
-        offeredAccommodationTypeText.setText(offer.getAccommodationOffer().getType().toString());
+        offeredAccommodationTypeText.setText(offer.getAccommodationOffer().getType());
         offeredAccommodationNameText.setText(offer.getAccommodationOffer().getName());
         offeredNumOfRoomsText.setText( Integer.toString(offer.getAccommodationOffer().getNumOfRooms()) );
         offeredAccommodationAddressText.setText(offer.getAccommodationOffer().getAddress());
-        offeredTransportTypeText.setText(offer.getTransportOffer().getType().toString());
+        offeredTransportTypeText.setText(offer.getTransportOffer().getType());
         offeredTransportCompanyNameText.setText(offer.getTransportOffer().getCompanyName());
         offeredDepartureLocationText.setText(offer.getTransportOffer().getDepartureLocation());
         offeredNumOfTravelersText.setText( Integer.toString(offer.getTransportOffer().getNumOfTravelers()) );
@@ -179,8 +182,8 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "delete announcement" button is clicked
     public void onDeleteAnnouncementClick()
     {
-        // TODO: Add implementation...
-        System.out.println("DELETE ANNOUNCEMENT CLICKED!");
+        // TODO: Add implementation if remains time...
+        displayErrorDialog("Delete announcement functionality is not available yet...");
     }
 
 
@@ -283,8 +286,21 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "reject offer" button is clicked
     public void onRejectOfferClick()
     {
-        // TODO: Add implementation...
-        System.out.println("REJECT OFFER CLICKED");
+        if(offers == null || offers.isEmpty())
+            return;
+
+        try {
+            Offer currOffer = offers.get(offerIndex);
+
+            OfferManager offerManager = new OfferManager();
+            offerManager.rejectOffer(currSession, currOffer);
+        } catch(IndexOutOfBoundsException e)
+        {
+            displayErrorDialog("No offer has been selected");
+        }
+        catch (DbException | IllegalCallerException | IllegalArgumentException e) {
+            displayErrorDialog(e.getMessage());
+        }
     }
 
 

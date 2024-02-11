@@ -13,7 +13,6 @@ import java.net.URL;
 // This class defines some common behaviour for the javafx graphic controllers
 public class BaseGfxControllerJfx {
 
-
     // Loads new screen and set it as current
     protected void changeScreen(URL pathToScreen, Stage stage, Callback<Class<?>, Object> gfxControllerFactoryLambda)
     {

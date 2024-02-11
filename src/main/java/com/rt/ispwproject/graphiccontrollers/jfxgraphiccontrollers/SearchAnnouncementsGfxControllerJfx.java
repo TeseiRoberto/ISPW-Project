@@ -74,11 +74,11 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "search" button is clicked
-    public void onSearchClick()
+    // Invoked when the "search announcements" button is clicked, reloads the "search announcements" screen
+    public void onSearchAnnouncementsClick()
     {
-        displayErrorDialog("Announcements custom search functionality has not been implemented yet...");
+        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+                (Stage) announcementsVbox.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
     }
-
 
 }

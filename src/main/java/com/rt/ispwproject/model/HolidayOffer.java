@@ -62,6 +62,7 @@ public class HolidayOffer {
         );
 
         newOffer.setId(metadata.getOfferId());
+        newOffer.setOfferStatus(metadata.getOfferState().toViewType());
 
         return newOffer;
     }

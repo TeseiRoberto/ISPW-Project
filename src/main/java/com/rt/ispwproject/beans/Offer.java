@@ -17,6 +17,7 @@ public class Offer {
 
     public Offer(String bidderAgencyName, String destination, Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
+        this.offerStatus = "unknown";
         setBidder(bidderAgencyName);
         setDestination(destination);
         setDuration(duration);
