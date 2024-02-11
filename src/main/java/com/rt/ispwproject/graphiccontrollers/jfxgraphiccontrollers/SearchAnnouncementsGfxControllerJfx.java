@@ -19,14 +19,13 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
 
     @FXML TextField             searchBarTextfield;
     @FXML VBox                  announcementsVbox;
-    private final Session       currSession;
     private List<Announcement>  announcements;
     private static final int    MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 10;
 
 
-    public SearchAnnouncementsGfxControllerJfx(Session session)
+    public SearchAnnouncementsGfxControllerJfx(Session session, Stage stage)
     {
-        this.currSession = session;
+        super(session, stage);
     }
 
 
@@ -62,7 +61,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onAnnouncementSelected(Announcement announce)
     {
         changeScreen(getClass().getResource("travelAgency/makeOfferScreen.fxml"),
-                (Stage) announcementsVbox.getScene().getWindow(), c -> new MakeOfferGfxControllerJfx(currSession, announce));
+                c -> new MakeOfferGfxControllerJfx(currSession, mainStage, announce));
     }
 
 
@@ -70,7 +69,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onMyOffersClick()
     {
         changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
-                (Stage) announcementsVbox.getScene().getWindow(), c -> new MyOffersGfxControllerJfx(currSession));
+                c -> new MyOffersGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -78,7 +77,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onSearchAnnouncementsClick()
     {
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) announcementsVbox.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
+                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 }

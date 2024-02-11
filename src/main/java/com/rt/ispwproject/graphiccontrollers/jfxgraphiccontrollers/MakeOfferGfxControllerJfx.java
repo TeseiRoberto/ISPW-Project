@@ -25,7 +25,6 @@ import java.util.List;
 public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
     private static final Font       DEFAULT_FONT = new Font("System", 18);
-    private final Session           currSession;
     private final Announcement      currAnnounce;
     private Accommodation           chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
     private Transport               chosenTransport = null;     // TransportOffer offer chosen using the search window
@@ -76,9 +75,9 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     private boolean                 dataUpdatedOnCallback = false;
 
 
-    public MakeOfferGfxControllerJfx(Session session, Announcement announce)
+    public MakeOfferGfxControllerJfx(Session session, Stage stage, Announcement announce)
     {
-        this.currSession = session;
+        super(session, stage);
         this.currAnnounce = announce;
     }
 
@@ -482,7 +481,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     public void onCloseAnnouncementClick()
     {
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) announcementDescriptionTextarea.getScene().getWindow(), c -> new SearchAnnouncementsGfxControllerJfx(currSession));
+                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -490,7 +489,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     public void onMyOffersClick()
     {
         changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
-                (Stage) announcementDescriptionTextarea.getScene().getWindow(), c -> new MyOffersGfxControllerJfx(currSession));
+                c -> new MyOffersGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -521,7 +520,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
 
         displayInfoDialog("Offer sent correctly!");
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) announcementOwnerText.getScene().getWindow(), c -> new SearchAnnouncementsGfxControllerJfx(currSession));
+                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -548,7 +547,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     public void onSearchAnnouncementsClick()
     {
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) announcementOwnerText.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
+                e -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 }

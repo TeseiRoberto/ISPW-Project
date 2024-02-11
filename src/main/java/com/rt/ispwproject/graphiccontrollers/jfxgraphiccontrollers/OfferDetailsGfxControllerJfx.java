@@ -6,11 +6,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 
 public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
-
-    private final Session   currSession;
 
     @FXML private Text      announcementOwnerUsernameText;
     @FXML private Text      offerStatusText;
@@ -52,9 +51,9 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private Text      requestedNumOfTravelersText;
 
 
-    public OfferDetailsGfxControllerJfx(Session session)
+    public OfferDetailsGfxControllerJfx(Session session, Stage stage)
     {
-        this.currSession = session;
+        super(session, stage);
     }
 
 
@@ -74,8 +73,7 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
     public void onSearchAnnouncementsClick()
     {
-        // TODO: Add implementation...
-        //changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-        //        (Stage) offersVbox.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
+        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 }

@@ -18,14 +18,13 @@ import java.util.List;
 public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
 
     @FXML VBox                      announcementsVbox;
-    private final Session           currSession;
     private List<Announcement>      announcements;
 
 
     // Loads all the announcements posted by user and displays them
-    public MyAnnouncementsGfxControllerJfx(Session session)
+    public MyAnnouncementsGfxControllerJfx(Session session, Stage stage)
     {
-        this.currSession = session;
+        super(session, stage);
     }
 
 
@@ -61,7 +60,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onCreateAnnouncementClick()
     {
         changeScreen(getClass().getResource("user/createAnnouncementScreen.fxml"),
-                (Stage) announcementsVbox.getScene().getWindow(), c -> new CreateAnnouncementGfxControllerJfx(currSession));
+                c -> new CreateAnnouncementGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -69,7 +68,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onAnnouncementSelected(Announcement announce)
     {
         changeScreen(getClass().getResource("user/announcementDetailsScreen.fxml"),
-                (Stage) announcementsVbox.getScene().getWindow(), c -> new AnnouncementDetailsGfxControllerJfx(currSession, announce));
+                c -> new AnnouncementDetailsGfxControllerJfx(currSession, mainStage, announce));
     }
 
 }

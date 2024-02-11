@@ -23,7 +23,6 @@ import java.util.List;
 
 public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
 
-    private final Session           currSession;
     private final Announcement      currAnnounce;
     List<Offer>                     offers;                     // Offers received for the currAnnounce
     private int                     offerIndex = 0;             // Index in the offers list for the offer that is currently being shown
@@ -75,9 +74,9 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private Text              offeredNumOfTravelersText;
 
 
-    public AnnouncementDetailsGfxControllerJfx(Session session, Announcement announce)
+    public AnnouncementDetailsGfxControllerJfx(Session session, Stage stage, Announcement announce)
     {
-        this.currSession = session;
+        super(session, stage);
         this.currAnnounce = announce;
     }
 
@@ -191,7 +190,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onCloseAnnouncementClick()
     {
         changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
-                (Stage) mainContainerVbox.getScene().getWindow(), c -> new MyAnnouncementsGfxControllerJfx(currSession));
+                c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -279,7 +278,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     public void onCreateAnnouncementClick()
     {
         changeScreen(getClass().getResource("user/createAnnouncementScreen.fxml"),
-                (Stage) mainContainerVbox.getScene().getWindow(), c -> new CreateAnnouncementGfxControllerJfx(currSession));
+                c -> new CreateAnnouncementGfxControllerJfx(currSession, mainStage));
     }
 
 

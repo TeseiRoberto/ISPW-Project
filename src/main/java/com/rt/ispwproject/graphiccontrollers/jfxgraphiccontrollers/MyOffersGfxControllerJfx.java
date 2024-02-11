@@ -16,14 +16,13 @@ import java.util.List;
 
 public class MyOffersGfxControllerJfx extends BaseGfxControllerJfx {
 
-    private final Session   currSession;
     private List<Offer>     offers = null;
     @FXML private VBox      offersVbox;
 
 
-    public MyOffersGfxControllerJfx(Session session)
+    public MyOffersGfxControllerJfx(Session session, Stage stage)
     {
-        this.currSession = session;
+        super(session, stage);
     }
 
 
@@ -68,7 +67,7 @@ public class MyOffersGfxControllerJfx extends BaseGfxControllerJfx {
     public void onSearchAnnouncementsClick()
     {
         changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                (Stage) offersVbox.getScene().getWindow(), e -> new SearchAnnouncementsGfxControllerJfx(currSession));
+                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 

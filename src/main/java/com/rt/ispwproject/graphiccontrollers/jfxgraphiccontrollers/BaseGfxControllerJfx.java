@@ -1,5 +1,6 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
+import com.rt.ispwproject.beans.Session;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,8 +14,19 @@ import java.net.URL;
 // This class defines some common behaviour for the javafx graphic controllers
 public class BaseGfxControllerJfx {
 
+    protected final Session currSession;
+    protected final Stage   mainStage;
+
+
+    public BaseGfxControllerJfx(Session session, Stage stage)
+    {
+        this.currSession = session;
+        this.mainStage = stage;
+    }
+
+
     // Loads new screen and set it as current
-    protected void changeScreen(URL pathToScreen, Stage stage, Callback<Class<?>, Object> gfxControllerFactoryLambda)
+    protected void changeScreen(URL pathToScreen, Callback<Class<?>, Object> gfxControllerFactoryLambda)
     {
         FXMLLoader loader = new FXMLLoader(pathToScreen);
 
@@ -22,8 +34,8 @@ public class BaseGfxControllerJfx {
             loader.setControllerFactory(gfxControllerFactoryLambda);
 
         try {
-            Scene newScene = new Scene(loader.load(), stage.getScene().getWidth(), stage.getScene().getHeight());
-            stage.setScene(newScene);
+            Scene newScene = new Scene(loader.load(), mainStage.getScene().getWidth(), mainStage.getScene().getHeight());
+            mainStage.setScene(newScene);
         } catch(IOException e)
         {
             displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());

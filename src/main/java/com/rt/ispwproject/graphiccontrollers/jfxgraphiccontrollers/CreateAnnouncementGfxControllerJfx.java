@@ -31,15 +31,14 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private HBox                          transportQualityHbox;
     private final QualitySelector               transportQualitySelector = new QualitySelector(0, 5);
     @FXML private TextField                     departureFromTextfield;
-    private final Session                       currSession;
 
     // Available values for accommodation and transport types combo boxes
-    private List<String>    availableAccommodationTypes = List.of("Not specified", "Hotel");
-    private List<String>    availabletransportTypes = List.of("Not specified", "Airplane", "Train", "Ferry", "Bus");
+    private final List<String>    availableAccommodationTypes = List.of("Not specified", "Hotel");
+    private final List<String>    availableTransportTypes = List.of("Not specified", "Airplane", "Train", "Ferry", "Bus");
 
-    public CreateAnnouncementGfxControllerJfx(Session session)
+    public CreateAnnouncementGfxControllerJfx(Session session, Stage stage)
     {
-        this.currSession = session;
+        super(session, stage);
     }
 
 
@@ -51,7 +50,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
 
         // Set available values for accommodation and transport type combo boxes
         accommodationTypeCombobox.getItems().addAll(availableAccommodationTypes);
-        transportTypeCombobox.getItems().addAll(availabletransportTypes);
+        transportTypeCombobox.getItems().addAll(availableTransportTypes);
     }
 
 
@@ -59,7 +58,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
     public void onMyAnnouncementsClick()
     {
         changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
-                (Stage) destinationTextfield.getScene().getWindow(), c -> new MyAnnouncementsGfxControllerJfx(currSession));
+                c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -94,7 +93,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
             annManager.postAnnouncement(currSession, announce);
 
             changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
-                    (Stage) destinationTextfield.getScene().getWindow(), c -> new MyAnnouncementsGfxControllerJfx(currSession));
+                    c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
         } catch(NumberFormatException e)
         {
             displayErrorDialog("Available budget, number of rooms and number of travelers are empty or contains letters!");
