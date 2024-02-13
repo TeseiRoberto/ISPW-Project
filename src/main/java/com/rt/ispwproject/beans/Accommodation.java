@@ -1,7 +1,5 @@
 package com.rt.ispwproject.beans;
 
-import com.rt.ispwproject.model.AccommodationType;
-
 import java.net.URL;
 import java.util.List;
 

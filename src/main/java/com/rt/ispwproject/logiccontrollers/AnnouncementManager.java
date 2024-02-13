@@ -24,7 +24,7 @@ public class AnnouncementManager {
             throw new IllegalCallerException("Only simple users can post an announcement");
 
         // Create holiday requirements with data in the given announcement
-        HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(0, currSession.getUsername(), announce.getDateOfPost(), announce.getNumOfViews());
+        HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(user.getUsername(), user.getUserId(), announce.getDateOfPost());
         DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
         Location destination = new Location(announce.getDestination());
         Location departureLocation = new Location(announce.getTransportRequirements().getDepartureLocation());
@@ -48,7 +48,7 @@ public class AnnouncementManager {
         );
 
         HolidayRequirementsDao requirementsDao = new HolidayRequirementsDao();
-        requirementsDao.postRequirements(user.getUserId(), newReq);
+        requirementsDao.postRequirements(newReq);
     }
 
 

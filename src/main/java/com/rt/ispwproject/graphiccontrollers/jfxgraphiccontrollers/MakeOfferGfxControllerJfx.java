@@ -104,7 +104,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     // Fills in the fields of the user request with the announcement data
     public void setRequestFields()
     {
-        announcementOwnerText.setText(currAnnounce.getOwner());
+        announcementOwnerText.setText(currAnnounce.getOwnerUsername());
         announcementDescriptionTextarea.setText(currAnnounce.getHolidayDescription());
         requestedDestinationText.setText(currAnnounce.getDestination());
         requestedDepartureDateText.setText(currAnnounce.getHolidayDuration().getDepartureDate().toString());
@@ -506,7 +506,9 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
             OfferManager offerManager = new OfferManager();
             int offerPrice = offerManager.calculateOfferPrice(chosenAccommodation, chosenTransport);
 
-            Offer newOffer = new Offer(currSession.getUsername(), offeredDestinationTextfield.getText(),
+            Offer newOffer = new Offer(
+                    currSession.getUsername(), currAnnounce.getOwnerUsername(),
+                    offeredDestinationTextfield.getText(),
                     new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue()),
                     offerPrice, chosenAccommodation, chosenTransport
             );

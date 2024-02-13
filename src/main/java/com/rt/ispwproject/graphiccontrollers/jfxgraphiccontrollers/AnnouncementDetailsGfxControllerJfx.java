@@ -95,16 +95,9 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
             offers = offerManager.getOffersForAnnouncement(currSession, currAnnounce);
 
             if(offers == null || offers.isEmpty())
-            {
-                Label infoMsg = new Label("No offer has been received yet.");
-                infoMsg.setTextAlignment(TextAlignment.CENTER);
-                infoMsg.setFont(new Font("System", 18));
-
-                mainContainerVbox.getChildren().remove(offerContainerVbox);
-                mainContainerVbox.getChildren().add(infoMsg);
-            } else {
+                insertNoOfferReceivedMessage();
+            else
                 setOfferFields(offers.get(offerIndex));
-            }
         } catch (DbException | IllegalArgumentException e)
         {
             offers.clear();
@@ -143,7 +136,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
         if(offer == null || offerContainerVbox == null)
             return;
 
-        bidderAgencyNameText.setText(offer.getBidder());
+        bidderAgencyNameText.setText(offer.getBidderUsername());
         offerStatusText.setText(offer.getOfferStatus());
         offeredDestinationText.setText(offer.getDestination());
         offeredPriceText.setText(offer.getPriceAsStr());
@@ -168,6 +161,22 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
             setAccommodationImage(null);
         else
             setAccommodationImage(images.get(accommodationImageIndex));
+    }
+
+
+    // Deletes the offerContainerVbox and inserts in the main container a message saying that no offer has been received
+    private void insertNoOfferReceivedMessage()
+    {
+        if(offerContainerVbox == null)
+            return;
+
+        Label infoMsg = new Label("No offer has been received yet.");
+        infoMsg.setTextAlignment(TextAlignment.CENTER);
+        infoMsg.setFont(new Font("System", 18));
+
+        mainContainerVbox.getChildren().remove(offerContainerVbox);
+        mainContainerVbox.getChildren().add(infoMsg);
+        offerContainerVbox = null;
     }
 
 
@@ -282,7 +291,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "reject offer" button is clicked
+    // Invoked when the "reject offer" button is clicked, informs travel agency that offer was rejected
     public void onRejectOfferClick()
     {
         if(offers == null || offers.isEmpty())
@@ -293,6 +302,17 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
 
             OfferManager offerManager = new OfferManager();
             offerManager.rejectOffer(currSession, currOffer);
+
+            offers.remove(currOffer);                       // Delete current offer from the offers list
+            if(offers.isEmpty())
+            {
+                offerIndex = 0;
+                insertNoOfferReceivedMessage();
+            } else {
+                offerIndex = offerIndex + 1 % offers.size();
+                setOfferFields(offers.get(offerIndex));
+            }
+
         } catch(IndexOutOfBoundsException e)
         {
             displayErrorDialog("No offer has been selected");

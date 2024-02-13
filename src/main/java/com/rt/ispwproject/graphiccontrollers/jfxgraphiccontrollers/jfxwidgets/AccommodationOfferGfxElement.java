@@ -104,7 +104,7 @@ public class AccommodationOfferGfxElement extends GridPane {
     // Creates text elements placed one on top of the other to display the accommodation details
     private VBox createAccommodationDetails(Accommodation offer)
     {
-        Text accommodationType = new Text(offer.getType().toString());
+        Text accommodationType = new Text(offer.getType());
         Text accommodationName = new Text(offer.getName());
         Text accommodationAddress = new Text(offer.getAddress());
         Text accommodationPrice = new Text(offer.getPricePerNightAsStr() + " per night");

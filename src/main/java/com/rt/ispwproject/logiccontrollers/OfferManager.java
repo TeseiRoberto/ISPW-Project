@@ -29,7 +29,11 @@ public class OfferManager {
         if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
             throw new IllegalCallerException("Only travel agencies can make offers to users");
 
-        HolidayOfferMetadata metadata = new HolidayOfferMetadata(announce.getId(), user.getUsername(), user.getUserId(), HolidayOfferState.PENDING);
+        HolidayOfferMetadata metadata = new HolidayOfferMetadata(
+                user.getUserId(), user.getUsername(), HolidayOfferState.PENDING,
+                announce.getId(), announce.getOwnerId(), announce.getOwnerUsername()
+        );
+
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
         Location destination = new Location(offer.getDestination());
         Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());

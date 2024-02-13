@@ -35,7 +35,7 @@ class TestAnnouncementManager {
     {
         for(Announcement a : list)
         {
-            if(!announce.getOwner().equals(a.getOwner()))
+            if(!announce.getOwnerUsername().equals(a.getOwnerUsername()))
                 continue;
 
             if(!announce.getDestination().equals(a.getDestination()))
@@ -98,7 +98,7 @@ class TestAnnouncementManager {
         Transport transportReq = new Transport("Airplane", 3, "Rome", 1);
 
         Announcement announce = new Announcement();
-        announce.setOwner(user.getUsername());
+        announce.setOwnerUsername(user.getUsername());
         announce.setDestination("London");
         announce.setHolidayDescription("This is a test announcement");
         announce.setAvailableBudget(3000);

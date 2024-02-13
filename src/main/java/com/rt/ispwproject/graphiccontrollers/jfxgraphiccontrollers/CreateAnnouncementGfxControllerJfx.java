@@ -80,7 +80,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
             );
 
             Announcement announce = new Announcement();
-            announce.setOwner(currSession.getUsername());
+            announce.setOwnerUsername(currSession.getUsername());
             announce.setDestination(destinationTextfield.getText());
             announce.setHolidayDescription(descriptionTextarea.getText());
             announce.setAvailableBudget( Integer.parseInt(availableBudgetTextfield.getText()) );

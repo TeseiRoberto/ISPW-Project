@@ -11,7 +11,7 @@ public class HolidayRequirementsDao {
 
     
     // Stores given holiday requirements in db
-    public void postRequirements(int userId, HolidayRequirements req) throws DbException
+    public void postRequirements(HolidayRequirements req) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
@@ -31,7 +31,7 @@ public class HolidayRequirementsDao {
             transportReqId = transportReqDao.postRequirements(req.getTransport());
 
             // Post holiday requirements
-            createReqProc.setInt(     "userId_in", userId);
+            createReqProc.setInt(     "userId_in", req.getMetadata().getOwnerId());
             createReqProc.setString(  "destinationAddress_in", req.getDestination().getAddress());
             createReqProc.setDouble(  "destinationLatitude_in", req.getDestination().getLatitude());
             createReqProc.setDouble(  "destinationLongitude_in", req.getDestination().getLongitude());
@@ -174,8 +174,10 @@ public class HolidayRequirementsDao {
             if(maxReqNum != -1 && result.size() == maxReqNum)
                 break;
 
-            HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(rs.getInt("id"),
+            HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(
+                    rs.getInt("id"),
                     rs.getString("ownerUsername"),
+                    rs.getInt("ownerId"),
                     rs.getDate("dateOfPost").toLocalDate(),
                     rs.getInt("numOfViews")
             );

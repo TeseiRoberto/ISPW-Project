@@ -64,7 +64,7 @@ public class TransportOfferGfxElement extends GridPane {
     private void createTransportDetails(Transport offer)
     {
         // Create text elements
-        Text transportType = new Text(offer.getType().toString());
+        Text transportType = new Text(offer.getType());
         Text transportCompanyName = new Text(offer.getCompanyName());
         Text transportPrice = new Text(offer.getPricePerTravelerAsStr() + " per traveler");
         QualityIndicator transportQuality = new QualityIndicator(offer.getQuality());

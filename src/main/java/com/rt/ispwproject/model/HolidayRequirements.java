@@ -10,13 +10,13 @@ import java.time.LocalDate;
 
 public class HolidayRequirements {
 
-    private final HolidayRequirementsMetadata metadata;
-    private String                      holidayDescription;
-    private Location                    destination;
-    protected int                       budget;
-    private final DateRange             duration;
-    private AccommodationRequirements   accommodationReq;
-    private TransportRequirements       transportReq;
+    private final HolidayRequirementsMetadata   metadata;
+    private String                              holidayDescription;
+    private Location                            destination;
+    protected int                               budget;
+    private final DateRange                     duration;
+    private AccommodationRequirements           accommodationReq;
+    private TransportRequirements               transportReq;
 
 
     public HolidayRequirements(HolidayRequirementsMetadata metadata, Location destination, String description, DateRange duration, int budget,
@@ -62,7 +62,8 @@ public class HolidayRequirements {
 
         Announcement a = new Announcement();
         a.setId(this.metadata.getHolidayId());
-        a.setOwner(this.metadata.getOwnerUsername());
+        a.setOwnerUsername(this.metadata.getOwnerUsername());
+        a.setOwnerId(this.getMetadata().getOwnerId());
         a.setNumOfViews(this.metadata.getNumOfViews());
         a.setDestination(this.destination.getAddress());
         a.setHolidayDescription(this.holidayDescription);

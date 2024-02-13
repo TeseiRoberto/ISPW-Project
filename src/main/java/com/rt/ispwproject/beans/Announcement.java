@@ -6,7 +6,8 @@ import java.time.LocalDate;
 public class Announcement {
 
     private int                 id;
-    private String              owner;
+    private String              ownerUsername;
+    private int                 ownerId;
     private String              destination;
     private String              holidayDescription;
     private int                 availableBudget;
@@ -20,7 +21,8 @@ public class Announcement {
     public Announcement()
     {
         this.id = -1;
-        this.owner = "";
+        this.ownerUsername = "";
+        this.ownerId = -1;
         this.destination = "";
         this.holidayDescription = "";
         this.availableBudget = 0;
@@ -33,15 +35,17 @@ public class Announcement {
 
 
     // Setters
-    public void setId(int id)                                   { this.id = id; }
+    public void setId(int id)               { this.id = id; }
 
-    public void setOwner(String owner) throws IllegalArgumentException
+    public void setOwnerUsername(String ownerUsername) throws IllegalArgumentException
     {
-        if(owner == null || owner.isEmpty())
+        if(ownerUsername == null || ownerUsername.isEmpty())
             throw new IllegalArgumentException("Owner name cannot be empty!");
 
-        this.owner = owner;
+        this.ownerUsername = ownerUsername;
     }
+
+    public void setOwnerId(int id)            { this.ownerId = id; }
 
     public void setDestination(String destination) throws IllegalArgumentException
     {
@@ -114,7 +118,8 @@ public class Announcement {
 
     // Getters
     public int getId()                                  { return this.id; }
-    public String getOwner()                            { return this.owner; }
+    public String getOwnerUsername()                    { return this.ownerUsername; }
+    public int getOwnerId()                             { return this.ownerId; }
     public String getDestination()                      { return this.destination; }
     public String getHolidayDescription()               { return this.holidayDescription; }
     public int getAvailableBudget()                     { return this.availableBudget; }

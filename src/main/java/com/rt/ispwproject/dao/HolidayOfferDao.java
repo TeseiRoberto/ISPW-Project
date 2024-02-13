@@ -29,7 +29,7 @@ public class HolidayOfferDao {
             // Use transport offer dao to post the accommodation offer
             transportOfferId = transportOfferDao.postOffer(offer.getTransport());
 
-            createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRequirementsId());
+            createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRelativeRequirementsId());
             createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getBidderAgencyId());
             createOfferProc.setInt("holidayPrice_in", offer.getPrice());
             createOfferProc.setDate("holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
@@ -109,7 +109,6 @@ public class HolidayOfferDao {
 
         } catch(SQLException e)
         {
-            System.out.println(e.getMessage());
             throw new DbException("Failed to invoke the \"getHolidayOffersPostedByUser\" stored procedure:\n\"" + e.getMessage());
         } catch (DbException e)
         {
@@ -149,11 +148,13 @@ public class HolidayOfferDao {
         while(rs.next())
         {
             HolidayOfferMetadata metadata = new HolidayOfferMetadata(
-                rs.getInt("id"),
-                rs.getInt("relativeRequirementsId"),
-                rs.getString("bidderAgencyName"),
-                rs.getInt("bidderAgencyId"),
-                HolidayOfferState.fromPersistenceType(rs.getString("offerState"))
+                    rs.getInt("id"),
+                    rs.getInt("bidderAgencyId"),
+                    rs.getString("bidderAgencyUsername"),
+                    HolidayOfferState.fromPersistenceType(rs.getString("offerState")),
+                    rs.getInt("relativeRequirementsId"),
+                    rs.getInt("relativeRequirementsOwnerId"),
+                    rs.getString("relativeRequirementsOwnerUsername")
             );
 
             DateRange duration = new DateRange(

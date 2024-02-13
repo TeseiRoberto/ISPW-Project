@@ -6,36 +6,49 @@ import java.time.LocalDate;
 public class Offer {
 
     private int                 id;
-    private String              bidderAgencyName;
+    private String              bidderAgencyUsername;
+    private String              relativeReqOwnerUsername;
     private String              offerStatus;
     private String              destination;
     private Duration            duration;
     private int                 price;
     private Accommodation       accommodation;
     private Transport           transport;
+    private boolean             hasRequestOfChanges;
 
 
-    public Offer(String bidderAgencyName, String destination, Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
+    public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername,String destination,
+                 Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         this.offerStatus = "unknown";
-        setBidder(bidderAgencyName);
+        setBidderUsername(bidderAgencyUsername);
+        setRelativeRequirementsOwnerUsername(relativeReqOwnerUsername);
         setDestination(destination);
         setDuration(duration);
         setPrice(price);
         setAccommodationOffer(accommodation);
         setTransportOffer(transport);
+        this.hasRequestOfChanges = false;
     }
 
 
     // Setters
     public void setId(int id)   { this.id = id; }
 
-    public void setBidder(String agencyName) throws IllegalArgumentException
+    public void setBidderUsername(String agencyUsername) throws IllegalArgumentException
     {
-        if(agencyName == null || agencyName.isEmpty())
-            throw new IllegalArgumentException("Bidder name cannot be empty!");
+        if(agencyUsername == null || agencyUsername.isEmpty())
+            throw new IllegalArgumentException("Bidder agency username cannot be empty!");
 
-        this.bidderAgencyName = agencyName;
+        this.bidderAgencyUsername = agencyUsername;
+    }
+
+    public void setRelativeRequirementsOwnerUsername(String username) throws IllegalArgumentException
+    {
+        if(username == null || username.isEmpty())
+            throw new IllegalArgumentException("relative requirements owner username cannot be empty!");
+
+        this.relativeReqOwnerUsername = username;
     }
 
     public void setOfferStatus(String status) throws IllegalArgumentException
@@ -89,17 +102,20 @@ public class Offer {
         this.transport = offer;
     }
 
+    public void setHasRequestOfChanges(boolean value)   { this.hasRequestOfChanges = value; }
+
 
     // Getters
-    public int getId()                                  { return this.id; }
-    public String getBidder()                           { return this.bidderAgencyName; }
-    public String getOfferStatus()                      { return this.offerStatus; }
-    public String getDestination()                      { return this.destination; }
-    public LocalDate getDepartureDate()                 { return this.duration.getDepartureDate(); }
-    public LocalDate getReturnDate()                    { return this.duration.getReturnDate(); }
-    public int getPrice()                               { return this.price; }
-    public String getPriceAsStr()                       { return Integer.toString(this.price) + '€'; }
-    public Accommodation getAccommodationOffer()        { return this.accommodation; }
-    public Transport getTransportOffer()                { return this.transport; }
-
+    public int getId()                                      { return this.id; }
+    public String getBidderUsername()                       { return this.bidderAgencyUsername; }
+    public String getRelativeRequirementsOwnerUsername()    { return this.relativeReqOwnerUsername; }
+    public String getOfferStatus()                          { return this.offerStatus; }
+    public String getDestination()                          { return this.destination; }
+    public LocalDate getDepartureDate()                     { return this.duration.getDepartureDate(); }
+    public LocalDate getReturnDate()                        { return this.duration.getReturnDate(); }
+    public int getPrice()                                   { return this.price; }
+    public String getPriceAsStr()                           { return Integer.toString(this.price) + '€'; }
+    public Accommodation getAccommodationOffer()            { return this.accommodation; }
+    public Transport getTransportOffer()                    { return this.transport; }
+    public boolean hasRequestOfChanges()                    { return this.hasRequestOfChanges; }
 }

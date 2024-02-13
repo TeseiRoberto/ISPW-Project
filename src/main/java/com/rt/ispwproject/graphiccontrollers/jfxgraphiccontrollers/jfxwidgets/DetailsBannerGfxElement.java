@@ -51,16 +51,18 @@ public class DetailsBannerGfxElement extends HBox {
         setElementLayout();
 
         VBox announcementDetailsVbox = createOfferDetails(offer);
-        VBox notificationVbox = createNotificationElement(100);
 
         announcementDetailsVbox.setOnMouseClicked(onClick);
-        notificationVbox.setOnMouseClicked(onClick);
-
         HBox.setMargin(announcementDetailsVbox, NOTIFICATION_INSETS);
         this.getChildren().add(announcementDetailsVbox);
-        this.getChildren().add(notificationVbox);
 
-        // TODO: Need to hide the notification element when the given offer does not have any new request of changes
+        // If changes has been requested on the offer then show the notification icon
+        if(offer.hasRequestOfChanges())
+        {
+            VBox notificationVbox = createNotificationElement(1);
+            notificationVbox.setOnMouseClicked(onClick);
+            this.getChildren().add(notificationVbox);
+        }
     }
 
 
@@ -111,7 +113,7 @@ public class DetailsBannerGfxElement extends HBox {
 
         if(showOwnerUsername)
         {
-            Text ownerText = createText(announce.getOwner(), SMALL_FONT);
+            Text ownerText = createText(announce.getOwnerUsername(), SMALL_FONT);
             row2.getChildren().add(ownerText);
         }
 

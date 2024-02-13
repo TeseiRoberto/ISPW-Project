@@ -53,7 +53,8 @@ public class HolidayOffer {
         Transport transport = transportOffer.toTransportBean();
 
         Offer newOffer =  new Offer(
-                metadata.getBidderAgencyName(),
+                metadata.getBidderAgencyUsername(),
+                metadata.getRelativeRequirementsOwnerUsername(),
                 destination.getAddress(),
                 new Duration(duration.getStartDate(), duration.getEndDate()),
                 price,
@@ -63,6 +64,9 @@ public class HolidayOffer {
 
         newOffer.setId(metadata.getOfferId());
         newOffer.setOfferStatus(metadata.getOfferState().toViewType());
+
+        if(metadata.getOfferState() == HolidayOfferState.REQUESTED_CHANGES)
+            newOffer.setHasRequestOfChanges(true);
 
         return newOffer;
     }
