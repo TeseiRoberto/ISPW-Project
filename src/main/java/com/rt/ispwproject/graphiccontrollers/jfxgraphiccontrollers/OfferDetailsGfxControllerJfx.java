@@ -1,7 +1,7 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
 import com.rt.ispwproject.beans.Offer;
-import com.rt.ispwproject.beans.RequestOfChanges;
+import com.rt.ispwproject.beans.ChangesRequest;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
@@ -14,10 +14,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
+public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private final Offer         currOffer;
-    private RequestOfChanges    requestedChanges;
+    private ChangesRequest      requestedChanges;
     @FXML private VBox          mainContainerVbox;
     @FXML private Text          announcementOwnerUsernameText;
     @FXML private Text          offerStatusText;
@@ -69,6 +69,8 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Retrieves request of changes for the current offer (if there is one).
     @FXML public void initialize()
     {
+        setOfferFields();
+
         try {
             ChangesManager changesManager = new ChangesManager();
             requestedChanges = changesManager.getRequestedChangesOnOffer(currSession, currOffer);
@@ -76,12 +78,13 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
             if(requestedChanges == null)
                 mainContainerVbox.getChildren().remove(requestedChangesVbox);
             else
-                setRequestedChangesFields(requestedChanges);
+                setRequestedChangesFields();
         } catch (DbException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
         }
 
+        announcementOwnerUsernameText.setText(currOffer.getRelativeAnnouncementOwnerUsername());
         offerStatusText.setText(currOffer.getOfferStatus());
     }
 
@@ -111,7 +114,7 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
 
 
     // Fills in the fields of the changes requested by the user
-    private void setRequestedChangesFields(RequestOfChanges requestedChanges)
+    private void setRequestedChangesFields()
     {
         if(requestedChangesVbox == null || requestedChanges == null)
             return;
@@ -123,15 +126,7 @@ public class OfferDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "close offer details" button is clicked, switches to the "search announcements" screen
     public void onCloseOfferDetailsClick()
     {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
-    }
-
-
-    // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
-    public void onSearchAnnouncementsClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+        changeScreen(getClass().getResource(MY_OFFERS_SCREEN_NAME),
                 c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 

@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class MyOffersGfxControllerJfx extends BaseGfxControllerJfx {
+public class MyOffersGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private List<Offer>     offers = null;
     @FXML private VBox      offersVbox;
@@ -58,16 +58,8 @@ public class MyOffersGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when one of the DetailsBannerGfxElement is clicked, switches to the "offer details" screen
     public void onOfferClick(Offer offer)
     {
-        // TODO: Need to switch to the "offer details" screen
-        System.out.println("CLICKED ON OFFER!");
-    }
-
-
-    // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
-    public void onSearchAnnouncementsClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
+        changeScreen(getClass().getResource(OFFER_DETAILS_SCREEN_NAME),
+                c -> new OfferDetailsGfxControllerJfx(currSession, mainStage, offer));
     }
 
 

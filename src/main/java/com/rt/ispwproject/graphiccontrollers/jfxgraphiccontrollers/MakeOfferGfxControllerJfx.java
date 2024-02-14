@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 
-public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
+public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private static final Font       DEFAULT_FONT = new Font("System", 18);
     private final Announcement      currAnnounce;
@@ -480,16 +480,8 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "close announcement" button is clicked, switches to the "search announcements" screen
     public void onCloseAnnouncementClick()
     {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+        changeScreen(getClass().getResource(SEARCH_ANNOUNCEMENTS_SCREEN_NAME),
                 c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
-    }
-
-
-    // Invoked when the "my offers" button is clicked, switches to the "my offers" screen
-    public void onMyOffersClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
-                c -> new MyOffersGfxControllerJfx(currSession, mainStage));
     }
 
 
@@ -521,7 +513,7 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         }
 
         displayInfoDialog("Offer sent correctly!");
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
+        changeScreen(getClass().getResource(SEARCH_ANNOUNCEMENTS_SCREEN_NAME),
                 c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
@@ -542,14 +534,6 @@ public class MakeOfferGfxControllerJfx extends BaseGfxControllerJfx {
         }
 
         this.offeredPriceText.setText( Integer.toString(currPrice) + '€' );
-    }
-
-
-    // Invoked when the "search announcements" button is clicked, switches to the "search announcements" screen
-    public void onSearchAnnouncementsClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                e -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 }

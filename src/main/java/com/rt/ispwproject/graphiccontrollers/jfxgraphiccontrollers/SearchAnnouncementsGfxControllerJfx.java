@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
+public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     @FXML TextField             searchBarTextfield;
     @FXML VBox                  announcementsVbox;
@@ -62,22 +62,6 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     {
         changeScreen(getClass().getResource("travelAgency/makeOfferScreen.fxml"),
                 c -> new MakeOfferGfxControllerJfx(currSession, mainStage, announce));
-    }
-
-
-    // Invoked when the "my offers" button is clicked, switches to the "my offers" screen
-    public void onMyOffersClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/myOffersScreen.fxml"),
-                c -> new MyOffersGfxControllerJfx(currSession, mainStage));
-    }
-
-
-    // Invoked when the "search announcements" button is clicked, reloads the "search announcements" screen
-    public void onSearchAnnouncementsClick()
-    {
-        changeScreen(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 }

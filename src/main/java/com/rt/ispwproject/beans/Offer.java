@@ -5,9 +5,11 @@ import java.time.LocalDate;
 
 public class Offer {
 
+    private static final String DEFAULT_UNKNOWN_VALUE = "UNKNOWN";
+
     private int                 id;
     private String              bidderAgencyUsername;
-    private String              relativeReqOwnerUsername;
+    private String              relativeAnnouncementOwnerUsername;
     private String              offerStatus;
     private String              destination;
     private Duration            duration;
@@ -20,9 +22,9 @@ public class Offer {
     public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername,String destination,
                  Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
-        this.offerStatus = "unknown";
+        this.offerStatus = DEFAULT_UNKNOWN_VALUE;
         setBidderUsername(bidderAgencyUsername);
-        setRelativeRequirementsOwnerUsername(relativeReqOwnerUsername);
+        setRelativeAnnouncementOwnerUsername(relativeReqOwnerUsername);
         setDestination(destination);
         setDuration(duration);
         setPrice(price);
@@ -43,12 +45,12 @@ public class Offer {
         this.bidderAgencyUsername = agencyUsername;
     }
 
-    public void setRelativeRequirementsOwnerUsername(String username) throws IllegalArgumentException
+    public void setRelativeAnnouncementOwnerUsername(String username) throws IllegalArgumentException
     {
         if(username == null || username.isEmpty())
             throw new IllegalArgumentException("relative requirements owner username cannot be empty!");
 
-        this.relativeReqOwnerUsername = username;
+        this.relativeAnnouncementOwnerUsername = username;
     }
 
     public void setOfferStatus(String status) throws IllegalArgumentException
@@ -108,7 +110,7 @@ public class Offer {
     // Getters
     public int getId()                                      { return this.id; }
     public String getBidderUsername()                       { return this.bidderAgencyUsername; }
-    public String getRelativeRequirementsOwnerUsername()    { return this.relativeReqOwnerUsername; }
+    public String getRelativeAnnouncementOwnerUsername()    { return this.relativeAnnouncementOwnerUsername; }
     public String getOfferStatus()                          { return this.offerStatus; }
     public String getDestination()                          { return this.destination; }
     public LocalDate getDepartureDate()                     { return this.duration.getDepartureDate(); }

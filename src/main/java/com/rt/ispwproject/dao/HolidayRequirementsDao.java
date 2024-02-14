@@ -31,7 +31,7 @@ public class HolidayRequirementsDao {
             transportReqId = transportReqDao.postRequirements(req.getTransport());
 
             // Post holiday requirements
-            createReqProc.setInt(     "userId_in", req.getMetadata().getOwnerId());
+            createReqProc.setInt(     "userId_in", req.getMetadata().getOwner().getUserId());
             createReqProc.setString(  "destinationAddress_in", req.getDestination().getAddress());
             createReqProc.setDouble(  "destinationLatitude_in", req.getDestination().getLatitude());
             createReqProc.setDouble(  "destinationLongitude_in", req.getDestination().getLongitude());
@@ -166,6 +166,8 @@ public class HolidayRequirementsDao {
     private List<HolidayRequirements> createHolidayRequirementsFromResultSet(ResultSet rs, int maxReqNum) throws SQLException, IllegalArgumentException, DbException
     {
         ArrayList<HolidayRequirements> result = new ArrayList<>();
+
+        ProfileDao profileDao = new ProfileDao();
         AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
         TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
 
@@ -174,10 +176,12 @@ public class HolidayRequirementsDao {
             if(maxReqNum != -1 && result.size() == maxReqNum)
                 break;
 
+            // Retrieve profile of the user that posted this holiday requirements
+            Profile requirementsOwner = profileDao.getProfile(rs.getInt("ownerId"));
+
             HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(
                     rs.getInt("id"),
-                    rs.getString("ownerUsername"),
-                    rs.getInt("ownerId"),
+                    requirementsOwner,
                     rs.getDate("dateOfPost").toLocalDate(),
                     rs.getInt("numOfViews")
             );

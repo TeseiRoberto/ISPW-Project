@@ -30,7 +30,7 @@ public class HolidayOfferDao {
             transportOfferId = transportOfferDao.postOffer(offer.getTransport());
 
             createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRelativeRequirementsId());
-            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getBidderAgencyId());
+            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getBidderAgency().getUserId());
             createOfferProc.setInt("holidayPrice_in", offer.getPrice());
             createOfferProc.setDate("holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
             createOfferProc.setDate("holidayEndDate_in", Date.valueOf(offer.getReturnDate()));
@@ -142,19 +142,23 @@ public class HolidayOfferDao {
     private List<HolidayOffer> createHolidayOffersFromResultSet(ResultSet rs) throws SQLException, IllegalArgumentException, DbException
     {
         ArrayList<HolidayOffer> result = new ArrayList<>();
+
+        ProfileDao profileDao = new ProfileDao();
         AccommodationOfferDao accommodationOfferDao = new AccommodationOfferDao();
         TransportOfferDao transportOfferDao = new TransportOfferDao();
 
         while(rs.next())
         {
+            // Retrieve the user that made the offer and the one to which the offer is intended to
+            Profile bidderAgency = profileDao.getProfile(rs.getInt("bidderAgencyId"));
+            Profile relativeReqOwner = profileDao.getProfile(rs.getInt("relativeRequirementsOwnerId"));
+
             HolidayOfferMetadata metadata = new HolidayOfferMetadata(
                     rs.getInt("id"),
-                    rs.getInt("bidderAgencyId"),
-                    rs.getString("bidderAgencyUsername"),
+                    bidderAgency,
                     HolidayOfferState.fromPersistenceType(rs.getString("offerState")),
                     rs.getInt("relativeRequirementsId"),
-                    rs.getInt("relativeRequirementsOwnerId"),
-                    rs.getString("relativeRequirementsOwnerUsername")
+                    relativeReqOwner
             );
 
             DateRange duration = new DateRange(

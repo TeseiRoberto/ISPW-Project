@@ -21,14 +21,13 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.List;
 
-public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
+public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     private final Announcement      currAnnounce;
     List<Offer>                     offers;                     // Offers received for the currAnnounce
     private int                     offerIndex = 0;             // Index in the offers list for the offer that is currently being shown
 
     @FXML private VBox              mainContainerVbox;
-
     @FXML private Text              announceDateOfPostText;
     @FXML private Text              announceNumOfViewsText;
     @FXML private TextArea          announceDescriptionTextarea;
@@ -51,6 +50,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML private VBox              offerContainerVbox;
 
     // Fields for the travel agency offer
+
     @FXML private Text              bidderAgencyNameText;
     @FXML private Text              offerStatusText;
 
@@ -85,7 +85,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     @FXML public void initialize()
     {
         setRequestFields();
-
+/*
         // Insert quality indicators for the offer in their hboxes
         offeredAccommodationQualityHbox.getChildren().add(offeredAccommodationQuality);
         offeredTransportQualityHbox.getChildren().add(offeredTransportQuality);
@@ -102,7 +102,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
         {
             offers.clear();
             displayErrorDialog(e.getMessage());
-        }
+        }*/
     }
 
 
@@ -198,7 +198,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "close announcement" button is clicked, switches back to the "my announcements" screen
     public void onCloseAnnouncementClick()
     {
-        changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
+        changeScreen(getClass().getResource(MY_ANNOUNCEMENTS_SCREEN_NAME),
                 c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
@@ -280,14 +280,6 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseGfxControllerJfx {
         {
             displayErrorDialog("Could not load accommodation image!");
         }
-    }
-
-
-    // Invoked when the "create announcement" button is clicked, switches to the "create announcement" screen
-    public void onCreateAnnouncementClick()
-    {
-        changeScreen(getClass().getResource("user/createAnnouncementScreen.fxml"),
-                c -> new CreateAnnouncementGfxControllerJfx(currSession, mainStage));
     }
 
 

@@ -15,8 +15,8 @@ public class HolidayRequirements {
     private Location                            destination;
     protected int                               budget;
     private final DateRange                     duration;
-    private AccommodationRequirements           accommodationReq;
-    private TransportRequirements               transportReq;
+    private final AccommodationRequirements     accommodationReq;
+    private final TransportRequirements         transportReq;
 
 
     public HolidayRequirements(HolidayRequirementsMetadata metadata, Location destination, String description, DateRange duration, int budget,
@@ -38,8 +38,6 @@ public class HolidayRequirements {
     public void setBudget(int budget)                           { this.budget = budget; }
     public void setDepartureDate(LocalDate date)                { this.duration.setStartDate(date); }
     public void setReturnDate(LocalDate date)                   { this.duration.setEndDate(date); }
-    public void setAccommodation(AccommodationRequirements req) { this.accommodationReq = req; }
-    public void setTransport(TransportRequirements req)         { this.transportReq = req; }
 
 
     // Getters
@@ -62,8 +60,8 @@ public class HolidayRequirements {
 
         Announcement a = new Announcement();
         a.setId(this.metadata.getHolidayId());
-        a.setOwnerUsername(this.metadata.getOwnerUsername());
-        a.setOwnerId(this.getMetadata().getOwnerId());
+        a.setOwnerUsername(this.metadata.getOwner().getUsername());
+        a.setOwnerId(this.getMetadata().getOwner().getUserId());
         a.setNumOfViews(this.metadata.getNumOfViews());
         a.setDestination(this.destination.getAddress());
         a.setHolidayDescription(this.holidayDescription);

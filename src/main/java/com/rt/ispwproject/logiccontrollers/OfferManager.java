@@ -6,6 +6,7 @@ import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayOfferDao;
+import com.rt.ispwproject.dao.ProfileDao;
 import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.*;
@@ -29,11 +30,11 @@ public class OfferManager {
         if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
             throw new IllegalCallerException("Only travel agencies can make offers to users");
 
-        HolidayOfferMetadata metadata = new HolidayOfferMetadata(
-                user.getUserId(), user.getUsername(), HolidayOfferState.PENDING,
-                announce.getId(), announce.getOwnerId(), announce.getOwnerUsername()
-        );
+        // Retrieve user that posted the announcement for which the offer is intended
+        ProfileDao profileDao = new ProfileDao();
+        Profile announcementOwner = profileDao.getProfile(announce.getOwnerId());
 
+        HolidayOfferMetadata metadata = new HolidayOfferMetadata(user, HolidayOfferState.PENDING, announce.getId(), announcementOwner);
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
         Location destination = new Location(offer.getDestination());
         Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
@@ -77,19 +78,19 @@ public class OfferManager {
             throw new IllegalCallerException("Only travel agencies can retrieve offers they made");
 
         List<HolidayOffer> holidayOffers = null;
+        ArrayList<Offer> offerBeans = new ArrayList<>();
+
         HolidayOfferDao offerDao = new HolidayOfferDao();
         holidayOffers = offerDao.getOffersMadeByUser(user.getUserId());
-
-        ArrayList<Offer> offers = new ArrayList<>();
         try {
             for(HolidayOffer o : holidayOffers)                 // Convert model classes to beans
-                offers.add(o.toOfferBean());
+                offerBeans.add(o.toOfferBean());
 
         } catch (IllegalArgumentException e) {
             throw new DbException("Db returned invalid data for an offer:\n" + e.getMessage());
         }
 
-        return offers;
+        return offerBeans;
     }
 
 
@@ -101,10 +102,10 @@ public class OfferManager {
             throw new IllegalCallerException("You must be logged in to retrieve the offers received for your announcement");
 
         List<HolidayOffer> holidayOffers = null;
+        ArrayList<Offer> offerBeans = new ArrayList<>();
+
         HolidayOfferDao offerDao = new HolidayOfferDao();
         holidayOffers = offerDao.getOffersForHolidayRequirements(announce.getId());
-
-        ArrayList<Offer> offers = new ArrayList<>();
         try {
 
             AccommodationSearcher searcher = new AccommodationSearcher();
@@ -114,14 +115,14 @@ public class OfferManager {
 
                 Offer newOffer = o.toOfferBean();
                 newOffer.getAccommodationOffer().setImagesLinks(accommodationImgs);
-                offers.add(newOffer);
+                offerBeans.add(newOffer);
             }
 
         } catch (IllegalArgumentException e) {
             throw new DbException("Db returned invalid data for an offer:\n" + e.getMessage());
         }
 
-        return offers;
+        return offerBeans;
     }
 
 

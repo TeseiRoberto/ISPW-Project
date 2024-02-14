@@ -8,10 +8,10 @@ public class HolidayOffer {
 
     private final HolidayOfferMetadata  metadata;
     private Location                    destination;
-    protected int                       price;
+    private int                         price;
     private final DateRange             duration;
-    private AccommodationOffer          accommodationOffer;
-    private TransportOffer              transportOffer;
+    private final AccommodationOffer    accommodationOffer;
+    private final TransportOffer        transportOffer;
 
 
     public HolidayOffer(HolidayOfferMetadata metadata, Location destination, DateRange duration, int price,
@@ -31,8 +31,6 @@ public class HolidayOffer {
     public void setPrice(int price)                                 { this.price = price; }
     public void setDepartureDate(LocalDate date)                    { this.duration.setStartDate(date); }
     public void setReturnDate(LocalDate date)                       { this.duration.setEndDate(date); }
-    public void setAccommodation(AccommodationOffer accommodation)  { this.accommodationOffer = accommodation; }
-    public void setTransport(TransportOffer transportOffer)         { this.transportOffer = transportOffer; }
 
 
     // Getters
@@ -53,8 +51,8 @@ public class HolidayOffer {
         Transport transport = transportOffer.toTransportBean();
 
         Offer newOffer =  new Offer(
-                metadata.getBidderAgencyUsername(),
-                metadata.getRelativeRequirementsOwnerUsername(),
+                metadata.getBidderAgency().getUsername(),
+                metadata.getRelativeRequirementsOwner().getUsername(),
                 destination.getAddress(),
                 new Duration(duration.getStartDate(), duration.getEndDate()),
                 price,

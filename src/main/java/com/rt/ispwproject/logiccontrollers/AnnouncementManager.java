@@ -13,6 +13,7 @@ import java.util.List;
 
 public class AnnouncementManager {
 
+
     // Inserts a new announcement in the system
     public void postAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
@@ -24,7 +25,7 @@ public class AnnouncementManager {
             throw new IllegalCallerException("Only simple users can post an announcement");
 
         // Create holiday requirements with data in the given announcement
-        HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(user.getUsername(), user.getUserId(), announce.getDateOfPost());
+        HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(user, announce.getDateOfPost());
         DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
         Location destination = new Location(announce.getDestination());
         Location departureLocation = new Location(announce.getTransportRequirements().getDepartureLocation());
@@ -94,6 +95,5 @@ public class AnnouncementManager {
 
         return announcements;
     }
-
 
 }

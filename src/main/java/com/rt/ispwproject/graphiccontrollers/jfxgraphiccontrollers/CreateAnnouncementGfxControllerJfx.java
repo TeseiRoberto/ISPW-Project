@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
+public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     @FXML private TextArea                      descriptionTextarea;
     @FXML private TextField                     destinationTextfield;
@@ -54,14 +54,6 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "my announcements" button is clicked, switches to the "my announcements" screen
-    public void onMyAnnouncementsClick()
-    {
-        changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
-                c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
-    }
-
-
     // Invoked when the "post announcement" button is clicked, this method posts a new announcement and returns to the "my announcements" screen
     public void onPostAnnouncementClick()
     {
@@ -92,7 +84,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseGfxControllerJfx {
             AnnouncementManager annManager = new AnnouncementManager();
             annManager.postAnnouncement(currSession, announce);
 
-            changeScreen(getClass().getResource("user/myAnnouncementsScreen.fxml"),
+            changeScreen(getClass().getResource(MY_ANNOUNCEMENTS_SCREEN_NAME),
                     c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
         } catch(NumberFormatException e)
         {

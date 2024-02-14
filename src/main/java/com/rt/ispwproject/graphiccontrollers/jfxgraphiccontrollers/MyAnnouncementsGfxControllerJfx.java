@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.List;
 
 
-public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
+public class MyAnnouncementsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     @FXML VBox                      announcementsVbox;
     private List<Announcement>      announcements;
@@ -56,18 +56,10 @@ public class MyAnnouncementsGfxControllerJfx extends BaseGfxControllerJfx {
     }
 
 
-    // Invoked when the "create announcements" button is clicked, switches to the "create announcement" screen
-    public void onCreateAnnouncementClick()
-    {
-        changeScreen(getClass().getResource("user/createAnnouncementScreen.fxml"),
-                c -> new CreateAnnouncementGfxControllerJfx(currSession, mainStage));
-    }
-
-
     // Invoked when a DetailsBannerGfxElement is clicked, switches to the "announcement details" screen
     public void onAnnouncementSelected(Announcement announce)
     {
-        changeScreen(getClass().getResource("user/announcementDetailsScreen.fxml"),
+        changeScreen(getClass().getResource(ANNOUNCEMENT_DETAILS_SCREEN_NAME),
                 c -> new AnnouncementDetailsGfxControllerJfx(currSession, mainStage, announce));
     }
 
