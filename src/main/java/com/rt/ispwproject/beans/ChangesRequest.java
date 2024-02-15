@@ -41,8 +41,8 @@ public class ChangesRequest {
     public void setDestination(String destination)                          { this.destination = destination == null ? "" : destination; }
     public void setDuration(Duration duration)                              { this.duration = duration; }
     public void setPrice(int price)                                         { this.price = price; }
-    public void setAccommodationChanges(Accommodation accommodationChanges) { this.accommodationChanges = accommodationChanges; }
-    public void setTransportChanges(Transport transportChanges)             { this.transportChanges = transportChanges; }
+    public void setAccommodationChanges(Accommodation changes)              { this.accommodationChanges = changes; }
+    public void setTransportChanges(Transport changes)                      { this.transportChanges = changes; }
 
 
     // Getters

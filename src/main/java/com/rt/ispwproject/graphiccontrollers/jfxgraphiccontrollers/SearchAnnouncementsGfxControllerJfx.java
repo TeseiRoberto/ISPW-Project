@@ -60,7 +60,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
     // Invoked when one of the DetailsBannerGfxElement is clicked, switches to the "make offer" screen
     public void onAnnouncementSelected(Announcement announce)
     {
-        changeScreen(getClass().getResource("travelAgency/makeOfferScreen.fxml"),
+        changeScreen(getClass().getResource(MAKE_OFFER_SCREEN_NAME),
                 c -> new MakeOfferGfxControllerJfx(currSession, mainStage, announce));
     }
 

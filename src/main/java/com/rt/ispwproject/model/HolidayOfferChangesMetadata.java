@@ -17,6 +17,15 @@ public class HolidayOfferChangesMetadata {
     }
 
 
+    public HolidayOfferChangesMetadata(Profile requestOwner, int relativeOfferId, Profile offerOwner)
+    {
+        this.id = -1;
+        this.owner = requestOwner;
+        this.relativeOfferId = relativeOfferId;
+        this.bidder = offerOwner;
+    }
+
+
     // Getters
     public int getId()                      { return id; }
     public Profile getOwner()               { return owner; }

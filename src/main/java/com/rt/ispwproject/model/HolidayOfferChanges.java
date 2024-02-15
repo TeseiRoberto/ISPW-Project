@@ -22,7 +22,7 @@ public class HolidayOfferChanges {
 
 
     // Setters
-    public void setChangesDescription(String description)                   { this.changesDescription = description; }
+    public void setChangesDescription(String description)                   { this.changesDescription = description == null ? "No description was given" : description; }
     public void setDestination(Location destination)                        { this.destination = destination; }
     public void setDuration(DateRange duration)                             { this.duration = duration; }
     public void setAccommodationChanges(AccommodationRequirements changes)  { this.accommodationChanges = changes; }
