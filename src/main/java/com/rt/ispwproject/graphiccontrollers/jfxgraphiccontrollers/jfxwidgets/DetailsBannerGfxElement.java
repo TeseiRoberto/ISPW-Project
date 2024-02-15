@@ -33,16 +33,17 @@ public class DetailsBannerGfxElement extends HBox {
         setElementLayout();
 
         VBox announcementDetailsVbox = createAnnouncementDetails(announce, showOwnerUsername);
-        VBox notificationVbox = createNotificationElement(99);
-
         announcementDetailsVbox.setOnMouseClicked(onClick);
-        notificationVbox.setOnMouseClicked(onClick);
-
         HBox.setMargin(announcementDetailsVbox, NOTIFICATION_INSETS);
         this.getChildren().add(announcementDetailsVbox);
-        this.getChildren().add(notificationVbox);
 
-        // TODO: Need to hide the notification element when the given announcement does not have any new offer
+        if(announce.getNumOfOffersReceived() > 0)
+        {
+            VBox notificationVbox = createNotificationElement(announce.getNumOfOffersReceived());
+            notificationVbox.setOnMouseClicked(onClick);
+            this.getChildren().add(notificationVbox);
+        }
+
     }
 
 

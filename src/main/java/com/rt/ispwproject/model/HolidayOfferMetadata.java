@@ -5,7 +5,7 @@ public class HolidayOfferMetadata {
 
     private final int           offerId;
     private final Profile       bidderAgency;                   // Travel agency that made the offer
-    private final int           relativeRequirementsId;         // Id associated to the holiday requirements for which this offer is intended
+    private final int           relativeRequirementsId;         // Identifier of the holiday requirements for which this offer is intended
     private final Profile       relativeRequirementsOwner;      // User owner of the holiday requirements for which this holiday offer is intended
     private HolidayOfferState   offerState;
 

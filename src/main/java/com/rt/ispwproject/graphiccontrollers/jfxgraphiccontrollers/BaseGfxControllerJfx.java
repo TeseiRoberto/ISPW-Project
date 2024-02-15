@@ -15,9 +15,10 @@ import java.net.URL;
 public class BaseGfxControllerJfx {
 
     // Names of the screens used by the simple user
-    protected static final String   MY_ANNOUNCEMENTS_SCREEN_NAME = "user/myAnnouncementsScreen.fxml";
-    protected static final String   CREATE_ANNOUNCEMENT_SCREEN_NAME = "user/createAnnouncementScreen.fxml";
-    protected static final String   ANNOUNCEMENT_DETAILS_SCREEN_NAME = "user/announcementDetailsScreen.fxml";
+    protected static final String   MY_ANNOUNCEMENTS_SCREEN_NAME = "simpleUser/myAnnouncementsScreen.fxml";
+    protected static final String   CREATE_ANNOUNCEMENT_SCREEN_NAME = "simpleUser/createAnnouncementScreen.fxml";
+    protected static final String   ANNOUNCEMENT_DETAILS_SCREEN_NAME = "simpleUser/announcementDetailsScreen.fxml";
+    protected static final String   REQUEST_CHANGES_SCREEN_NAME = "simpleUser/requestChangesScreen.fxml";
 
     // Names of the screens used by the travel agency
     protected static final String   SEARCH_ANNOUNCEMENTS_SCREEN_NAME = "travelAgency/searchAnnouncementsScreen.fxml";
@@ -49,6 +50,7 @@ public class BaseGfxControllerJfx {
             mainStage.setScene(newScene);
         } catch(IOException e)
         {
+            System.out.println(e.getMessage());
             displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }

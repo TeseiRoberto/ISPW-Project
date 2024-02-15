@@ -8,8 +8,7 @@ public class Announcement {
     private static final String DEFAULT_UNKNOWN_VALUE = "UNKNOWN";
 
     private int                 id;
-    private String              ownerUsername;
-    private int                 ownerId;
+    private String              ownerUsername;                  // Username of the user that has posted this announcement
     private String              destination;
     private String              holidayDescription;
     private int                 availableBudget;
@@ -18,13 +17,13 @@ public class Announcement {
     private Accommodation       accommodationReq;
     private Transport           transportReq;
     private int                 numOfViews;
+    private int                 numOfOffersReceived;            // Number of offers that this announcement has received
 
 
     public Announcement()
     {
         this.id = -1;
         this.ownerUsername = "";
-        this.ownerId = -1;
         this.destination = "";
         this.holidayDescription = "";
         this.availableBudget = 0;
@@ -33,6 +32,7 @@ public class Announcement {
         this.accommodationReq = new Accommodation(DEFAULT_UNKNOWN_VALUE, 1, 1);
         this.transportReq = new Transport(DEFAULT_UNKNOWN_VALUE, 1, DEFAULT_UNKNOWN_VALUE, 1);
         this.numOfViews = 0;
+        this.numOfOffersReceived = 0;
     }
 
 
@@ -46,8 +46,6 @@ public class Announcement {
 
         this.ownerUsername = ownerUsername;
     }
-
-    public void setOwnerId(int id)            { this.ownerId = id; }
 
     public void setDestination(String destination) throws IllegalArgumentException
     {
@@ -117,11 +115,18 @@ public class Announcement {
         this.numOfViews = numOfViews;
     }
 
+    public void setNumOfOffersReceived(int numOfOffers)
+    {
+        if(numOfOffers < 0)
+            throw new IllegalArgumentException("Number of views cannot be negative!");
+
+        this.numOfOffersReceived = numOfOffers;
+    }
+
 
     // Getters
     public int getId()                                  { return this.id; }
     public String getOwnerUsername()                    { return this.ownerUsername; }
-    public int getOwnerId()                             { return this.ownerId; }
     public String getDestination()                      { return this.destination; }
     public String getHolidayDescription()               { return this.holidayDescription; }
     public int getAvailableBudget()                     { return this.availableBudget; }
@@ -131,5 +136,6 @@ public class Announcement {
     public Accommodation getAccommodationRequirements() { return this.accommodationReq; }
     public Transport getTransportRequirements()         { return this.transportReq; }
     public int getNumOfViews()                          { return this.numOfViews; }
+    public int getNumOfOffersReceived()                 { return this.numOfOffersReceived; }
 
 }

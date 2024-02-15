@@ -88,7 +88,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControl
                     c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
         } catch(NumberFormatException e)
         {
-            displayErrorDialog("Available budget, number of rooms and number of travelers are empty or contains letters!");
+            displayErrorDialog("Available budget, number of rooms and/or number of travelers are empty or contains letters!");
         } catch(IllegalArgumentException | DbException e)
         {
             displayErrorDialog(e.getMessage());

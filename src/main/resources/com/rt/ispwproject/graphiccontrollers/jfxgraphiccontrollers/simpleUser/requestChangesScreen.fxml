@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?import javafx.scene.layout.BorderPane?&gt;&lt;?import javafx.scene.text.Font?&gt;&lt;?import javafx.scene.text.Text?&gt;&lt;BorderPane maxHeight=&quot;-Infinity&quot; minHeight=&quot;-Infinity&quot; prefHeight=&quot;55.0&quot; prefWidth=&quot;600.0&quot; style=&quot;-fx-background-color: E69E0F;&quot; xmlns=&quot;http://javafx.com/javafx/21&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot;&gt;   &lt;center&gt;      &lt;Text fill=&quot;WHITE&quot; strokeType=&quot;OUTSIDE&quot; strokeWidth=&quot;0.0&quot; text=&quot;My Holiday&quot; textAlignment=&quot;CENTER&quot; wrappingWidth=&quot;95.73669052124023&quot; BorderPane.alignment=&quot;CENTER&quot;&gt;         &lt;font&gt;            &lt;Font name=&quot;System Bold&quot; size=&quot;14.0&quot; /&gt;         &lt;/font&gt;      &lt;/Text&gt;   &lt;/center&gt;&lt;/BorderPane&gt;;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.RequestChangesGfxControllerJfx">
+   <center>
+      <ScrollPane id="announcements_scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+         <content>
+            <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF;">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+               <children>
+                  <BorderPane id="screen_title_container" prefHeight="50.0" prefWidth="200.0">
+                     <center>
+                        <HBox id="screen_title" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="53.0" prefWidth="616.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Requesting changes to:">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="54.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <Text fx:id="bidderAgencyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="TravelAgency1">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </center>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <right>
+                        <Button id="closeAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onCloseRequestOfChangesClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <graphic>
+                              <SVGPath content="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="WHITE" stroke="#2b2b2b" strokeWidth="0.0" />
+                           </graphic>
+                        </Button>
+                     </right>
+                  </BorderPane>
+                  <TextArea id="description_textarea" fx:id="requestedChangesDescriptiontextarea" maxHeight="-Infinity" maxWidth="600.0" minHeight="-Infinity" prefHeight="80.0" prefWidth="500.0" promptText="Requested changes description" style="-fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <GridPane id="generalFields" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox id="generalTitle" alignment="CENTER_LEFT" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="General">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                        <HBox id="offerTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Offer">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="requestedChangesTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Requested changes">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="destinationTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="priceTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Price" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="departureDateTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure date" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="returnDateTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Return date" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredDestination" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text fx:id="offeredDestinationText" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredPrice" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Text fx:id="offeredPriceText" strokeType="OUTSIDE" strokeWidth="0.0" text="0€" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredDepartureDate" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text fx:id="offeredDepartureDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="00/00/0000" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredReturnDate" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text fx:id="offeredReturnDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="00/00/0000" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <TextField id="requestedDestination" fx:id="requestedDestinationTextfield" maxWidth="300.0" prefWidth="30.0" promptText="Destination" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <TextField id="requestedPrice" fx:id="requestedPriceTextfield" maxWidth="300.0" prefWidth="30.0" promptText="Price" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <DatePicker id="requestedDepartureDate" fx:id="requestedDepartureDatePicker" maxWidth="300.0" prefHeight="30.0" prefWidth="200.0" promptText="Departure date" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <DatePicker id="requestedReturnDate" fx:id="requestedReturnDatePicker" maxWidth="300.0" prefHeight="30.0" prefWidth="200.0" promptText="Return date" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+                  <GridPane id="accommodationFields" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox id="accommodationTitle" alignment="CENTER_LEFT" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Accommodation">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                        <HBox id="typeTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="qualityTile" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quality" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="numOfRoomsTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of rooms" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="nameTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredType" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text fx:id="offeredAccommodationTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredQuality" fx:id="offeredAccommodationQualityHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <HBox id="offeredNumOfRooms" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text fx:id="offeredNumOfRoomsText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredName" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text fx:id="offeredAccommodationNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="addressTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredAddress" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Text fx:id="offeredAccommodationAddressText" strokeType="OUTSIDE" strokeWidth="0.0" text="somewhere" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <ComboBox id="requestedType" fx:id="requestedAccommodationTypeComboBox" maxWidth="300.0" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <HBox id="requestedQuality" fx:id="requestedAccommodationQualityHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <TextField id="requestedDestination" fx:id="requestedNumOfRoomsTextfield" maxWidth="300.0" prefWidth="30.0" promptText="Num. of rooms" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <HBox id="requestedAccommodationChange" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <children>
+                              <CheckBox fx:id="requestedAccommodationChangeCheckBox" mnemonicParsing="false" prefHeight="238.0" prefWidth="199.0" text="Request change" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </GridPane>
+                  <GridPane id="transportFields" minHeight="-Infinity" minWidth="-Infinity" vgap="20.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox id="transportTitle" alignment="CENTER_LEFT" maxWidth="320.0" prefHeight="200.0" prefWidth="226.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Transport">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Line endX="160.0" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" />
+                           </children>
+                        </VBox>
+                        <HBox id="typeTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="qualityTile" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quality" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="numOfTravelers" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="companyNameTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Company name" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredType" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text fx:id="offeredTransportTypeText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredQuality" fx:id="offeredTransportQualityHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <HBox id="offeredNumOfTravelers" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text fx:id="offeredNumOfTravelersText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="offeredCompanyName" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Text fx:id="offeredCompanyNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="something" textAlignment="CENTER" wrappingWidth="150.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <ComboBox id="requestedType" fx:id="requestedTransportTypeComboBox" maxWidth="300.0" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4; -fx-font-size: 18;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <HBox id="requestedQuality" fx:id="requestedTransportQualityHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <TextField id="requestedNumOfTravelers" fx:id="requestedNumOfTravelersTextfield" maxWidth="300.0" prefWidth="30.0" promptText="Num. of travelers" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                        <HBox id="requestedCompanyChange" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                           <children>
+                              <CheckBox fx:id="requestedTransportCompanyChangeCheckBox" mnemonicParsing="false" prefHeight="238.0" prefWidth="199.0" text="Request change" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                        </HBox>
+                        <HBox id="departureFromTitle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure from" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <HBox id="departureFrom" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text fx:id="offeredDepartureLocationText" strokeType="OUTSIDE" strokeWidth="0.0" text="somewhere" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <TextField id="requestedDepartureLocation" fx:id="requestedDepartureLocationTextfield" maxWidth="300.0" prefWidth="30.0" promptText="Departure from" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </GridPane>
+                  <Button id="requestChanges_btn" fx:id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onRequestChangesClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Request changes" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+         <BorderPane.margin>
+            <Insets top="5.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </ScrollPane>
+   </center>
+   <top>
+      <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: E69E0F;">
+         <left>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="My Holiday" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets left="14.0" />
+               </BorderPane.margin>
+            </Text>
+         </left>
+         <center>
+            <HBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="myAnnouncements_btn" mnemonicParsing="false" onMouseClicked="#onMyAnnouncementsClick" prefHeight="40.0" prefWidth="210.0" style="-fx-border-color: #2B2B2B; -fx-background-color: FFFFFF; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="My announcements" textFill="#e69e0f">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button id="createAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onCreateAnnouncementClick" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Create announcement" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="50.0" right="50.0" />
+               </BorderPane.margin>
+            </HBox>
+         </center>
+         <right>
+            <Button id="logout_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" style="-fx-shape: &quot;M4 28q0 0.832 0.576 1.44t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.44q0-1.44-0.672-2.912t-1.76-2.624-2.496-2.144-2.88-1.504q1.76-1.088 2.784-2.912t1.024-3.904v-1.984q0-3.328-2.336-5.664t-5.664-2.336-5.664 2.336-2.336 5.664v1.984q0 2.112 1.024 3.904t2.784 2.912q-1.504 0.544-2.88 1.504t-2.496 2.144-1.76 2.624-0.672 2.912z&quot;; -fx-background-color: #2B2B2B;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="14.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+      </BorderPane>
+   </top>
+</BorderPane>

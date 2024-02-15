@@ -123,11 +123,11 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     }
 
 
-    // Invoked when the "close offer details" button is clicked, switches to the "search announcements" screen
+    // Invoked when the "close offer details" button is clicked, switches to the "my offers" screen
     public void onCloseOfferDetailsClick()
     {
         changeScreen(getClass().getResource(MY_OFFERS_SCREEN_NAME),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
+                c -> new MyOffersGfxControllerJfx(currSession, mainStage));
     }
 
 

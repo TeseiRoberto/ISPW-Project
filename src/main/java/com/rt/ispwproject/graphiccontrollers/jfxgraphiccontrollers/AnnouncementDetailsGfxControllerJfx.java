@@ -7,6 +7,7 @@ import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
 import com.rt.ispwproject.logiccontrollers.OfferManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -25,7 +26,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
 
     private final Announcement      currAnnounce;
     List<Offer>                     offers;                     // Offers received for the currAnnounce
-    private int                     offerIndex = 0;             // Index in the offers list for the offer that is currently being shown
+    private int                     offerIndex;                 // Index in the offers list for the offer that is currently being shown
 
     @FXML private VBox              mainContainerVbox;
     @FXML private Text              announceDateOfPostText;
@@ -77,6 +78,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     public AnnouncementDetailsGfxControllerJfx(Session session, Stage stage, Announcement announce)
     {
         super(session, stage);
+        this.offerIndex = 0;
         this.currAnnounce = announce;
     }
 
@@ -85,7 +87,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     @FXML public void initialize()
     {
         setRequestFields();
-/*
+
         // Insert quality indicators for the offer in their hboxes
         offeredAccommodationQualityHbox.getChildren().add(offeredAccommodationQuality);
         offeredTransportQualityHbox.getChildren().add(offeredTransportQuality);
@@ -102,7 +104,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
         {
             offers.clear();
             displayErrorDialog(e.getMessage());
-        }*/
+        }
     }
 
 
@@ -190,7 +192,6 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     // Invoked when the "delete announcement" button is clicked
     public void onDeleteAnnouncementClick()
     {
-        // TODO: Add implementation if remains time...
         displayErrorDialog("Delete announcement functionality is not available yet...");
     }
 
@@ -289,6 +290,10 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
         if(offers == null || offers.isEmpty())
             return;
 
+        ButtonType res = displayConfirmDialog("Do you really want to reject this offer?");
+        if(res != ButtonType.OK)
+            return;
+
         try {
             Offer currOffer = offers.get(offerIndex);
 
@@ -301,7 +306,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
                 offerIndex = 0;
                 insertNoOfferReceivedMessage();
             } else {
-                offerIndex = offerIndex + 1 % offers.size();
+                offerIndex = (offerIndex + 1) % offers.size();
                 setOfferFields(offers.get(offerIndex));
             }
 
@@ -318,8 +323,12 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     // Invoked when the "request changes" button is clicked
     public void onRequestChangesClick()
     {
-        // TODO: Add implementation...
-        System.out.println("REQUEST CHANGES CLICKED");
+        if(offers == null || offers.isEmpty())
+            return;
+
+        Offer currOffer = offers.get(offerIndex);
+        changeScreen(getClass().getResource(REQUEST_CHANGES_SCREEN_NAME),
+                c -> new RequestChangesGfxControllerJfx(currSession, mainStage, currAnnounce, currOffer));
     }
 
 

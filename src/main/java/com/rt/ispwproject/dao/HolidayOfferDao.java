@@ -82,7 +82,6 @@ public class HolidayOfferDao {
             throw new DbException("Failed to invoke the \"getHolidayOffersForRequirements\" stored procedure:\n\"" + e.getMessage());
         } catch (DbException e)
         {
-            System.out.println(e.getMessage());
             throw new DbException("Cannot load holiday offers for the given holiday requirements:\n" + e.getMessage());
         }
 
@@ -112,7 +111,6 @@ public class HolidayOfferDao {
             throw new DbException("Failed to invoke the \"getHolidayOffersPostedByUser\" stored procedure:\n\"" + e.getMessage());
         } catch (DbException e)
         {
-            System.out.println(e.getMessage());
             throw new DbException("Cannot load holiday offers made by the given user:\n" + e.getMessage());
         }
 

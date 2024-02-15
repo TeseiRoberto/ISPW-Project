@@ -32,7 +32,7 @@ public class OfferManager {
 
         // Retrieve user that posted the announcement for which the offer is intended
         ProfileDao profileDao = new ProfileDao();
-        Profile announcementOwner = profileDao.getProfile(announce.getOwnerId());
+        Profile announcementOwner = profileDao.getProfile(announce.getOwnerUsername());
 
         HolidayOfferMetadata metadata = new HolidayOfferMetadata(user, HolidayOfferState.PENDING, announce.getId(), announcementOwner);
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());

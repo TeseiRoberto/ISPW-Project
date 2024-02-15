@@ -61,7 +61,6 @@ public class HolidayRequirements {
         Announcement a = new Announcement();
         a.setId(this.metadata.getHolidayId());
         a.setOwnerUsername(this.metadata.getOwner().getUsername());
-        a.setOwnerId(this.getMetadata().getOwner().getUserId());
         a.setNumOfViews(this.metadata.getNumOfViews());
         a.setDestination(this.destination.getAddress());
         a.setHolidayDescription(this.holidayDescription);

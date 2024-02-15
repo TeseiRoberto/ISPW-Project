@@ -60,7 +60,7 @@ public class LoginGfxControllerJfx extends Application {
         if (session.getUserRole() == UserRole.SIMPLE_USER)
         {
             loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session, mainStage));
-            loader.setLocation(getClass().getResource("user/myAnnouncementsScreen.fxml"));
+            loader.setLocation(getClass().getResource("simpleUser/myAnnouncementsScreen.fxml"));
         } else if (session.getUserRole() == UserRole.TRAVEL_AGENCY)
         {
                 loader.setControllerFactory(c -> new SearchAnnouncementsGfxControllerJfx(session, mainStage));

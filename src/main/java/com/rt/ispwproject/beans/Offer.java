@@ -19,7 +19,7 @@ public class Offer {
     private boolean             hasRequestOfChanges;
 
 
-    public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername,String destination,
+    public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername, String destination,
                  Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         this.offerStatus = DEFAULT_UNKNOWN_VALUE;
