@@ -51,4 +51,12 @@ public class SessionManager {
     {
         return users.get(session);
     }
+
+
+    // Returns true if the given session is associated to a profile with the given role, false otherwise
+    public boolean isLoggedAs(Session session, UserRole role) throws IllegalCallerException
+    {
+        Profile p = getProfile(session);
+        return (p != null && p.getUserRole() == role);
+    }
 }

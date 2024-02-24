@@ -7,6 +7,7 @@ public class Accommodation {
 
     private String      type;
     private String      name;
+    private int         accommodationId;
     private String      address;
     private int         quality;
     private int         numOfRooms;
@@ -25,6 +26,7 @@ public class Accommodation {
         setPricePerNight(pricePerNight);
         setPrice(totalPrice);
         imagesLinks = List.of();
+        this.accommodationId = 0;
     }
 
 
@@ -52,6 +54,8 @@ public class Accommodation {
 
         this.name = name;
     }
+
+    public void setAccommodationId(int id)      { this.accommodationId = id; }
 
     public void setAddress(String address) throws IllegalArgumentException
     {
@@ -102,6 +106,7 @@ public class Accommodation {
     // Getters
     public String getType()                 { return this.type; }
     public String getName()                 { return this.name; }
+    public int getAccommodationId()         { return this.accommodationId; }
     public String getAddress()              { return this.address; }
     public int getQuality()                 { return this.quality; }
     public int getNumOfRooms()              { return this.numOfRooms; }
@@ -110,4 +115,10 @@ public class Accommodation {
     public int getPrice()                   { return this.totalPrice; }
     public String getPriceAsStr()           { return Integer.toString(this.totalPrice) + '€'; }
     public List<URL> getImagesLinks()       { return this.imagesLinks; }
+
+    // Returns all the available accommodation types
+    public static List<String> getAvailableTypes()
+    {
+        return List.of("Not specified", "Hotel");
+    }
 }

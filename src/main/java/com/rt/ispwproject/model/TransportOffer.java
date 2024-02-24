@@ -48,7 +48,7 @@ public class TransportOffer {
     public int getId()                                  { return this.id; }
     public int getCompanyId()                           { return this.companyId; }
     public TransportType getType()                      { return this.type; }
-    public String getCompany()                          { return this.company; }
+    public String getCompanyName()                      { return this.company; }
     public int getQuality()                             { return this.quality; }
     public int getNumOfTravelers()                      { return this.numOfTravelers; }
     public Location getDepartureLocation()              { return this.fromToLocation.getDepartureLocation(); }

@@ -39,8 +39,8 @@ public class HolidayOffer {
     public int getPrice()                                       { return this.price; }
     public LocalDate getDepartureDate()                         { return this.duration.getStartDate(); }
     public LocalDate getReturnDate()                            { return this.duration.getEndDate(); }
-    public AccommodationOffer getAccommodation()                { return this.accommodationOffer; }
-    public TransportOffer getTransport()                        { return this.transportOffer; }
+    public AccommodationOffer getAccommodationOffer()           { return this.accommodationOffer; }
+    public TransportOffer getTransportOffer()                   { return this.transportOffer; }
 
 
     // Converts an HolidayOffer instance into an Offer instance (model to bean class conversion)
@@ -51,7 +51,7 @@ public class HolidayOffer {
         Transport transport = transportOffer.toTransportBean();
 
         Offer newOffer =  new Offer(
-                metadata.getBidderAgency().getUsername(),
+                metadata.getOfferOwner().getUsername(),
                 metadata.getRelativeRequirementsOwner().getUsername(),
                 destination.getAddress(),
                 new Duration(duration.getStartDate(), duration.getEndDate()),

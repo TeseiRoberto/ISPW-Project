@@ -16,21 +16,20 @@ public class HolidayOfferDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         AccommodationOfferDao accommodationOfferDao = new AccommodationOfferDao();
-        int accommodationOfferId = 0;
-
         TransportOfferDao transportOfferDao = new TransportOfferDao();
+        int accommodationOfferId = 0;
         int transportOfferId = 0;
 
         try (CallableStatement createOfferProc = connection.prepareCall("call createHolidayOffer(?, ?, ?, ?, ?, ?, ?)"))
         {
             // Use accommodation offer dao to post the accommodation offer
-            accommodationOfferId = accommodationOfferDao.postOffer(offer.getAccommodation());
+            accommodationOfferId = accommodationOfferDao.postOffer(offer.getAccommodationOffer());
 
             // Use transport offer dao to post the accommodation offer
-            transportOfferId = transportOfferDao.postOffer(offer.getTransport());
+            transportOfferId = transportOfferDao.postOffer(offer.getTransportOffer());
 
             createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRelativeRequirementsId());
-            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getBidderAgency().getUserId());
+            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getOfferOwner().getUserId());
             createOfferProc.setInt("holidayPrice_in", offer.getPrice());
             createOfferProc.setDate("holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
             createOfferProc.setDate("holidayEndDate_in", Date.valueOf(offer.getReturnDate()));
@@ -118,20 +117,59 @@ public class HolidayOfferDao {
     }
 
 
-    // Updates the state of the holiday offer associated to the given offerId
-    public void updateOfferState(int offerId, HolidayOfferState newState) throws DbException
+    // Retrieves the holiday offer associated to the given id from the db
+    public HolidayOffer getOfferById(int offerId) throws DbException
     {
+        List<HolidayOffer> holidayOffer = null;
         Connection connection = DbConnection.getInstance().getConnection();
 
-        try (CallableStatement updateOfferProc = connection.prepareCall("call updateHolidayOfferState(?, ?)"))
+        try (CallableStatement getOfferProc = connection.prepareCall("CALL getHolidayOfferById(?)"))
         {
-            updateOfferProc.setInt("offerId_in", offerId);
-            updateOfferProc.setString("newState_in", newState.toPersistenceType());
+            getOfferProc.setInt("offerId_in", offerId);
+            boolean status = getOfferProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getOfferProc.getResultSet();
+                holidayOffer = createHolidayOffersFromResultSet(rs);
+                rs.close();
+            }
+
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"getHolidayOfferById\" stored procedure:\n" + e.getMessage());
+        }
+
+        if(holidayOffer == null || holidayOffer.size() != 1)
+            throw new DbException("Cannot find holiday offer with id " + offerId);
+
+        return holidayOffer.getFirst();
+    }
+
+
+    // Updates the state of the holiday offer associated to the given offerId
+    public void updateOffer(HolidayOffer newOffer) throws DbException
+    {
+        AccommodationOfferDao accommodationDao = new AccommodationOfferDao();
+        TransportOfferDao transportDao = new TransportOfferDao();
+
+        accommodationDao.updateOffer(newOffer.getAccommodationOffer());
+        transportDao.updateOffer(newOffer.getTransportOffer());
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateHolidayOffer(?, ?, ?, ?, ?, ?, ?)"))
+        {
+            updateOfferProc.setInt("offerId_in", newOffer.getMetadata().getOfferId());
+            updateOfferProc.setInt("newRequirementsId_in", newOffer.getMetadata().getRelativeRequirementsId());
+            updateOfferProc.setInt("newBidderAgencyId_in", newOffer.getMetadata().getOfferOwner().getUserId());
+            updateOfferProc.setInt("newHolidayPrice_in", newOffer.getPrice());
+            updateOfferProc.setDate("newHolidayStartDate_in", Date.valueOf(newOffer.getDepartureDate()));
+            updateOfferProc.setDate("newHolidayEndDate_in", Date.valueOf(newOffer.getReturnDate()));
+            updateOfferProc.setString("newOfferState_in", newOffer.getMetadata().getOfferState().toPersistenceType());
 
             updateOfferProc.execute();
         } catch(SQLException e)
         {
-            throw new DbException("Failed to invoke the \"updateHolidayOfferState\" stored procedure:\n\"" + e.getMessage());
+            throw new DbException("Failed to invoke the \"updateHolidayOffer\" stored procedure:\n\"" + e.getMessage());
         }
     }
 

@@ -16,22 +16,21 @@ public class HolidayRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
-        int accommodationReqId = 0;
-
         TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
+        int accommodationReqId = 0;
         int transportReqId = 0;
 
         // Create callable statement and setup parameters to invoke the createHolidayRequirements stored procedure
         try (CallableStatement createReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             // Use accommodation requirements dao to post the accommodation requirements
-            accommodationReqId = accommodationReqDao.postRequirements(req.getAccommodation());
+            accommodationReqId = accommodationReqDao.postRequirements(req.getAccommodationRequirements());
 
             // Use transport requirements dao to post the transport requirements
-            transportReqId = transportReqDao.postRequirements(req.getTransport());
+            transportReqId = transportReqDao.postRequirements(req.getTransportRequirements());
 
             // Post holiday requirements
-            createReqProc.setInt(     "userId_in", req.getMetadata().getOwner().getUserId());
+            createReqProc.setInt(     "userId_in", req.getMetadata().getRequirementsOwner().getUserId());
             createReqProc.setString(  "destinationAddress_in", req.getDestination().getAddress());
             createReqProc.setDouble(  "destinationLatitude_in", req.getDestination().getLatitude());
             createReqProc.setDouble(  "destinationLongitude_in", req.getDestination().getLongitude());
@@ -96,37 +95,55 @@ public class HolidayRequirementsDao {
     }
 
 
-    // Removes the holiday requirements with given id from the db (if they exist)
-    public void removeRequirementsPostedByUser(int userId, int holidayReqId) throws DbException
+    // Retrieves the holiday requirements associated to the given id from the db
+    public HolidayRequirements getRequirementsById(int requirementsId) throws DbException
+    {
+        List<HolidayRequirements> requirements = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement getReqProc = connection.prepareCall("call getHolidayRequirementsById(?)"))
+        {
+            getReqProc.setInt("requirementsId_in", requirementsId);
+            boolean status = getReqProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getReqProc.getResultSet();
+                requirements = createHolidayRequirementsFromResultSet(rs, -1);
+                rs.close();
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Failed to invoke the \"getHolidayRequirementsById\" stored procedure:\n" + e.getMessage());
+        } catch(IllegalArgumentException e)
+        {
+            throw new DbException("\"getHolidayRequirementsById\" stored procedure has returned invalid data:\n" + e.getMessage());
+        }
+
+        if(requirements == null || requirements.size() != 1)
+            throw new DbException("Cannot find holiday requirements with id " + requirementsId);
+
+        return requirements.getFirst();
+    }
+
+
+    // Removes the given holiday requirements from the db (if they exist)
+    public void removeRequirements(HolidayRequirements requirements) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
-        // We need to check that the holiday requirements associated to the given id exists and were actually
-        // posted by the user associated with the given user id
-        List<HolidayRequirements> reqs = getRequirementsPostedByUser(userId);
+        AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
+        TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
 
-        for(HolidayRequirements req : reqs)
+        accommodationReqDao.removeRequirements(requirements.getAccommodationRequirements().getId());
+        transportReqDao.removeRequirements(requirements.getTransportRequirements().getId());
+
+        // Create callable statement and setup parameters to invoke the deleteHolidayRequirements stored procedure
+        try (CallableStatement deleteRequirementsProc = connection.prepareCall("call deleteHolidayRequirements(?)") )
         {
-            if(req.getMetadata().getHolidayId() == holidayReqId)
-            {
-                AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
-                accommodationReqDao.removeRequirements(req.getAccommodation().getId());
-
-                TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
-                transportReqDao.removeRequirements(req.getTransport().getId());
-
-                // Create callable statement and setup parameters to invoke the deleteHolidayRequirements stored procedure
-                try (CallableStatement deleteRequirementsProc = connection.prepareCall("call deleteHolidayRequirements(?)") )
-                {
-                    deleteRequirementsProc.setInt("requirementsId_in", req.getMetadata().getHolidayId());
-                    deleteRequirementsProc.execute();
-                } catch(SQLException e)
-                {
-                    throw new DbException("Failed to invoke the \"deleteHolidayRequirements\" stored procedure:\n" + e.getMessage());
-                }
-
-                break;
-            }
+            deleteRequirementsProc.setInt("requirementsId_in", requirements.getMetadata().getRequirementsId());
+            deleteRequirementsProc.execute();
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"deleteHolidayRequirements\" stored procedure:\n" + e.getMessage());
         }
     }
 
@@ -183,6 +200,7 @@ public class HolidayRequirementsDao {
                     rs.getInt("id"),
                     requirementsOwner,
                     rs.getDate("dateOfPost").toLocalDate(),
+                    rs.getInt("numOfOffersReceived"),
                     rs.getInt("numOfViews")
             );
 

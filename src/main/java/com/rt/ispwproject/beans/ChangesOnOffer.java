@@ -4,7 +4,7 @@ package com.rt.ispwproject.beans;
 // This class represents the changes that a user requests on an offer received from a travel agency, note that if a field is
 // null, negative or an empty string then no change is required on such field.
 // Before calling a getter method you should check that a change is requested for the value that you are getting using the has*Change methods
-public class ChangesRequest {
+public class ChangesOnOffer {
 
     private final int                   id;
     private final String                ownerUsername;
@@ -18,7 +18,7 @@ public class ChangesRequest {
     private Transport                   transportChanges = null;
 
 
-    public ChangesRequest(int id, String ownerUsername, int relativeOfferId, String bidderUsername)
+    public ChangesOnOffer(int id, String ownerUsername, int relativeOfferId, String bidderUsername)
     {
         this.id = id;
         this.ownerUsername = ownerUsername;
@@ -27,7 +27,7 @@ public class ChangesRequest {
     }
 
 
-    public ChangesRequest(int relativeOfferId, String bidderUsername)
+    public ChangesOnOffer(int relativeOfferId, String bidderUsername)
     {
         this.id = -1;
         this.ownerUsername = "";
@@ -54,15 +54,14 @@ public class ChangesRequest {
     public String getDestination()                  { return this.destination; }
     public Duration getDuration()                   { return this.duration; }
     public int getPrice()                           { return this.price; }
-    public String getPriceAsStr()                   { return this.price + "€"; }
+    public String getPriceAsStr()                   { return this.price < 0 ? "0€" : this.price + "€"; }
     public Accommodation getAccommodationChanges()  { return this.accommodationChanges; }
     public Transport getTransportChanges()          { return this.transportChanges; }
 
 
-    public boolean hasChangesDescription()          { return this.changesDescription != null && !this.changesDescription.isEmpty(); }
-    public boolean hasDestinationChange()           { return this.destination != null && !this.destination.isEmpty(); }
-    public boolean hasDurationChange()              { return this.duration != null; }
-    public boolean hasPriceChange()                 { return this.price > 0; }
-    public boolean hasAccommodationChange()         { return this.accommodationChanges != null; }
-    public boolean hasTransportChange()             { return this.transportChanges != null; }
+    public boolean isDestinationChangeRequired()    { return this.destination != null && !this.destination.isEmpty(); }
+    public boolean isDurationChangeRequired()       { return this.duration != null; }
+    public boolean isPriceChangeRequired()          { return this.price > 0; }
+    public boolean isAccommodationChangeRequired()  { return this.accommodationChanges != null; }
+    public boolean isTransportChangeRequired()      { return this.transportChanges != null; }
 }

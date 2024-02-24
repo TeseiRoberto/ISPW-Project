@@ -1,7 +1,7 @@
 package com.rt.ispwproject.model;
 
 import com.rt.ispwproject.beans.Accommodation;
-import com.rt.ispwproject.beans.ChangesRequest;
+import com.rt.ispwproject.beans.ChangesOnOffer;
 import com.rt.ispwproject.beans.Duration;
 import com.rt.ispwproject.beans.Transport;
 
@@ -39,9 +39,9 @@ public class HolidayOfferChanges {
 
 
     // Converts a HolidayOfferChanges instance into a RequestOfChanges instance (model to bean class conversion)
-    public ChangesRequest toRequestOfChangesBean() throws IllegalArgumentException
+    public ChangesOnOffer toRequestOfChangesBean() throws IllegalArgumentException
     {
-        ChangesRequest newRequest = new ChangesRequest(
+        ChangesOnOffer newRequest = new ChangesOnOffer(
                 metadata.getId(),
                 metadata.getOwner().getUsername(),
                 metadata.getRelativeOfferId(),

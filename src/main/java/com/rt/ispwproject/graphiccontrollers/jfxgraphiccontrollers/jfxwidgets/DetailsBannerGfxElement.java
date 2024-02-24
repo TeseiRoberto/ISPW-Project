@@ -28,7 +28,7 @@ public class DetailsBannerGfxElement extends HBox {
     private static final Insets NOTIFICATION_INSETS = new Insets(0, 0, 0, NOTIFICATION_CONTAINER_WIDTH);
 
 
-    public DetailsBannerGfxElement(Announcement announce, EventHandler<MouseEvent> onClick, boolean showOwnerUsername)
+    public DetailsBannerGfxElement(Announcement announce, EventHandler<MouseEvent> onClick, boolean showOwnerUsername, boolean showNotification)
     {
         setElementLayout();
 
@@ -37,7 +37,7 @@ public class DetailsBannerGfxElement extends HBox {
         HBox.setMargin(announcementDetailsVbox, NOTIFICATION_INSETS);
         this.getChildren().add(announcementDetailsVbox);
 
-        if(announce.getNumOfOffersReceived() > 0)
+        if(announce.getNumOfOffersReceived() > 0 && showNotification)
         {
             VBox notificationVbox = createNotificationElement(announce.getNumOfOffersReceived());
             notificationVbox.setOnMouseClicked(onClick);

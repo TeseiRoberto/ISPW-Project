@@ -23,12 +23,10 @@ public class OfferManager {
     // Inserts a new offer (intended for the given announcement) in the system
     public void makeOfferToUser(Session currSession, Announcement announce, Offer offer) throws DbException, IllegalCallerException, IllegalArgumentException
     {
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-        if(user == null)                                        // Check if currSession is valid
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to make an offer to another user");
 
-        if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
-            throw new IllegalCallerException("Only travel agencies can make offers to users");
+        Profile user = SessionManager.getInstance().getProfile(currSession);
 
         // Retrieve user that posted the announcement for which the offer is intended
         ProfileDao profileDao = new ProfileDao();
@@ -40,7 +38,7 @@ public class OfferManager {
         Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
         Location accommodationLocation = new Location(offer.getAccommodationOffer().getAddress());
 
-        AccommodationOffer accommodation = new AccommodationOffer(
+        AccommodationOffer accommodationOffer = new AccommodationOffer(
                 AccommodationType.fromViewType(offer.getAccommodationOffer().getType()),
                 offer.getAccommodationOffer().getName(),
                 accommodationLocation,
@@ -60,8 +58,10 @@ public class OfferManager {
                 holidayDuration
         );
 
-        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodation, transportOffer);
+        accommodationOffer.setAccommodationId(offer.getAccommodationOffer().getAccommodationId());
+        transportOffer.setCompanyId(offer.getTransportOffer().getCompanyId());
 
+        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodationOffer, transportOffer);
         HolidayOfferDao offerDao = new HolidayOfferDao();
         offerDao.postOffer(holidayOffer);
     }
@@ -70,13 +70,10 @@ public class OfferManager {
     // Retrieves all the offers made by the travel agency associated to the given session
     public List<Offer> getMyOffers(Session currSession) throws DbException, IllegalCallerException, IllegalArgumentException
     {
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-        if(user == null)                                        // Check if currSession is valid
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to retrieve your offers");
 
-        if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
-            throw new IllegalCallerException("Only travel agencies can retrieve offers they made");
-
+        Profile user = SessionManager.getInstance().getProfile(currSession);
         List<HolidayOffer> holidayOffers = null;
         ArrayList<Offer> offerBeans = new ArrayList<>();
 
@@ -97,8 +94,7 @@ public class OfferManager {
     // Retrieves all the offers made by travel agencies to the given announcement
     public List<Offer> getOffersForAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-        if(user == null)
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
             throw new IllegalCallerException("You must be logged in to retrieve the offers received for your announcement");
 
         List<HolidayOffer> holidayOffers = null;
@@ -111,7 +107,7 @@ public class OfferManager {
             AccommodationSearcher searcher = new AccommodationSearcher();
             for(HolidayOffer o : holidayOffers)                 // Convert model classes to beans and retrieve accommodations images
             {
-                List<URL> accommodationImgs = searcher.getAccommodationImages(o.getAccommodation().getAccommodationId());
+                List<URL> accommodationImgs = searcher.getAccommodationImages(o.getAccommodationOffer().getAccommodationId());
 
                 Offer newOffer = o.toOfferBean();
                 newOffer.getAccommodationOffer().setImagesLinks(accommodationImgs);
@@ -127,17 +123,15 @@ public class OfferManager {
 
 
     // Marks the given offer as rejected
-    public void rejectOffer(Session currSession, Offer currOffer) throws DbException, IllegalCallerException
+    public void rejectOffer(Session currSession, Offer offer) throws DbException, IllegalCallerException
     {
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-        if(user == null)
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
             throw new IllegalCallerException("You must be logged in to reject an offer");
 
-        if(user.getUserRole() != UserRole.SIMPLE_USER)
-            throw new IllegalCallerException("Only simple users can reject offers");
-
         HolidayOfferDao offerDao = new HolidayOfferDao();
-        offerDao.updateOfferState(currOffer.getId(), HolidayOfferState.REJECTED);
+        HolidayOffer currOffer = offerDao.getOfferById(offer.getId());
+        currOffer.getMetadata().setOfferState(HolidayOfferState.REJECTED);
+        offerDao.updateOffer(currOffer);
     }
 
 

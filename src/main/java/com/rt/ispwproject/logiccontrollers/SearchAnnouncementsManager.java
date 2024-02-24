@@ -18,12 +18,8 @@ public class SearchAnnouncementsManager {
     // Returns a list of announcements width ids starting from startId, the list size is between 0 and maxAnnouncementsNum
     public List<Announcement> loadAnnouncements(Session currSession, int startId, int maxAnnouncementsNum) throws DbException, IllegalCallerException, IllegalArgumentException
     {
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-        if(user == null)
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to load announcements!");
-
-        if(user.getUserRole() != UserRole.TRAVEL_AGENCY)
-            throw new IllegalCallerException("Only travel agencies can load announcements arbitrarily");
 
         ArrayList<Announcement> announcements = new ArrayList<>();
         List<HolidayRequirements> requirements;

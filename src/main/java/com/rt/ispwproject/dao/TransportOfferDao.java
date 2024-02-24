@@ -18,7 +18,7 @@ public class TransportOfferDao {
         try (CallableStatement createOfferProc = connection.prepareCall("call createTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             createOfferProc.setString(  "transportType_in", offer.getType().toPersistenceType());
-            createOfferProc.setString(  "companyName_in", offer.getCompany());
+            createOfferProc.setString(  "companyName_in", offer.getCompanyName());
             createOfferProc.setInt(     "companyId_in", offer.getCompanyId());
             createOfferProc.setInt(     "transportQuality_in", offer.getQuality());
             createOfferProc.setInt(     "numOfTravelers_in", offer.getNumOfTravelers());
@@ -105,6 +105,35 @@ public class TransportOfferDao {
             throw new DbException("Transport offer not found");
 
         return offer;
+    }
+
+    // Updates all the fields of the offer in the db with the newOffer data (the offer must already exist in the db)
+    public void updateOffer(TransportOffer newOffer) throws DbException
+    {
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        {
+            updateOfferProc.setInt("transportOfferId_in", newOffer.getId());
+            updateOfferProc.setString("newTransportType_in", newOffer.getType().toPersistenceType());
+            updateOfferProc.setString("newCompanyName_in", newOffer.getCompanyName());
+            updateOfferProc.setInt("newCompanyId_in", newOffer.getCompanyId());
+            updateOfferProc.setInt("newTransportQuality_in", newOffer.getQuality());
+            updateOfferProc.setInt("newNumOfTravelers_in", newOffer.getNumOfTravelers());
+            updateOfferProc.setInt("newPricePerTraveler_in", newOffer.getPricePerTraveler());
+            updateOfferProc.setString("newDepartureLocationAddress_in", newOffer.getDepartureLocation().getAddress());
+            updateOfferProc.setDouble("newDepartureLocationLatitude_in", newOffer.getDepartureLocation().getLatitude());
+            updateOfferProc.setDouble("newDepartureLocationLongitude_in", newOffer.getDepartureLocation().getLongitude());
+            updateOfferProc.setString("newArrivalLocationAddress_in", newOffer.getArrivalLocation().getAddress());
+            updateOfferProc.setDouble("newArrivalLocationLatitude_in", newOffer.getArrivalLocation().getLatitude());
+            updateOfferProc.setDouble("newArrivalLocationLongitude_in", newOffer.getArrivalLocation().getLongitude());
+            updateOfferProc.setDate("newDepartureDate_in", Date.valueOf(newOffer.getDepartureDate()));
+            updateOfferProc.setDate("newReturnDate_in", Date.valueOf(newOffer.getReturnDate()));
+
+            updateOfferProc.execute();
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"updateTransportOffer\" stored procedure:\n\"" + e.getMessage());
+        }
     }
 
 

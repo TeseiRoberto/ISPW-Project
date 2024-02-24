@@ -50,7 +50,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
         } else {
             for(Announcement el : announcements)
             {
-                DetailsBannerGfxElement gfxEl = new DetailsBannerGfxElement(el, e -> onAnnouncementSelected(el) , true);
+                DetailsBannerGfxElement gfxEl = new DetailsBannerGfxElement(el, e -> onAnnouncementSelected(el) , true, false);
                 announcementsVbox.getChildren().add(gfxEl);
             }
         }

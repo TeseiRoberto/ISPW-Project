@@ -1,7 +1,7 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
 
 import com.rt.ispwproject.beans.Offer;
-import com.rt.ispwproject.beans.ChangesRequest;
+import com.rt.ispwproject.beans.ChangesOnOffer;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private final Offer         currOffer;
-    private ChangesRequest      requestedChanges;
+    private ChangesOnOffer requestedChanges;
     @FXML private VBox          mainContainerVbox;
     @FXML private Text          announcementOwnerUsernameText;
     @FXML private Text          offerStatusText;

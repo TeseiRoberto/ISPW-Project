@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+
 public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     private final Announcement      currAnnounce;
@@ -73,8 +75,24 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         offeredAccommodationQualityHbox.getChildren().add(offeredAccommodationQuality);
         offeredTransportQualityHbox.getChildren().add(offeredTransportQuality);
 
+        // Set available options for the accommodation type and transport type combo boxes
+        requestedAccommodationTypeComboBox.getItems().addAll(Accommodation.getAvailableTypes());
+        requestedTransportTypeComboBox.getItems().addAll(Transport.getAvailableTypes());
+
         setOfferFields();
         bidderAgencyNameText.setText(currOffer.getBidderUsername());
+
+        // Set callbacks for the requested changes fields
+        requestedAccommodationTypeComboBox.valueProperty().addListener( (ov, oldVal, newVal) -> onAccommodationTypeChanged(newVal) );
+        requestedAccommodationQuality.setOnValueChangeCallback( newVal -> requestedAccommodationChangeCheckBox.setSelected(true) );
+        requestedNumOfRoomsTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onNumOfRoomsChanged(newVal) );
+        requestedAccommodationChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onAccommodationChangeCheckboxChanged(newVal) );
+
+        requestedTransportTypeComboBox.valueProperty().addListener((ov, oldVal, newVal) -> onTransportTypeChanged(newVal) );
+        requestedTransportQuality.setOnValueChangeCallback(  newVal -> requestedTransportChangeCheckBox.setSelected(true) );
+        requestedNumOfTravelersTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onNumOfTravelersChanged(newVal) );
+        requestedDepartureLocationTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onDepartureLocationChanged(newVal) );
+        requestedTransportChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onTransportChangeCheckboxChanged(newVal) );
     }
 
 
@@ -99,6 +117,83 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
+    // Callback invoked when the value of the accommodation type combobox changes, marks as selected the requested accommodation change checkbox
+    private void onAccommodationTypeChanged(String newValue)
+    {
+        if(newValue == null || newValue.isEmpty())
+            return;
+
+        requestedAccommodationChangeCheckBox.setSelected(true);
+    }
+
+
+    // Callback invoked when the value of the number of rooms text field changes, marks as selected the requested accommodation change checkbox
+    private void onNumOfRoomsChanged(String newValue)
+    {
+        if(newValue == null || newValue.isEmpty())
+            return;
+
+        requestedAccommodationChangeCheckBox.setSelected(true);
+    }
+
+
+    // Callback invoked when the value of the accommodation change checkbox changes, if the checkbox is unselected then
+    // all the accommodation changes selected will be lost
+    private void onAccommodationChangeCheckboxChanged(boolean newValue)
+    {
+        if(!newValue)
+        {
+            requestedAccommodationTypeComboBox.setValue(null);
+            requestedAccommodationQuality.setQualityLevel(0);
+            requestedNumOfRoomsTextfield.setText(null);
+        }
+    }
+
+
+    // Callback invoked when the value of the transport type combobox changes, marks as selected the requested transport change checkbox
+    private void onTransportTypeChanged(String newValue)
+    {
+        if(newValue == null || newValue.isEmpty())
+            return;
+
+        requestedTransportChangeCheckBox.setSelected(true);
+    }
+
+
+    // Callback invoked when the value of the number of travelers text field changes, marks as selected the requested transport change checkbox
+    private void onNumOfTravelersChanged(String newValue)
+    {
+        if(newValue == null || newValue.isEmpty())
+            return;
+
+        requestedTransportChangeCheckBox.setSelected(true);
+    }
+
+
+    // Callback invoked when the value of the departure location text field changes, marks as selected the requested transport change checkbox
+    private void onDepartureLocationChanged(String newValue)
+    {
+        if(newValue == null || newValue.isEmpty())
+            return;
+
+        requestedTransportChangeCheckBox.setSelected(true);
+    }
+
+
+    // Callback invoked when the value of the transport type combobox changes, if the checkbox is unselected then
+    // all the transport changes selected will be lost
+    private void onTransportChangeCheckboxChanged(boolean newValue)
+    {
+        if(!newValue)
+        {
+            requestedTransportTypeComboBox.setValue(null);
+            requestedTransportQuality.setQualityLevel(0);
+            requestedDepartureLocationTextfield.setText(null);
+            requestedNumOfTravelersTextfield.setText(null);
+        }
+    }
+
+
     // Invoked when the "close request of changes" button is clicked, switches back to the announcement details screen
     public void onCloseRequestOfChangesClick()
     {
@@ -107,11 +202,11 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Constructs a ChangesRequest instance and sends it to the travel agency
+    // Constructs a OfferChanges instance and sends it to the travel agency, then switch back to the "announcement details" screen
     public void onRequestChangesClick()
     {
         try {
-            ChangesRequest newRequest = new ChangesRequest(currOffer.getId(), currOffer.getBidderUsername());
+            ChangesOnOffer newRequest = new ChangesOnOffer(currOffer.getId(), currOffer.getBidderUsername());
             newRequest.setChangesDescription(requestedChangesDescriptionTextarea.getText());
             newRequest.setDestination(requestedDestinationTextfield.getText());
             newRequest.setPrice(getPriceChange());
@@ -126,10 +221,14 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
 
             ChangesManager changesManager = new ChangesManager();
             changesManager.requestChangesOnOffer(currSession, newRequest, currOffer);
+            displayInfoDialog("Request of changes sent correctly!");
         } catch (DbException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
         }
+
+        changeScreen(getClass().getResource(ANNOUNCEMENT_DETAILS_SCREEN_NAME),
+                c -> new AnnouncementDetailsGfxControllerJfx(currSession, mainStage, currAnnounce));
     }
 
     // ===========[ Utility methods that helps us to create the request of changes instance ]===========
@@ -139,8 +238,16 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     {
         int newPrice = -1;
         try {
-            if(requestedPriceTextfield.getText() != null)
-                newPrice = Integer.parseInt(requestedPriceTextfield.getText());
+            String priceAsStr = requestedPriceTextfield.getText();
+            if(priceAsStr != null && !priceAsStr.isEmpty())
+            {
+                newPrice = Integer.parseInt(priceAsStr);
+
+                // User cannot explicitly ask for a negative/zero price, a negative value can be used only internally to represent no change
+                if(newPrice <= 0)
+                    throw new IllegalArgumentException("Price cannot be negative or zero");
+            }
+
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Price cannot contain letters");
         }
@@ -152,11 +259,16 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     // Returns the duration that the user would like for his holiday, null if no change is requested
     private Duration getDurationChanges() throws IllegalArgumentException
     {
-        Duration durationChange = null;
-        if(requestedDepartureDatePicker.getValue() != null && requestedReturnDatePicker.getValue() != null)
-            durationChange = new Duration(requestedDepartureDatePicker.getValue(), requestedReturnDatePicker.getValue());
+        LocalDate departureDate = requestedDepartureDatePicker.getValue();
+        LocalDate returnDate = requestedReturnDatePicker.getValue();
 
-        return durationChange;
+        if(departureDate == null && returnDate == null)
+            return null;
+
+        return new Duration(
+                departureDate == null ? currOffer.getDepartureDate() : departureDate,
+                returnDate == null ? currOffer.getReturnDate() : returnDate
+        );
     }
 
 
@@ -227,7 +339,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
                 }
             }
 
-            transportChanges =  new Transport(newType, newQuality, newDepartureLocation, newNumOfTravelers);
+            transportChanges = new Transport(newType, newQuality, newDepartureLocation, newNumOfTravelers);
         }
 
         return transportChanges;

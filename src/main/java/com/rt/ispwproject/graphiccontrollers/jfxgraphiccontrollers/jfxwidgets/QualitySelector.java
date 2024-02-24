@@ -1,16 +1,12 @@
 package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.IntBinaryOperator;
 
 
 // A row with some buttons shaped as stars, it is used to represents a quality level in the range [0, maxQualityLevel]
@@ -41,7 +37,6 @@ public class QualitySelector extends HBox {
             btn.setPrefWidth(30);
             btn.setPrefHeight(30);
             btn.setOnMouseClicked(e -> setQualityLevel(starIndex));
-            btn.setOnMouseClicked(e -> setQualityLevel(starIndex));
 
             if(i < currQualityLevel)
                 btn.setStyle(ACTIVE_BTN_STYLE);
@@ -67,6 +62,27 @@ public class QualitySelector extends HBox {
                 btn.setStyle(ACTIVE_BTN_STYLE);
             else
                 btn.setStyle(INACTIVE_BTN_STYLE);
+        }
+    }
+
+
+    // Enables the user of this widget to execute arbitrary code when the quality value changes
+    public void setOnValueChangeCallback(Consumer<Integer> callback)
+    {
+        ObservableList<Node> buttons = this.getChildren();
+
+        for(int i = 0; i < buttons.size(); ++i)
+        {
+            int starIndex = i + 1;
+            if(callback != null)
+            {
+                buttons.get(i).setOnMouseClicked(e -> {
+                    callback.accept(starIndex);
+                    setQualityLevel(starIndex);
+                });
+            } else {
+                buttons.get(i).setOnMouseClicked(e -> setQualityLevel(starIndex));
+            }
         }
     }
 

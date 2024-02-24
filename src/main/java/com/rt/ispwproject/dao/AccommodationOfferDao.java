@@ -98,6 +98,33 @@ public class AccommodationOfferDao {
     }
 
 
+    // Updates all the fields of the offer in the db with the newOffer data (the offer must already exist in the db)
+    public void updateOffer(AccommodationOffer newOffer) throws DbException
+    {
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateAccommodationOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        {
+            updateOfferProc.setInt("accommodationOfferId_in", newOffer.getId());
+            updateOfferProc.setString("newAccommodationType_in", newOffer.getType().toPersistenceType());
+            updateOfferProc.setString("newAccommodationName_in", newOffer.getName());
+            updateOfferProc.setInt("newAccommodationId_in", newOffer.getAccommodationId());
+            updateOfferProc.setString("newAccommodationAddress_in", newOffer.getLocation().getAddress());
+            updateOfferProc.setDouble("newAccommodationLatitude_in", newOffer.getLocation().getLatitude());
+            updateOfferProc.setDouble("newAccommodationLongitude_in", newOffer.getLocation().getLongitude());
+            updateOfferProc.setInt("newAccommodationQuality_in", newOffer.getQuality());
+            updateOfferProc.setInt("newNumOfRoomsOffered_in", newOffer.getNumOfRooms());
+            updateOfferProc.setInt("newPricePerNight_in", newOffer.getPricePerNight());
+            updateOfferProc.setDate("newCheckInDate_in", Date.valueOf(newOffer.getCheckInDate()));
+            updateOfferProc.setDate("newCheckOutDate_in", Date.valueOf(newOffer.getCheckOutDate()));
+
+            updateOfferProc.execute();
+        } catch(SQLException e)
+        {
+            throw new DbException("Failed to invoke the \"updateAccommodationOffer\" stored procedure:\n\"" + e.getMessage());
+        }
+    }
+
+
     // Removes the accommodation offer associated to the given id from the db (if exists)
     public void removeOffer(int offerId) throws DbException
     {

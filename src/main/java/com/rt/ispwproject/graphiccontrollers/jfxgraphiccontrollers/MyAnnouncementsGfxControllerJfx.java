@@ -49,7 +49,7 @@ public class MyAnnouncementsGfxControllerJfx extends BaseSimpleUserGfxController
         } else {
             for(Announcement el : announcements)
             {
-                DetailsBannerGfxElement gfxEl = new DetailsBannerGfxElement(el, e -> onAnnouncementSelected(el), false);
+                DetailsBannerGfxElement gfxEl = new DetailsBannerGfxElement(el, e -> onAnnouncementSelected(el), false, true);
                 announcementsVbox.getChildren().add(gfxEl);
             }
         }

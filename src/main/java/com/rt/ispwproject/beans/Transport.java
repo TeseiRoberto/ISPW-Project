@@ -1,10 +1,13 @@
 package com.rt.ispwproject.beans;
 
 
+import java.util.List;
+
 public class Transport {
 
     private String      type;
     private String      companyName;
+    private int         companyId;
     private int         quality;
     private int         numOfTravelers;
     private String      departureLocation;
@@ -15,6 +18,7 @@ public class Transport {
     public Transport(String type, String companyName, int quality, String departureLocation, int numOfTravelers,
                      int pricePerTraveler) throws IllegalArgumentException
     {
+        this.companyId = 0;
         setType(type);
         setCompanyName(companyName);
         setQuality(quality);
@@ -50,6 +54,8 @@ public class Transport {
 
         this.companyName = name;
     }
+
+    public void setCompanyId(int id)        { this.companyId = id; }
 
     public void setQuality(int quality) throws IllegalArgumentException
     {
@@ -87,6 +93,7 @@ public class Transport {
     // Getters
     public String getType()                     { return this.type; }
     public String getCompanyName()              { return this.companyName; }
+    public int getCompanyId()                   { return this.companyId; }
     public int getQuality()                     { return this.quality; }
     public String getDepartureLocation()        { return this.departureLocation; }
     public int getNumOfTravelers()              { return this.numOfTravelers; }
@@ -95,4 +102,9 @@ public class Transport {
     public int getPrice()                       { return this.pricePerTraveler * this.numOfTravelers; }
     public String getPriceAsStr()               { return Integer.toString(this.getPrice()) + '€'; }
 
+    // Returns all the available transport types
+    public static List<String> getAvailableTypes()
+    {
+        return List.of("Not specified", "Airplane", "Train", "Ferry", "Bus");
+    }
 }
