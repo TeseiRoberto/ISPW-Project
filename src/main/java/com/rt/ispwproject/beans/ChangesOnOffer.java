@@ -1,9 +1,9 @@
 package com.rt.ispwproject.beans;
 
 
-// This class represents the changes that a user requests on an offer received from a travel agency, note that if a field is
-// null, negative or an empty string then no change is required on such field.
-// Before calling a getter method you should check that a change is requested for the value that you are getting using the has*Change methods
+// This class represents the changes that a user has requested on an offer received from a travel agency, note that if a field is
+// null, zero or an empty string then no change is required on such field.
+// Before calling a getter method you should check that a change is requested for the value that you are getting using the is*ChangeRequired methods
 public class ChangesOnOffer {
 
     private final int                   id;
@@ -13,7 +13,7 @@ public class ChangesOnOffer {
     private String                      changesDescription = "";
     private String                      destination = "";
     private Duration                    duration = null;
-    private int                         price = -1;                     // A negative value means that no change is required
+    private int                         price = 0;
     private Accommodation               accommodationChanges = null;
     private Transport                   transportChanges = null;
 
@@ -29,7 +29,7 @@ public class ChangesOnOffer {
 
     public ChangesOnOffer(int relativeOfferId, String bidderUsername)
     {
-        this.id = -1;
+        this.id = 0;
         this.ownerUsername = "";
         this.relativeOfferId = relativeOfferId;
         this.bidderUsername = bidderUsername;

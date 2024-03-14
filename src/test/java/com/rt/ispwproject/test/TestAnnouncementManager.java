@@ -95,20 +95,16 @@ class TestAnnouncementManager {
     private Announcement createTestAnnouncement(Session user) throws IllegalArgumentException
     {
         Accommodation accommodationReq = new Accommodation("Hotel", 4, 1);
-        Transport transportReq = new Transport("Airplane", 3, "Rome", 1);
+        Transport transportReq = new Transport("Airplane", 3, "Rome", "London", 1);
 
-        Announcement announce = new Announcement();
-        announce.setOwnerUsername(user.getUsername());
-        announce.setDestination("London");
-        announce.setHolidayDescription("This is a test announcement");
-        announce.setAvailableBudget(3000);
-        announce.setAccommodationRequirements(accommodationReq);
-        announce.setTransportRequirements(transportReq);
-
-        Duration duration = new Duration(LocalDate.now().plusDays(31), LocalDate.now().plusDays(41));
-        announce.setHolidayDuration(duration);
-
-        return announce;
+        return new Announcement(
+                user.getUsername(),
+                "This is a test announcement",
+                3000,
+                new Duration(LocalDate.now().plusDays(31), LocalDate.now().plusDays(41)),
+                accommodationReq,
+                transportReq
+        );
     }
 
 

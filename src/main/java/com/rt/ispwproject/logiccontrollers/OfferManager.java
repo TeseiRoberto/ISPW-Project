@@ -9,6 +9,7 @@ import com.rt.ispwproject.dao.HolidayOfferDao;
 import com.rt.ispwproject.dao.ProfileDao;
 import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.net.URL;
@@ -30,13 +31,16 @@ public class OfferManager {
 
         // Retrieve user that posted the announcement for which the offer is intended
         ProfileDao profileDao = new ProfileDao();
-        Profile announcementOwner = profileDao.getProfile(announce.getOwnerUsername());
+        Profile announcementOwner = profileDao.getProfileByUsername(announce.getOwnerUsername());
 
         HolidayOfferMetadata metadata = new HolidayOfferMetadata(user, HolidayOfferState.PENDING, announce.getId(), announcementOwner);
         DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
-        Location destination = new Location(offer.getDestination());
-        Location departureLocation = new Location(offer.getTransportOffer().getDepartureLocation());
-        Location accommodationLocation = new Location(offer.getAccommodationOffer().getAddress());
+        Location destination = LocationFactory.getInstance().createLocation(offer.getDestination());
+        Location accommodationLocation = LocationFactory.getInstance().createLocation(offer.getAccommodationOffer().getAddress());
+        Route transportRoute = new Route(
+            LocationFactory.getInstance().createLocation(offer.getTransportOffer().getDepartureLocation()),
+            LocationFactory.getInstance().createLocation(offer.getTransportOffer().getArrivalLocation())
+        );
 
         AccommodationOffer accommodationOffer = new AccommodationOffer(
                 AccommodationType.fromViewType(offer.getAccommodationOffer().getType()),
@@ -45,14 +49,14 @@ public class OfferManager {
                 offer.getAccommodationOffer().getQuality(),
                 offer.getAccommodationOffer().getNumOfRooms(),
                 holidayDuration,
-                offer.getAccommodationOffer().getPricePerNight()
+                offer.getAccommodationOffer().getPrice()
         );
 
         TransportOffer transportOffer = new TransportOffer(
                 TransportType.fromViewType(offer.getTransportOffer().getType()),
                 offer.getTransportOffer().getCompanyName(),
                 offer.getTransportOffer().getQuality(),
-                new Route(departureLocation, destination),
+                transportRoute,
                 offer.getTransportOffer().getNumOfTravelers(),
                 offer.getTransportOffer().getPricePerTraveler(),
                 holidayDuration
@@ -139,7 +143,7 @@ public class OfferManager {
     public List<Accommodation> getAvailableAccommodations(String destination, Duration checkInOutDates, int numOfRooms) throws ApiException
     {
         AccommodationSearcher searcher = new AccommodationSearcher();
-        return searcher.searchAccommodations(destination, checkInOutDates, numOfRooms);
+        return searcher.searchAccommodationOffers(destination, checkInOutDates, numOfRooms);
     }
 
 
@@ -148,7 +152,7 @@ public class OfferManager {
                                                   Duration departureAndReturnDates, int numOfTravelers) throws ApiException
     {
         TransportSearcher searcher = new TransportSearcher();
-        return searcher.searchTransports(departureLocation, destination, departureAndReturnDates, numOfTravelers);
+        return searcher.searchTransportOffers(departureLocation, destination, departureAndReturnDates, numOfTravelers);
     }
 
 

@@ -1,4 +1,4 @@
-package com.rt.ispwproject.dao;
+package com.rt.ispwproject.config;
 
 import com.rt.ispwproject.exceptions.DbException;
 

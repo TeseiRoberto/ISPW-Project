@@ -1,6 +1,8 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -14,14 +16,13 @@ public class TransportRequirementsDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createTransportRequirements stored procedure
-        try (CallableStatement createReqProc = connection.prepareCall("call createTransportRequirements(?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createReqProc = connection.prepareCall("call createTransportRequirements(?, ?, ?, ?, ?, ?)"))
         {
             createReqProc.setString(  "transportType_in", req.getType().toPersistenceType());
             createReqProc.setInt(     "transportQuality_in", req.getQuality());
             createReqProc.setInt(     "numOfTravelers_in", req.getNumOfTravelers());
             createReqProc.setString(  "departureLocationAddress_in", req.getDepartureLocation().getAddress());
-            createReqProc.setDouble(  "departureLocationLatitude_in", req.getDepartureLocation().getLatitude());
-            createReqProc.setDouble(  "departureLocationLongitude_in", req.getDepartureLocation().getLongitude());
+            createReqProc.setString(  "arrivalLocationAddress_in", req.getArrivalLocation().getAddress());
             createReqProc.registerOutParameter("transportReqId_out", Types.INTEGER);
 
             createReqProc.execute();
@@ -36,7 +37,7 @@ public class TransportRequirementsDao {
 
 
     // Retrieves the transport requirements associated to the given id from the db
-    public TransportRequirements getRequirements(int transportReqId) throws DbException
+    public TransportRequirements getRequirementsById(int transportReqId) throws DbException
     {
         if(transportReqId <= 0)
             return null;
@@ -55,15 +56,18 @@ public class TransportRequirementsDao {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
                 {
-                    Location departureLocation = new Location(rs.getString("departureLocationAddress"),
-                            rs.getDouble("departureLocationLatitude"),
-                            rs.getDouble("departureLocationLongitude"));
+                    Route fromToLocation = new Route(
+                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
+                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
+                    );
 
-                    transportReq = new TransportRequirements(rs.getInt("id"),
+                    transportReq = new TransportRequirements(
+                            rs.getInt("id"),
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getInt("transportQuality"),
                             rs.getInt("numOfTravelers"),
-                            departureLocation);
+                            fromToLocation
+                    );
                 }
 
                 rs.close();
@@ -85,17 +89,14 @@ public class TransportRequirementsDao {
 
 
     // Removes the transport requirements associated to the given id from the db
-    public void removeRequirements(int transportReqId) throws DbException
+    public void removeRequirements(TransportRequirements req) throws DbException
     {
-        if(transportReqId <= 0)
-            return;
-
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteTransportRequirements stored procedure
         try (CallableStatement deleteReqProc = connection.prepareCall("call deleteTransportRequirements(?)"))
         {
-            deleteReqProc.setInt("requirementsId_in", transportReqId);
+            deleteReqProc.setInt("requirementsId_in", req.getId());
             deleteReqProc.execute();
 
             deleteReqProc.execute();

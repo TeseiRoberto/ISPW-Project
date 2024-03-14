@@ -233,17 +233,17 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
 
     // ===========[ Utility methods that helps us to create the request of changes instance ]===========
 
-    // Returns the price that the user would like to pay (-1 if no change is required)
+    // Returns the price that the user would like to pay (0 if no change is required)
     private int getPriceChange() throws IllegalArgumentException
     {
-        int newPrice = -1;
+        int newPrice = 0;
         try {
             String priceAsStr = requestedPriceTextfield.getText();
             if(priceAsStr != null && !priceAsStr.isEmpty())
             {
                 newPrice = Integer.parseInt(priceAsStr);
 
-                // User cannot explicitly ask for a negative/zero price, a negative value can be used only internally to represent no change
+                // User cannot explicitly ask for a negative/zero price, the value zero can be used only internally to represent no change
                 if(newPrice <= 0)
                     throw new IllegalArgumentException("Price cannot be negative or zero");
             }
@@ -313,9 +313,11 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         Transport transportChanges = null;
         if(requestedTransportChangeCheckBox.isSelected())                                   // Check if any change is requested
         {
+            // TODO: Here we are not setting the arrival location correctly, I need to review this whole class....
             String newType = requestedTransportTypeComboBox.getValue();
             int newQuality = requestedTransportQuality.getQualityLevel();
             String newDepartureLocation = requestedDepartureLocationTextfield.getText();
+            String newArrivalLocation = requestedDestinationTextfield.getText();
             String newNumOfTravelersAsStr = requestedNumOfTravelersTextfield.getText();
             int newNumOfTravelers = 0;
 
@@ -339,7 +341,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
                 }
             }
 
-            transportChanges = new Transport(newType, newQuality, newDepartureLocation, newNumOfTravelers);
+            transportChanges = new Transport(newType, newQuality, newDepartureLocation, newArrivalLocation, newNumOfTravelers);
         }
 
         return transportChanges;

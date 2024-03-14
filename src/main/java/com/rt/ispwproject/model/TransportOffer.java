@@ -62,6 +62,17 @@ public class TransportOffer {
     // Converts a TransportOffer instance into a Transport instance (model to bean class conversion)
     public Transport toTransportBean() throws IllegalArgumentException
     {
-        return new Transport(type.toViewType(), company, quality, getDepartureLocation().getAddress(), numOfTravelers, pricePerTraveler);
+        Transport t = new Transport(
+                this.type.toViewType(),
+                this.company,
+                this.quality,
+                this.fromToLocation.getDepartureLocation().getAddress(),
+                this.fromToLocation.getArrivalLocation().getAddress(),
+                this.numOfTravelers,
+                this.pricePerTraveler
+        );
+
+        t.setCompanyId(this.companyId);
+        return t;
     }
 }

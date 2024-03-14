@@ -1,6 +1,8 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -15,7 +17,7 @@ public class TransportOfferDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createTransportOffer stored procedure
-        try (CallableStatement createOfferProc = connection.prepareCall("call createTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createOfferProc = connection.prepareCall("call createTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             createOfferProc.setString(  "transportType_in", offer.getType().toPersistenceType());
             createOfferProc.setString(  "companyName_in", offer.getCompanyName());
@@ -24,11 +26,7 @@ public class TransportOfferDao {
             createOfferProc.setInt(     "numOfTravelers_in", offer.getNumOfTravelers());
             createOfferProc.setInt(     "pricePerTraveler_in", offer.getPricePerTraveler());
             createOfferProc.setString(  "departureLocationAddress_in", offer.getDepartureLocation().getAddress());
-            createOfferProc.setDouble(  "departureLocationLatitude_in", offer.getDepartureLocation().getLatitude());
-            createOfferProc.setDouble(  "departureLocationLongitude_in", offer.getDepartureLocation().getLongitude());
             createOfferProc.setString(  "arrivalLocationAddress_in", offer.getArrivalLocation().getAddress());
-            createOfferProc.setDouble(  "arrivalLocationLatitude_in", offer.getArrivalLocation().getLatitude());
-            createOfferProc.setDouble(  "arrivalLocationLongitude_in", offer.getArrivalLocation().getLongitude());
             createOfferProc.setDate(    "departureDate_in", Date.valueOf(offer.getDepartureDate()));
             createOfferProc.setDate(    "returnDate_in", Date.valueOf(offer.getReturnDate()));
 
@@ -45,7 +43,7 @@ public class TransportOfferDao {
 
 
     // Retrieves the transport offer associated to the given id from the db (if exists)
-    public TransportOffer getOffer(int offerId) throws DbException
+    public TransportOffer getOfferById(int offerId) throws DbException
     {
         TransportOffer offer = null;
         Connection connection = DbConnection.getInstance().getConnection();
@@ -61,17 +59,9 @@ public class TransportOfferDao {
                 ResultSet rs = getOfferProc.getResultSet();
                 if(rs.next())                                   // Construct transport offer with data in the result set
                 {
-                    Route fromToLocation = new Route(
-                            new Location(
-                                    rs.getString("departureLocationAddress"),
-                                    rs.getDouble("departureLocationLatitude"),
-                                    rs.getDouble("departureLocationLongitude")
-                            ),
-                            new Location(
-                                    rs.getString("arrivalLocationAddress"),
-                                    rs.getDouble("arrivalLocationLatitude"),
-                                    rs.getDouble("arrivalLocationLongitude")
-                            )
+                    Route transportRoute = new Route(
+                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
+                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
                     DateRange departureAndReturnDates = new DateRange(
@@ -83,7 +73,7 @@ public class TransportOfferDao {
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getString("companyName"),
                             rs.getInt("transportQuality"),
-                            fromToLocation,
+                            transportRoute,
                             rs.getInt("numOfTravelers"),
                             rs.getInt("pricePerTraveler"),
                             departureAndReturnDates
@@ -111,23 +101,19 @@ public class TransportOfferDao {
     public void updateOffer(TransportOffer newOffer) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
-        try (CallableStatement updateOfferProc = connection.prepareCall("call updateTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateTransportOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
-            updateOfferProc.setInt("transportOfferId_in", newOffer.getId());
-            updateOfferProc.setString("newTransportType_in", newOffer.getType().toPersistenceType());
-            updateOfferProc.setString("newCompanyName_in", newOffer.getCompanyName());
-            updateOfferProc.setInt("newCompanyId_in", newOffer.getCompanyId());
-            updateOfferProc.setInt("newTransportQuality_in", newOffer.getQuality());
-            updateOfferProc.setInt("newNumOfTravelers_in", newOffer.getNumOfTravelers());
-            updateOfferProc.setInt("newPricePerTraveler_in", newOffer.getPricePerTraveler());
-            updateOfferProc.setString("newDepartureLocationAddress_in", newOffer.getDepartureLocation().getAddress());
-            updateOfferProc.setDouble("newDepartureLocationLatitude_in", newOffer.getDepartureLocation().getLatitude());
-            updateOfferProc.setDouble("newDepartureLocationLongitude_in", newOffer.getDepartureLocation().getLongitude());
-            updateOfferProc.setString("newArrivalLocationAddress_in", newOffer.getArrivalLocation().getAddress());
-            updateOfferProc.setDouble("newArrivalLocationLatitude_in", newOffer.getArrivalLocation().getLatitude());
-            updateOfferProc.setDouble("newArrivalLocationLongitude_in", newOffer.getArrivalLocation().getLongitude());
-            updateOfferProc.setDate("newDepartureDate_in", Date.valueOf(newOffer.getDepartureDate()));
-            updateOfferProc.setDate("newReturnDate_in", Date.valueOf(newOffer.getReturnDate()));
+            updateOfferProc.setInt(     "transportOfferId_in", newOffer.getId());
+            updateOfferProc.setString(  "newTransportType_in", newOffer.getType().toPersistenceType());
+            updateOfferProc.setString(  "newCompanyName_in", newOffer.getCompanyName());
+            updateOfferProc.setInt(     "newCompanyId_in", newOffer.getCompanyId());
+            updateOfferProc.setInt(     "newTransportQuality_in", newOffer.getQuality());
+            updateOfferProc.setInt(     "newNumOfTravelers_in", newOffer.getNumOfTravelers());
+            updateOfferProc.setInt(     "newPricePerTraveler_in", newOffer.getPricePerTraveler());
+            updateOfferProc.setString(  "newDepartureLocationAddress_in", newOffer.getDepartureLocation().getAddress());
+            updateOfferProc.setString(  "newArrivalLocationAddress_in", newOffer.getArrivalLocation().getAddress());
+            updateOfferProc.setDate(    "newDepartureDate_in", Date.valueOf(newOffer.getDepartureDate()));
+            updateOfferProc.setDate(    "newReturnDate_in", Date.valueOf(newOffer.getReturnDate()));
 
             updateOfferProc.execute();
         } catch(SQLException e)
@@ -138,14 +124,14 @@ public class TransportOfferDao {
 
 
     // Removes the transport offer associated to the given id from the db (if exists)
-    public void removeOffer(int offerId) throws DbException
+    public void removeOffer(TransportOffer offer) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteTransportOffer stored procedure
         try (CallableStatement deleteOfferProc = connection.prepareCall("call deleteTransportOffer(?)"))
         {
-            deleteOfferProc.setInt("offerId_in", offerId);
+            deleteOfferProc.setInt("offerId_in", offer.getId());
             deleteOfferProc.execute();
         } catch(SQLException e)
         {

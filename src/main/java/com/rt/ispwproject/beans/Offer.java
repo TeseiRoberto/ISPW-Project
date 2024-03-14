@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 public class Offer {
 
-    private static final String DEFAULT_UNKNOWN_VALUE = "UNKNOWN";
-
     private int                 id;
     private String              bidderAgencyUsername;
     private String              relativeAnnouncementOwnerUsername;
@@ -22,7 +20,7 @@ public class Offer {
     public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername, String destination,
                  Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
-        this.offerStatus = DEFAULT_UNKNOWN_VALUE;
+        this.id = 0;
         setBidderUsername(bidderAgencyUsername);
         setRelativeAnnouncementOwnerUsername(relativeReqOwnerUsername);
         setDestination(destination);
@@ -30,6 +28,7 @@ public class Offer {
         setPrice(price);
         setAccommodationOffer(accommodation);
         setTransportOffer(transport);
+        this.offerStatus = "";
         this.hasRequestOfChanges = false;
     }
 

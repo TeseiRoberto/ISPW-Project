@@ -336,7 +336,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     public void onAcceptOfferClick()
     {
         // TODO: Add implementation...
-        System.out.println("ACCEPT OFFER CLICKED");
+        displayErrorDialog("Accept offer functionality is not implemented yet...");
     }
 
 }

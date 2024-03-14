@@ -1,5 +1,6 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.Profile;
@@ -16,15 +17,15 @@ public class ProfileDao {
     }
 
 
-    // Retrieves profile associated to the given identifier from db
-    public Profile getProfile(int userId) throws DbException
+    // Retrieves profile associated to the given id from db
+    public Profile getProfileById(int userId) throws DbException
     {
         return getProfileDetails(userId, null, null);
     }
 
 
-    // Retrieves profile associated to the given identifier from db
-    public Profile getProfile(String username) throws DbException
+    // Retrieves profile associated to the given username from db
+    public Profile getProfileByUsername(String username) throws DbException
     {
         return getProfileDetails(null, username, null);
     }

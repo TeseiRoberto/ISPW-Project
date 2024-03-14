@@ -50,7 +50,7 @@ public class BaseGfxControllerJfx {
             mainStage.setScene(newScene);
         } catch(IOException e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("BaseJfxGfxController exception: " + e.getMessage() + e.getCause()); // TODO: Remove me!!!
             displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }

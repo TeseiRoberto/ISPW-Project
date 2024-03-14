@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 
-// Widget that implements a clickable element that displays data for a transport
+// Widget that implements a clickable element which displays data for a transport
 public class TransportOfferGfxElement extends GridPane {
 
     private static final int    COL_NUM = 4;

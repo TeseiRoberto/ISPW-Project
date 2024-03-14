@@ -11,19 +11,17 @@ public class Accommodation {
     private String      address;
     private int         quality;
     private int         numOfRooms;
-    private int         pricePerNight;
     private int         totalPrice;
     private List<URL>   imagesLinks;
 
 
-    public Accommodation(String type, String name, String address, int quality, int numOfRooms, int pricePerNight, int totalPrice) throws IllegalArgumentException
+    public Accommodation(String type, String name, String address, int quality, int numOfRooms, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
         setName(name);
         setAddress(address);
         setQuality(quality);
         setNumOfRooms(numOfRooms);
-        setPricePerNight(pricePerNight);
         setPrice(totalPrice);
         imagesLinks = List.of();
         this.accommodationId = 0;
@@ -81,14 +79,6 @@ public class Accommodation {
         this.numOfRooms = numOfRooms;
     }
 
-    public void setPricePerNight(int price) throws IllegalArgumentException
-    {
-        if(price <= 0)
-            throw new IllegalArgumentException("Price per night cannot be negative or zero!");
-
-        this.pricePerNight = price;
-    }
-
     public void setPrice(int price) throws IllegalArgumentException
     {
         if(price <= 0)
@@ -110,8 +100,6 @@ public class Accommodation {
     public String getAddress()              { return this.address; }
     public int getQuality()                 { return this.quality; }
     public int getNumOfRooms()              { return this.numOfRooms; }
-    public int getPricePerNight()           { return this.pricePerNight; }
-    public String getPricePerNightAsStr()   { return Integer.toString(this.pricePerNight) + '€'; }
     public int getPrice()                   { return this.totalPrice; }
     public String getPriceAsStr()           { return Integer.toString(this.totalPrice) + '€'; }
     public List<URL> getImagesLinks()       { return this.imagesLinks; }

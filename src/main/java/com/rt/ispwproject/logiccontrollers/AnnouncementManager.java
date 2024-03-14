@@ -1,11 +1,14 @@
 package com.rt.ispwproject.logiccontrollers;
 
+import com.rt.ispwproject.apiboundaries.AddressChecker;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayRequirementsDao;
+import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.util.ArrayList;
@@ -25,8 +28,10 @@ public class AnnouncementManager {
         // Create holiday requirements with data in the given announcement
         HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(user, announce.getDateOfPost());
         DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
-        Location destination = new Location(announce.getDestination());
-        Location departureLocation = new Location(announce.getTransportRequirements().getDepartureLocation());
+        Route fromToLocation = new Route(
+                LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getDepartureLocation() ),
+                LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getArrivalLocation() )
+        );
 
         AccommodationRequirements accommodationReq = new AccommodationRequirements(
                 AccommodationType.fromViewType(announce.getAccommodationRequirements().getType()),
@@ -38,11 +43,11 @@ public class AnnouncementManager {
                 TransportType.fromViewType(announce.getTransportRequirements().getType()),
                 announce.getTransportRequirements().getQuality(),
                 announce.getTransportRequirements().getNumOfTravelers(),
-                departureLocation
+                fromToLocation
         );
 
         HolidayRequirements newReq = new HolidayRequirements(
-                metadata, destination, announce.getHolidayDescription(), holidayDuration,
+                metadata, announce.getHolidayDescription(), holidayDuration,
                 announce.getAvailableBudget(), accommodationReq, transportReq
         );
 

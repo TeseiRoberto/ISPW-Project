@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.List;
 
 
-// Widget that implements a clickable element that displays data for an accommodation
+// Widget that implements a clickable element which displays data for an accommodation
 public class AccommodationOfferGfxElement extends GridPane {
 
     private static final int    COL_NUM = 2;
@@ -107,7 +107,7 @@ public class AccommodationOfferGfxElement extends GridPane {
         Text accommodationType = new Text(offer.getType());
         Text accommodationName = new Text(offer.getName());
         Text accommodationAddress = new Text(offer.getAddress());
-        Text accommodationPrice = new Text(offer.getPricePerNightAsStr() + " per night");
+        Text accommodationPrice = new Text(offer.getPriceAsStr());
         QualityIndicator accommodationQuality = new QualityIndicator(offer.getQuality());
 
         Font font = new Font("System", 18);

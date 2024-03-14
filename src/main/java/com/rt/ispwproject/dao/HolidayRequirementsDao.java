@@ -1,5 +1,6 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.*;
 
@@ -21,7 +22,7 @@ public class HolidayRequirementsDao {
         int transportReqId = 0;
 
         // Create callable statement and setup parameters to invoke the createHolidayRequirements stored procedure
-        try (CallableStatement createReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createReqProc = connection.prepareCall("call createHolidayRequirements(?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             // Use accommodation requirements dao to post the accommodation requirements
             accommodationReqId = accommodationReqDao.postRequirements(req.getAccommodationRequirements());
@@ -31,10 +32,7 @@ public class HolidayRequirementsDao {
 
             // Post holiday requirements
             createReqProc.setInt(     "userId_in", req.getMetadata().getRequirementsOwner().getUserId());
-            createReqProc.setString(  "destinationAddress_in", req.getDestination().getAddress());
-            createReqProc.setDouble(  "destinationLatitude_in", req.getDestination().getLatitude());
-            createReqProc.setDouble(  "destinationLongitude_in", req.getDestination().getLongitude());
-            createReqProc.setInt(     "availableBudget_in", req.getBudget());
+            createReqProc.setInt(     "availableBudget_in", req.getAvailableBudget());
             createReqProc.setString(  "description_in", req.getHolidayDescription());
             createReqProc.setDate(    "dateOfPost_in", Date.valueOf(req.getMetadata().getDateOfPost()) );
             createReqProc.setDate(    "departureDate_in", Date.valueOf(req.getDepartureDate()) );
@@ -46,19 +44,31 @@ public class HolidayRequirementsDao {
         } catch(SQLException e)
         {
             if(accommodationReqId != 0)
-                accommodationReqDao.removeRequirements(accommodationReqId);
+            {
+                AccommodationRequirements accommodationReq = accommodationReqDao.getRequirementsById(accommodationReqId);
+                accommodationReqDao.removeRequirements(accommodationReq);
+            }
 
             if(transportReqId != 0)
-                transportReqDao.removeRequirements(transportReqId);
+            {
+                TransportRequirements transportReq = transportReqDao.getRequirementsById(transportReqId);
+                transportReqDao.removeRequirements(transportReq);
+            }
 
             throw new DbException("Failed to invoke the \"createHolidayRequirements\" stored procedure:\n" + e.getMessage());
         } catch(DbException e)
         {
             if(accommodationReqId != 0)
-                accommodationReqDao.removeRequirements(accommodationReqId);
+            {
+                AccommodationRequirements accommodationReq = accommodationReqDao.getRequirementsById(accommodationReqId);
+                accommodationReqDao.removeRequirements(accommodationReq);
+            }
 
             if(transportReqId != 0)
-                transportReqDao.removeRequirements(transportReqId);
+            {
+                TransportRequirements transportReq = transportReqDao.getRequirementsById(transportReqId);
+                transportReqDao.removeRequirements(transportReq);
+            }
             throw new DbException("Cannot post holiday requirements:\n" + e.getMessage());
         }
 
@@ -133,8 +143,8 @@ public class HolidayRequirementsDao {
         AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
         TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
 
-        accommodationReqDao.removeRequirements(requirements.getAccommodationRequirements().getId());
-        transportReqDao.removeRequirements(requirements.getTransportRequirements().getId());
+        accommodationReqDao.removeRequirements(requirements.getAccommodationRequirements());
+        transportReqDao.removeRequirements(requirements.getTransportRequirements());
 
         // Create callable statement and setup parameters to invoke the deleteHolidayRequirements stored procedure
         try (CallableStatement deleteRequirementsProc = connection.prepareCall("call deleteHolidayRequirements(?)") )
@@ -149,6 +159,8 @@ public class HolidayRequirementsDao {
 
 
     // Retrieves holiday requirements which id is equal to or grater than start id from the db
+    // @startId: indicates from which holiday requirements the search will start from
+    // @maxRequirementsNum: max size of the list that will be returned
     public List<HolidayRequirements> searchRequirements(int startId, int maxRequirementsNum) throws DbException
     {
         List<HolidayRequirements> requirements = null;
@@ -179,7 +191,8 @@ public class HolidayRequirementsDao {
 
 
     // Creates a list of HolidayRequirements using data contained in the given result set.
-    // The returned list will have a size between 0 and maxReqNum if maxReqNum is != -1
+    // @rs: result set from which the holiday requirements instances will be built
+    // @maxReqNum: max size of the list that will be returned (if -1 is given then no limit is imposed)
     private List<HolidayRequirements> createHolidayRequirementsFromResultSet(ResultSet rs, int maxReqNum) throws SQLException, IllegalArgumentException, DbException
     {
         ArrayList<HolidayRequirements> result = new ArrayList<>();
@@ -194,7 +207,7 @@ public class HolidayRequirementsDao {
                 break;
 
             // Retrieve profile of the user that posted this holiday requirements
-            Profile requirementsOwner = profileDao.getProfile(rs.getInt("ownerId"));
+            Profile requirementsOwner = profileDao.getProfileById(rs.getInt("ownerId"));
 
             HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(
                     rs.getInt("id"),
@@ -204,12 +217,11 @@ public class HolidayRequirementsDao {
                     rs.getInt("numOfViews")
             );
 
-            Location destination = new Location(rs.getString("destinationAddress"), rs.getDouble("destinationLatitude"), rs.getDouble("destinationLongitude"));
             DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
-            AccommodationRequirements accommodationReq = accommodationReqDao.getRequirements(rs.getInt("accommodationReqId"));
-            TransportRequirements transportReq = transportReqDao.getRequirements(rs.getInt("transportReqId"));
+            AccommodationRequirements accommodationReq = accommodationReqDao.getRequirementsById(rs.getInt("accommodationReqId"));
+            TransportRequirements transportReq = transportReqDao.getRequirementsById(rs.getInt("transportReqId"));
 
-            result.add(new HolidayRequirements(metadata, destination, rs.getString("description"), duration, rs.getInt("budget"), accommodationReq, transportReq));
+            result.add(new HolidayRequirements(metadata, rs.getString("description"), duration, rs.getInt("budget"), accommodationReq, transportReq));
         }
 
         return result;

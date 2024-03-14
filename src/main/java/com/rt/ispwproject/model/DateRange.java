@@ -1,6 +1,7 @@
 package com.rt.ispwproject.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class DateRange {
 
@@ -39,4 +40,17 @@ public class DateRange {
 
     public LocalDate getStartDate()     { return this.startDate; }
     public LocalDate getEndDate()       { return this.endDate; }
+
+    // Returns the number of nights between the start and the end date.
+    public int getNightsBetween()
+    {
+        return Period.between(this.startDate, this.endDate).getDays();
+    }
+
+
+    // Returns true if the start date and the end date of this instance are the same of the given instance
+    public boolean isEqual(DateRange other)
+    {
+        return this.startDate.isEqual(other.startDate) && this.endDate.isEqual(other.endDate);
+    }
 }

@@ -5,11 +5,8 @@ import java.time.LocalDate;
 
 public class Announcement {
 
-    private static final String DEFAULT_UNKNOWN_VALUE = "UNKNOWN";
-
     private int                 id;
     private String              ownerUsername;                  // Username of the user that has posted this announcement
-    private String              destination;
     private String              holidayDescription;
     private int                 availableBudget;
     private LocalDate           dateOfPost;
@@ -20,17 +17,17 @@ public class Announcement {
     private int                 numOfOffersReceived;            // Number of offers that this announcement has received
 
 
-    public Announcement()
+    public Announcement(String ownerUsername, String holidayDescription, int availableBudget,
+                        Duration holidayDuration, Accommodation accommodationReq, Transport transportReq) throws IllegalArgumentException
     {
-        this.id = -1;
-        this.ownerUsername = "";
-        this.destination = "";
-        this.holidayDescription = "";
-        this.availableBudget = 0;
-        this.dateOfPost = LocalDate.now();
-        this.holidayDuration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(2));
-        this.accommodationReq = new Accommodation(DEFAULT_UNKNOWN_VALUE, 1, 1);
-        this.transportReq = new Transport(DEFAULT_UNKNOWN_VALUE, 1, DEFAULT_UNKNOWN_VALUE, 1);
+        this.id = 0;
+        setOwnerUsername(ownerUsername);
+        setHolidayDescription(holidayDescription);
+        setAvailableBudget(availableBudget);
+        setDateOfPost(LocalDate.now());
+        setHolidayDuration(holidayDuration);
+        setAccommodationRequirements(accommodationReq);
+        setTransportRequirements(transportReq);
         this.numOfViews = 0;
         this.numOfOffersReceived = 0;
     }
@@ -45,14 +42,6 @@ public class Announcement {
             throw new IllegalArgumentException("Owner name cannot be empty!");
 
         this.ownerUsername = ownerUsername;
-    }
-
-    public void setDestination(String destination) throws IllegalArgumentException
-    {
-        if(destination == null || destination.isEmpty())
-            throw new IllegalArgumentException("Destination cannot be empty!");
-
-        this.destination = destination;
     }
 
     public void setHolidayDescription(String description) throws IllegalArgumentException
@@ -127,7 +116,7 @@ public class Announcement {
     // Getters
     public int getId()                                  { return this.id; }
     public String getOwnerUsername()                    { return this.ownerUsername; }
-    public String getDestination()                      { return this.destination; }
+    public String getDestination()                      { return this.transportReq.getArrivalLocation(); }
     public String getHolidayDescription()               { return this.holidayDescription; }
     public int getAvailableBudget()                     { return this.availableBudget; }
     public String getAvailableBudgetAsStr()             { return Integer.toString(this.availableBudget) + '€'; }

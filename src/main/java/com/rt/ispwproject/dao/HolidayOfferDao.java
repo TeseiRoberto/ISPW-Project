@@ -1,6 +1,8 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -20,7 +22,7 @@ public class HolidayOfferDao {
         int accommodationOfferId = 0;
         int transportOfferId = 0;
 
-        try (CallableStatement createOfferProc = connection.prepareCall("call createHolidayOffer(?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createOfferProc = connection.prepareCall("call createHolidayOffer(?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             // Use accommodation offer dao to post the accommodation offer
             accommodationOfferId = accommodationOfferDao.postOffer(offer.getAccommodationOffer());
@@ -28,31 +30,45 @@ public class HolidayOfferDao {
             // Use transport offer dao to post the accommodation offer
             transportOfferId = transportOfferDao.postOffer(offer.getTransportOffer());
 
-            createOfferProc.setInt("requirementsId_in", offer.getMetadata().getRelativeRequirementsId());
-            createOfferProc.setInt("bidderAgencyId_in", offer.getMetadata().getOfferOwner().getUserId());
-            createOfferProc.setInt("holidayPrice_in", offer.getPrice());
-            createOfferProc.setDate("holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
-            createOfferProc.setDate("holidayEndDate_in", Date.valueOf(offer.getReturnDate()));
-            createOfferProc.setInt("accommodationOfferId_in", accommodationOfferId);
-            createOfferProc.setInt("transportOfferId_in", transportOfferId);
+            createOfferProc.setInt(     "requirementsId_in", offer.getMetadata().getRelativeRequirementsId());
+            createOfferProc.setInt(     "bidderAgencyId_in", offer.getMetadata().getOfferOwner().getUserId());
+            createOfferProc.setString(  "destinationAddress_in", offer.getDestination().getAddress());
+            createOfferProc.setInt(     "holidayPrice_in", offer.getPrice());
+            createOfferProc.setDate(    "holidayStartDate_in", Date.valueOf(offer.getDepartureDate()));
+            createOfferProc.setDate(    "holidayEndDate_in", Date.valueOf(offer.getReturnDate()));
+            createOfferProc.setInt(     "accommodationOfferId_in", accommodationOfferId);
+            createOfferProc.setInt(     "transportOfferId_in", transportOfferId);
 
             createOfferProc.execute();
         } catch(SQLException e)
         {
+            System.out.println(e.getMessage());
             if(accommodationOfferId != 0)
-                accommodationOfferDao.removeOffer(accommodationOfferId);
+            {
+                AccommodationOffer accommodationOffer = accommodationOfferDao.getOfferById(accommodationOfferId);
+                accommodationOfferDao.removeOffer(accommodationOffer);
+            }
 
             if(transportOfferId != 0)
-                transportOfferDao.removeOffer(transportOfferId);
+            {
+                TransportOffer transportOffer = transportOfferDao.getOfferById(transportOfferId);
+                transportOfferDao.removeOffer(transportOffer);
+            }
 
             throw new DbException("Failed to invoke the \"createHolidayOffer\" stored procedure:\n\"" + e.getMessage());
         } catch (DbException e)
         {
             if(accommodationOfferId != 0)
-                accommodationOfferDao.removeOffer(accommodationOfferId);
+            {
+                AccommodationOffer accommodationOffer = accommodationOfferDao.getOfferById(accommodationOfferId);
+                accommodationOfferDao.removeOffer(accommodationOffer);
+            }
 
             if(transportOfferId != 0)
-                transportOfferDao.removeOffer(transportOfferId);
+            {
+                TransportOffer transportOffer = transportOfferDao.getOfferById(transportOfferId);
+                transportOfferDao.removeOffer(transportOffer);
+            }
 
             throw new DbException("Cannot post holiday offer:\n" + e.getMessage());
         }
@@ -156,11 +172,12 @@ public class HolidayOfferDao {
         transportDao.updateOffer(newOffer.getTransportOffer());
 
         Connection connection = DbConnection.getInstance().getConnection();
-        try (CallableStatement updateOfferProc = connection.prepareCall("call updateHolidayOffer(?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateHolidayOffer(?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             updateOfferProc.setInt("offerId_in", newOffer.getMetadata().getOfferId());
             updateOfferProc.setInt("newRequirementsId_in", newOffer.getMetadata().getRelativeRequirementsId());
             updateOfferProc.setInt("newBidderAgencyId_in", newOffer.getMetadata().getOfferOwner().getUserId());
+            updateOfferProc.setString("newDestinationAddress_in", newOffer.getDestination().getAddress());
             updateOfferProc.setInt("newHolidayPrice_in", newOffer.getPrice());
             updateOfferProc.setDate("newHolidayStartDate_in", Date.valueOf(newOffer.getDepartureDate()));
             updateOfferProc.setDate("newHolidayEndDate_in", Date.valueOf(newOffer.getReturnDate()));
@@ -186,8 +203,8 @@ public class HolidayOfferDao {
         while(rs.next())
         {
             // Retrieve the user that made the offer and the one to which the offer is intended to
-            Profile bidderAgency = profileDao.getProfile(rs.getInt("bidderAgencyId"));
-            Profile relativeReqOwner = profileDao.getProfile(rs.getInt("relativeRequirementsOwnerId"));
+            Profile bidderAgency = profileDao.getProfileById(rs.getInt("bidderAgencyId"));
+            Profile relativeReqOwner = profileDao.getProfileById(rs.getInt("relativeRequirementsOwnerId"));
 
             HolidayOfferMetadata metadata = new HolidayOfferMetadata(
                     rs.getInt("id"),
@@ -204,10 +221,10 @@ public class HolidayOfferDao {
 
             int accommodationOfferId = rs.getInt("accommodationOfferId");
             int transportOfferId = rs.getInt("transportOfferId");
-            AccommodationOffer accommodationOffer = accommodationOfferDao.getOffer(accommodationOfferId);
-            TransportOffer transportOffer = transportOfferDao.getOffer(transportOfferId);
+            AccommodationOffer accommodationOffer = accommodationOfferDao.getOfferById(accommodationOfferId);
+            TransportOffer transportOffer = transportOfferDao.getOfferById(transportOfferId);
 
-            Location destination = transportOffer.getArrivalLocation();
+            Location destination = LocationFactory.getInstance().createLocation(rs.getString("destinationAddress"));
             result.add(new HolidayOffer(metadata, destination, duration, rs.getInt("holidayPrice"), accommodationOffer, transportOffer));
         }
 

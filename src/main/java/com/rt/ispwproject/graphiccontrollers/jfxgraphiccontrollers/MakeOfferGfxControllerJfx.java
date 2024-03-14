@@ -342,7 +342,7 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
             offeredAccommodationNameText.setText(accommodation.getName());
             offeredAccommodationQuality.setQualityLevel(accommodation.getQuality());
             offeredAccommodationAddressText.setText(accommodation.getAddress());
-            offeredAccommodationPriceText.setText(accommodation.getPricePerNightAsStr());
+            offeredAccommodationPriceText.setText(accommodation.getPriceAsStr());
         }
         updateOfferPrice();
     }

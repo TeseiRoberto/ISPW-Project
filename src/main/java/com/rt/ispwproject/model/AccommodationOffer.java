@@ -15,10 +15,10 @@ public class AccommodationOffer {
     private int                 quality;
     private int                 numOfRooms;
     private final DateRange     checkInOutDates;
-    private int                 pricePerNight;
+    private int                 totalPrice;
 
 
-    public AccommodationOffer(AccommodationType type, String name, Location address, int quality, int numOfRooms, DateRange checkInOutDates, int pricePerNight)
+    public AccommodationOffer(AccommodationType type, String name, Location address, int quality, int numOfRooms, DateRange checkInOutDates, int totalPrice)
     {
         this.id = 0;
         this.accommodationId = 0;
@@ -28,7 +28,7 @@ public class AccommodationOffer {
         this.quality = quality;
         this.numOfRooms = numOfRooms;
         this.checkInOutDates = checkInOutDates;
-        this.pricePerNight = pricePerNight;
+        this.totalPrice = totalPrice;
     }
 
 
@@ -42,7 +42,7 @@ public class AccommodationOffer {
     public void setNumOfRooms(int num)              { this.numOfRooms = num; }
     public void setCheckInDate(LocalDate date)      { this.checkInOutDates.setStartDate(date); }
     public void setCheckOutDate(LocalDate date)     { this.checkInOutDates.setEndDate(date); }
-    public void setPricePerNight(int price)         { this.pricePerNight = price; }
+    public void setTotalPrice(int price)            { this.totalPrice = price; }
 
 
     // Getters
@@ -55,22 +55,31 @@ public class AccommodationOffer {
     public int getNumOfRooms()                      { return this.numOfRooms; }
     public LocalDate getCheckInDate()               { return this.checkInOutDates.getStartDate(); }
     public LocalDate getCheckOutDate()              { return this.checkInOutDates.getEndDate(); }
-    public int getPricePerNight()                   { return this.pricePerNight; }
+    public int getTotalPrice()                      { return this.totalPrice; }
 
 
-    public int getPrice()
+    public float getPricePerNight()
     {
         if(this.checkInOutDates == null)
             return 0;
 
-        int numOfNights = Period.between(checkInOutDates.getStartDate(), checkInOutDates.getEndDate()).getDays();
-        return numOfNights * pricePerNight * numOfRooms;
+        return (float) this.checkInOutDates.getNightsBetween() / (float) this.totalPrice;
     }
 
 
     // Converts an AccommodationOffer instance into an Accommodation instance (model to bean class conversion)
     public Accommodation toAccommodationBean() throws IllegalArgumentException
     {
-        return new Accommodation(type.toViewType(), name, location.getAddress(), quality, numOfRooms, pricePerNight, getPrice());
+        Accommodation a = new Accommodation(
+          this.type.toViewType(),
+          this.name,
+          this.location.getAddress(),
+          this.quality,
+          this.numOfRooms,
+          this.totalPrice
+        );
+
+        a.setAccommodationId(this.accommodationId);
+        return a;
     }
 }

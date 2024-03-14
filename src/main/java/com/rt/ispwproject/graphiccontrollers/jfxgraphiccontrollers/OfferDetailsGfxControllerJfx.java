@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private final Offer         currOffer;
-    private ChangesOnOffer requestedChanges;
+    private ChangesOnOffer      requestedChanges;
     @FXML private VBox          mainContainerVbox;
     @FXML private Text          announcementOwnerUsernameText;
     @FXML private Text          offerStatusText;
@@ -135,7 +135,7 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     public void onRejectChangesClick()
     {
         // TODO: Add implementation
-        System.out.println("REJECT REQUESTED CHANGES CLICKED!");
+        displayErrorDialog("Reject requested changes functionality is not implemented yet...");
     }
 
 
@@ -143,6 +143,6 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     public void onMakeCounterOfferClick()
     {
         // TODO: Add implementation
-        System.out.println("MAKE COUNTER OFFER CLICKED!");
+        displayErrorDialog("Make counter offer functionality is not implemented yet...");
     }
 }

@@ -11,29 +11,33 @@ public class Transport {
     private int         quality;
     private int         numOfTravelers;
     private String      departureLocation;
+    private String      arrivalLocation;
     private int         pricePerTraveler;
 
 
     // Constructor used to create transport offer
-    public Transport(String type, String companyName, int quality, String departureLocation, int numOfTravelers,
-                     int pricePerTraveler) throws IllegalArgumentException
+    public Transport(String type, String companyName, int quality, String departureLocation, String arrivalLocation,
+                     int numOfTravelers, int pricePerTraveler) throws IllegalArgumentException
     {
         this.companyId = 0;
         setType(type);
         setCompanyName(companyName);
         setQuality(quality);
         setDepartureLocation(departureLocation);
+        setArrivalLocation(arrivalLocation);
         setNumOfTravelers(numOfTravelers);
         setPricePerTraveler(pricePerTraveler);
     }
 
 
     // Constructor used to create transport requirements
-    public Transport(String type, int quality, String departureLocation, int numOfTravelers) throws IllegalArgumentException
+    public Transport(String type, int quality, String departureLocation, String arrivalLocation, int numOfTravelers) throws IllegalArgumentException
     {
+        this.companyId = 0;
         setType(type);
         setQuality(quality);
         setDepartureLocation(departureLocation);
+        setArrivalLocation(arrivalLocation);
         setNumOfTravelers(numOfTravelers);
     }
 
@@ -70,7 +74,21 @@ public class Transport {
         if(location == null || location.isEmpty())
             throw new IllegalArgumentException("Departure location cannot be empty!");
 
+        if(location.equals(arrivalLocation))
+            throw new IllegalArgumentException("Departure location cannot be equal to the arrival location!");
+
         this.departureLocation = location;
+    }
+
+    public void setArrivalLocation(String location) throws IllegalArgumentException
+    {
+        if(location == null || location.isEmpty())
+            throw new IllegalArgumentException("Arrival location cannot be empty!");
+
+        if(location.equals(departureLocation))
+            throw new IllegalArgumentException("Arrival location cannot be equal to the departure location!");
+
+        this.arrivalLocation = location;
     }
 
     public void setNumOfTravelers(int numOfTravelers) throws IllegalArgumentException
@@ -96,6 +114,7 @@ public class Transport {
     public int getCompanyId()                   { return this.companyId; }
     public int getQuality()                     { return this.quality; }
     public String getDepartureLocation()        { return this.departureLocation; }
+    public String getArrivalLocation()          { return this.arrivalLocation; }
     public int getNumOfTravelers()              { return this.numOfTravelers; }
     public int getPricePerTraveler()            { return this.pricePerTraveler; }
     public String getPricePerTravelerAsStr()    { return Integer.toString(this.pricePerTraveler) + '€'; }

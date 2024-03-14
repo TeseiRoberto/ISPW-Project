@@ -18,11 +18,6 @@ public class Main {
 
     public static void main(String[] args)
     {
-        // TODO: Maybe apply abstract factory pattern to GUI??? In this case we will have something like this...
-        /*GfxControllerFactory gfxFactory = GfxControllerFactory.getInstance();
-        LoginGfxController ctrl = gfxFactory.createLoginGfxController();
-        ctrl.start();*/
-
         loadConfigurationFile(Main.CONFIG_FILE_NAME);
 
         if(typeOfGui == GuiType.JAVAFX_GUI)

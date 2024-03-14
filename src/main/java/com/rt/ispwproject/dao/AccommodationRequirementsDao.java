@@ -1,5 +1,6 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.model.AccommodationRequirements;
 import com.rt.ispwproject.model.AccommodationType;
@@ -35,7 +36,7 @@ public class AccommodationRequirementsDao {
 
 
     // Retrieves the accommodation requirements associated to the given id from the db
-    public AccommodationRequirements getRequirements(int accommodationReqId) throws DbException
+    public AccommodationRequirements getRequirementsById(int accommodationReqId) throws DbException
     {
         if(accommodationReqId <= 0)
             return null;
@@ -76,17 +77,14 @@ public class AccommodationRequirementsDao {
 
 
     // Removes the accommodation requirements associated to the given id from the db
-    public void removeRequirements(int accommodationReqId) throws DbException
+    public void removeRequirements(AccommodationRequirements req) throws DbException
     {
-        if(accommodationReqId <= 0)
-            return;
-
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteAccommodationRequirements stored procedure
         try (CallableStatement deleteReqProc = connection.prepareCall("call deleteAccommodationRequirements(?)"))
         {
-            deleteReqProc.setInt("requirementsId_in", accommodationReqId);
+            deleteReqProc.setInt("requirementsId_in", req.getId());
             deleteReqProc.execute();
 
             deleteReqProc.execute();

@@ -19,7 +19,7 @@ public class Route {
         if(location == null)
             throw new IllegalArgumentException("Departure location cannot be empty!");
 
-        if(location.equals(this.arrivalLocation))
+        if(location.isEqual(this.arrivalLocation))
             throw new IllegalArgumentException("Departure and arrival location cannot be the same!");
 
         this.departureLocation = location;
@@ -30,7 +30,7 @@ public class Route {
         if(location == null)
             throw new IllegalArgumentException("Arrival location cannot be empty!");
 
-        if(location.equals(this.departureLocation))
+        if(location.isEqual(this.departureLocation))
             throw new IllegalArgumentException("Departure and arrival location cannot be the same!");
 
         this.arrivalLocation = location;

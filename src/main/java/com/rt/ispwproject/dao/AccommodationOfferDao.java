@@ -1,6 +1,8 @@
 package com.rt.ispwproject.dao;
 
+import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -15,17 +17,15 @@ public class AccommodationOfferDao {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the createAccommodationOffer stored procedure
-        try (CallableStatement createOfferProc = connection.prepareCall("call createAccommodationOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement createOfferProc = connection.prepareCall("call createAccommodationOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             createOfferProc.setString(  "accommodationType_in", offer.getType().toPersistenceType());
             createOfferProc.setString(  "accommodationName_in", offer.getName());
             createOfferProc.setInt(     "accommodationId_in", offer.getAccommodationId());
             createOfferProc.setString(  "accommodationAddress_in", offer.getLocation().getAddress());
-            createOfferProc.setDouble(  "accommodationLatitude_in", offer.getLocation().getLatitude());
-            createOfferProc.setDouble(  "accommodationLongitude_in", offer.getLocation().getLongitude());
             createOfferProc.setInt(     "accommodationQuality_in", offer.getQuality());
             createOfferProc.setInt(     "numOfRoomsOffered_in", offer.getNumOfRooms());
-            createOfferProc.setInt(     "pricePerNight_in", offer.getPricePerNight());
+            createOfferProc.setInt(     "totalPrice_in", offer.getTotalPrice());
             createOfferProc.setDate(    "checkInDate_in", Date.valueOf(offer.getCheckInDate()));
             createOfferProc.setDate(    "checkOutDate_in", Date.valueOf(offer.getCheckOutDate()));
 
@@ -42,7 +42,7 @@ public class AccommodationOfferDao {
 
 
     // Retrieves the accommodation offer associated to the given id from the db (if exists)
-    public AccommodationOffer getOffer(int offerId) throws DbException
+    public AccommodationOffer getOfferById(int offerId) throws DbException
     {
         AccommodationOffer offer = null;
         Connection connection = DbConnection.getInstance().getConnection();
@@ -58,12 +58,7 @@ public class AccommodationOfferDao {
                 ResultSet rs = getOfferProc.getResultSet();
                 if(rs.next())                                   // Construct accommodation offer with data in the result set
                 {
-                    Location accommodationAddress = new Location(
-                            rs.getString("accommodationAddress"),
-                            rs.getDouble("accommodationLatitude"),
-                            rs.getDouble("accommodationLongitude")
-                    );
-
+                    Location locatedIn = LocationFactory.getInstance().createLocation(rs.getString("accommodationAddress"));
                     DateRange checkInOutDates = new DateRange(
                             rs.getDate("checkInDate").toLocalDate(),
                             rs.getDate("checkOutDate").toLocalDate()
@@ -72,11 +67,11 @@ public class AccommodationOfferDao {
                     offer = new AccommodationOffer(
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getString("accommodationName"),
-                            accommodationAddress,
+                            locatedIn,
                             rs.getInt("accommodationQuality"),
                             rs.getInt("numOfRoomsOffered"),
                             checkInOutDates,
-                            rs.getInt("pricePerNight")
+                            rs.getInt("totalPrice")
                     );
 
                     offer.setAccommodationId(rs.getInt("accommodationId"));
@@ -102,18 +97,16 @@ public class AccommodationOfferDao {
     public void updateOffer(AccommodationOffer newOffer) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
-        try (CallableStatement updateOfferProc = connection.prepareCall("call updateAccommodationOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
+        try (CallableStatement updateOfferProc = connection.prepareCall("call updateAccommodationOffer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
             updateOfferProc.setInt("accommodationOfferId_in", newOffer.getId());
             updateOfferProc.setString("newAccommodationType_in", newOffer.getType().toPersistenceType());
             updateOfferProc.setString("newAccommodationName_in", newOffer.getName());
             updateOfferProc.setInt("newAccommodationId_in", newOffer.getAccommodationId());
             updateOfferProc.setString("newAccommodationAddress_in", newOffer.getLocation().getAddress());
-            updateOfferProc.setDouble("newAccommodationLatitude_in", newOffer.getLocation().getLatitude());
-            updateOfferProc.setDouble("newAccommodationLongitude_in", newOffer.getLocation().getLongitude());
             updateOfferProc.setInt("newAccommodationQuality_in", newOffer.getQuality());
             updateOfferProc.setInt("newNumOfRoomsOffered_in", newOffer.getNumOfRooms());
-            updateOfferProc.setInt("newPricePerNight_in", newOffer.getPricePerNight());
+            updateOfferProc.setInt("newTotalPrice_in", newOffer.getTotalPrice());
             updateOfferProc.setDate("newCheckInDate_in", Date.valueOf(newOffer.getCheckInDate()));
             updateOfferProc.setDate("newCheckOutDate_in", Date.valueOf(newOffer.getCheckOutDate()));
 
@@ -126,14 +119,14 @@ public class AccommodationOfferDao {
 
 
     // Removes the accommodation offer associated to the given id from the db (if exists)
-    public void removeOffer(int offerId) throws DbException
+    public void removeOffer(AccommodationOffer offer) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
 
         // Create callable statement and setup parameters to invoke the deleteAccommodationOffer stored procedure
         try (CallableStatement deleteOfferProc = connection.prepareCall("call deleteAccommodationOffer(?)"))
         {
-            deleteOfferProc.setInt("offerId_in", offerId);
+            deleteOfferProc.setInt("offerId_in", offer.getId());
             deleteOfferProc.execute();
         } catch(SQLException e)
         {
