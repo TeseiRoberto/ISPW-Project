@@ -101,8 +101,8 @@ public class Transport {
 
     public void setPricePerTraveler(int price) throws IllegalArgumentException
     {
-        if(price <= 0)
-            throw new IllegalArgumentException("Price per travelers cannot be negative or zero!");
+        if(price < 0)
+            throw new IllegalArgumentException("Price per travelers cannot be negative!");
 
         this.pricePerTraveler = price;
     }
@@ -119,7 +119,6 @@ public class Transport {
     public int getPricePerTraveler()            { return this.pricePerTraveler; }
     public String getPricePerTravelerAsStr()    { return Integer.toString(this.pricePerTraveler) + '€'; }
     public int getPrice()                       { return this.pricePerTraveler * this.numOfTravelers; }
-    public String getPriceAsStr()               { return Integer.toString(this.getPrice()) + '€'; }
 
     // Returns all the available transport types
     public static List<String> getAvailableTypes()

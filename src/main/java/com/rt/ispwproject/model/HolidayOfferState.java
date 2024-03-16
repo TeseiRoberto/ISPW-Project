@@ -2,11 +2,27 @@ package com.rt.ispwproject.model;
 
 public enum HolidayOfferState {
 
-    PENDING,                // Simple user has not decided yet what to do with the holiday offer
-    REQUESTED_CHANGES,      // Simple user has requested changes on the holiday offer to the travel agency
-    PENDING_WITH_CHANGES,   // Changes were requested by the user and has been made by the travel agency, now we are waiting for the user evaluation
-    ACCEPTED,               // Simple user has accepted the holiday offer made by the travel agency
-    REJECTED;               // Simple user has rejected the holiday offer made by the travel agency
+    PENDING,                        // The offer has not been evaluated yet
+    REQUESTED_CHANGES,              // Changes has been requested on the offer
+    PENDING_WITH_CHANGES,           // The offer has been modified but the changes made have not been evaluated yet
+    PENDING_WITH_REJECTED_CHANGES,  // The changes requested on the offer has been rejected but the original offer is still valid
+    ACCEPTED,                       // The offer has been accepted
+    REJECTED;                       // The offer has been rejected
+
+
+    // Converts the offer state from the model representation to the view representation
+    public String toViewType()
+    {
+        return switch(this)
+        {
+            case PENDING ->                         "Offer has not been evaluated yet...";
+            case REQUESTED_CHANGES ->               "Changes has been requested on the offer.";
+            case PENDING_WITH_CHANGES ->            "Offer has been modified, waiting for evaluation...";
+            case PENDING_WITH_REJECTED_CHANGES ->   "Requested changes has been rejected, but the offer is still valid.";
+            case ACCEPTED ->                        "Offer has been accepted!";
+            case REJECTED ->                        "Offer has been rejected!";
+        };
+    }
 
 
     // Converts the offer state from the model representation to the representation used in the persistence layer
@@ -14,11 +30,12 @@ public enum HolidayOfferState {
     {
         return switch(this)
         {
-            case PENDING ->                 "PENDING";
-            case REQUESTED_CHANGES ->       "REQUESTED_CHANGES";
-            case PENDING_WITH_CHANGES ->    "PENDING_WITH_CHANGES";
-            case ACCEPTED ->                "ACCEPTED";
-            case REJECTED ->                "REJECTED";
+            case PENDING ->                         "PENDING";
+            case REQUESTED_CHANGES ->               "REQUESTED_CHANGES";
+            case PENDING_WITH_CHANGES ->            "PENDING_WITH_CHANGES";
+            case PENDING_WITH_REJECTED_CHANGES ->   "PENDING_WITH_REJECTED_CHANGES";
+            case ACCEPTED ->                        "ACCEPTED";
+            case REJECTED ->                        "REJECTED";
         };
     }
 
@@ -28,26 +45,13 @@ public enum HolidayOfferState {
     {
         return switch(state)
         {
-            case "PENDING" ->               HolidayOfferState.PENDING;
-            case "REQUESTED_CHANGES" ->     HolidayOfferState.REQUESTED_CHANGES;
-            case "PENDING_WITH_CHANGES" ->  HolidayOfferState.PENDING_WITH_CHANGES;
-            case "ACCEPTED" ->              HolidayOfferState.ACCEPTED;
-            case "REJECTED" ->              HolidayOfferState.REJECTED;
-            default ->                      throw new IllegalArgumentException("Transport type cannot be converted from persistence to system representation");
-        };
-    }
-
-
-    // Converts the offer state from the model representation to the view representation
-    public String toViewType()
-    {
-        return switch(this)
-        {
-            case PENDING ->                 "Offer has not been evaluated yet...";
-            case REQUESTED_CHANGES ->       "Changes has been requested on the offer.";
-            case PENDING_WITH_CHANGES ->    "Waiting for the user to evaluate the proposed changes";
-            case ACCEPTED ->                "Offer has been accepted!";
-            case REJECTED ->                "Offer has been rejected!";
+            case "PENDING" ->                       PENDING;
+            case "REQUESTED_CHANGES" ->             REQUESTED_CHANGES;
+            case "PENDING_WITH_CHANGES" ->          PENDING_WITH_CHANGES;
+            case "PENDING_WITH_REJECTED_CHANGES" -> PENDING_WITH_REJECTED_CHANGES;
+            case "ACCEPTED" ->                      ACCEPTED;
+            case "REJECTED" ->                      REJECTED;
+            default ->                              throw new IllegalArgumentException("Holiday offer state cannot be converted from persistence to system representation");
         };
     }
 

@@ -1,14 +1,14 @@
 package com.rt.ispwproject.logiccontrollers;
 
-import com.rt.ispwproject.apiboundaries.AddressChecker;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayRequirementsDao;
-import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.util.ArrayList;
@@ -33,17 +33,17 @@ public class AnnouncementManager {
                 LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getArrivalLocation() )
         );
 
-        AccommodationRequirements accommodationReq = new AccommodationRequirements(
+        AccommodationRequirements accommodationReq = AccommodationFactory.getInstance().createRequirements(
                 AccommodationType.fromViewType(announce.getAccommodationRequirements().getType()),
                 announce.getAccommodationRequirements().getQuality(),
                 announce.getAccommodationRequirements().getNumOfRooms()
         );
 
-        TransportRequirements transportReq = new TransportRequirements(
+        TransportRequirements transportReq = TransportFactory.getInstance().createRequirements(
                 TransportType.fromViewType(announce.getTransportRequirements().getType()),
                 announce.getTransportRequirements().getQuality(),
-                announce.getTransportRequirements().getNumOfTravelers(),
-                fromToLocation
+                fromToLocation,
+                announce.getTransportRequirements().getNumOfTravelers()
         );
 
         HolidayRequirements newReq = new HolidayRequirements(

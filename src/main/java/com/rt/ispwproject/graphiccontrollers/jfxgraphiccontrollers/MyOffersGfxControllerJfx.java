@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+// Graphic controller that displays the list of offers made by the "TRAVEL_AGENCY"
 public class MyOffersGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private List<Offer>     offers = null;

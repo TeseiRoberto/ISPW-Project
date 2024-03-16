@@ -22,7 +22,7 @@ public class HolidayOfferMetadata {
 
     public HolidayOfferMetadata(Profile offerOwner, HolidayOfferState state, int relativeRequirementsId, Profile relativeRequirementsOwner)
     {
-        this.offerId = -1;
+        this.offerId = 0;
         this.offerOwner = offerOwner;
         this.relativeRequirementsId = relativeRequirementsId;
         this.relativeRequirementsOwner = relativeRequirementsOwner;

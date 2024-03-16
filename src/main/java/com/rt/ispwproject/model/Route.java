@@ -38,4 +38,5 @@ public class Route {
 
     public Location getDepartureLocation()    { return this.departureLocation; }
     public Location getArrivalLocation()      { return this.arrivalLocation; }
+
 }

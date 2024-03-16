@@ -26,8 +26,8 @@ public class BaseGfxControllerJfx {
     protected static final String   MY_OFFERS_SCREEN_NAME = "travelAgency/myOffersScreen.fxml";
     protected static final String   OFFER_DETAILS_SCREEN_NAME = "travelAgency/offerDetailsScreen.fxml";
 
-    protected final Session currSession;
-    protected final Stage   mainStage;
+    protected final Session         currSession;
+    protected final Stage           mainStage;
 
 
     public BaseGfxControllerJfx(Session session, Stage stage)
@@ -50,7 +50,6 @@ public class BaseGfxControllerJfx {
             mainStage.setScene(newScene);
         } catch(IOException e)
         {
-            System.out.println("BaseJfxGfxController exception: " + e.getMessage() + e.getCause()); // TODO: Remove me!!!
             displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }

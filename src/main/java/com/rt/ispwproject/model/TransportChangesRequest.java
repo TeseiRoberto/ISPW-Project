@@ -2,7 +2,7 @@ package com.rt.ispwproject.model;
 
 import com.rt.ispwproject.beans.Transport;
 
-public interface TransportRequirements {
+public interface TransportChangesRequest {
 
     // Setters
     void setId(int id);

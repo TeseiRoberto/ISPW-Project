@@ -2,30 +2,8 @@ package com.rt.ispwproject.model;
 
 public enum AccommodationType {
 
-    UNSPECIFIED, HOTEL;
-
-    // Converts the accommodation type from the model representation to the representation used in the persistence layer
-    public String toPersistenceType()
-    {
-        return switch (this)
-        {
-            case HOTEL ->       "HOTEL";
-            case UNSPECIFIED -> "UNSPECIFIED";
-        };
-    }
-
-
-    // Converts the given accommodation type from the representation used in the persistence layer to the model representation
-    public static AccommodationType fromPersistenceType(String type) throws IllegalArgumentException
-    {
-        return switch (type)
-        {
-            case "HOTEL" ->         AccommodationType.HOTEL;
-            case "UNSPECIFIED" ->   AccommodationType.UNSPECIFIED;
-            default ->              throw new IllegalArgumentException("Accommodation type cannot be converted from persistence to model representation");
-        };
-    }
-
+    UNSPECIFIED,
+    HOTEL;
 
     // Converts the accommodation type from the model representation to the view representation
     public String toViewType()
@@ -49,5 +27,27 @@ public enum AccommodationType {
         };
     }
 
+
+    // Converts the accommodation type from the model representation to the representation used in the persistence layer
+    public String toPersistenceType()
+    {
+        return switch (this)
+        {
+            case HOTEL ->       "HOTEL";
+            case UNSPECIFIED -> "UNSPECIFIED";
+        };
+    }
+
+
+    // Converts the given accommodation type from the representation used in the persistence layer to the model representation
+    public static AccommodationType fromPersistenceType(String type) throws IllegalArgumentException
+    {
+        return switch (type)
+        {
+            case "HOTEL" ->         AccommodationType.HOTEL;
+            case "UNSPECIFIED" ->   AccommodationType.UNSPECIFIED;
+            default ->              throw new IllegalArgumentException("Accommodation type cannot be converted from persistence to model representation");
+        };
+    }
 
 }

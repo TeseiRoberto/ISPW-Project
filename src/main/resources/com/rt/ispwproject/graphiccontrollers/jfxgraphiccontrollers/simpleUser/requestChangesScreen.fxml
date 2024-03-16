@@ -459,7 +459,7 @@
                         </TextField>
                      </children>
                   </GridPane>
-                  <Button id="requestChanges_btn" fx:id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onRequestChangesClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Request changes" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="requestChanges_btn" mnemonicParsing="false" onMouseClicked="#onRequestChangesClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Request changes" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>

@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+// Graphic controller used by the "TRAVEL_AGENCY" to search for announcements
 public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     @FXML TextField             searchBarTextfield;
@@ -34,7 +35,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
     {
         try {
             SearchAnnouncementsManager searchManager = new SearchAnnouncementsManager();
-            announcements = searchManager.loadAnnouncements(currSession, 0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
+            announcements = searchManager.searchAnnouncements(currSession, 0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
         } catch(DbException | IllegalCallerException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());

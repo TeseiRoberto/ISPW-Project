@@ -49,7 +49,7 @@
                         <Insets />
                      </opaqueInsets>
                      <right>
-                        <Button id="closeOffer_btn" fx:id="closeOffer_btn" mnemonicParsing="false" onMouseClicked="#onCloseOfferDetailsClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE" BorderPane.alignment="CENTER">
+                        <Button id="closeOffer_btn" mnemonicParsing="false" onMouseClicked="#onCloseOfferDetailsClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -674,7 +674,7 @@
                                     <HBox id="quality" fx:id="requestedTransportQualityHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <HBox id="companyChangeRequest" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
-                                          <Text fx:id="requestedTransportCompanyChangeText" strokeType="OUTSIDE" strokeWidth="0.0" text="yes" textAlignment="CENTER" wrappingWidth="100.0">
+                                          <Text fx:id="requestedTransportChangeText" strokeType="OUTSIDE" strokeWidth="0.0" text="yes" textAlignment="CENTER" wrappingWidth="100.0">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -775,7 +775,7 @@
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="search_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0">
                            <graphic>
                               <SVGPath content="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" fill="#ebebeb" onMouseClicked="#onSearchAnnouncementsClick" stroke="BLACK" strokeWidth="2.0" />
                            </graphic>

@@ -35,8 +35,8 @@ public class HolidayRequirementsDao {
             createReqProc.setInt(     "availableBudget_in", req.getAvailableBudget());
             createReqProc.setString(  "description_in", req.getHolidayDescription());
             createReqProc.setDate(    "dateOfPost_in", Date.valueOf(req.getMetadata().getDateOfPost()) );
-            createReqProc.setDate(    "departureDate_in", Date.valueOf(req.getDepartureDate()) );
-            createReqProc.setDate(    "returnDate_in", Date.valueOf(req.getReturnDate()) );
+            createReqProc.setDate(    "departureDate_in", Date.valueOf(req.getHolidayDuration().getStartDate()) );
+            createReqProc.setDate(    "returnDate_in", Date.valueOf(req.getHolidayDuration().getEndDate()) );
             createReqProc.setInt(     "accommodationReqId_in", accommodationReqId);
             createReqProc.setInt(     "transportReqId_in", transportReqId);
 
@@ -96,9 +96,8 @@ public class HolidayRequirementsDao {
 
         } catch (SQLException e) {
             throw new DbException("Failed to invoke the \"getHolidayRequirements\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("\"getHolidayRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(DbException e) {
+            throw new DbException("Cannot get holiday requirements posted by user:\n" + e.getMessage());
         }
 
         return requirements;
@@ -123,9 +122,8 @@ public class HolidayRequirementsDao {
 
         } catch (SQLException e) {
             throw new DbException("Failed to invoke the \"getHolidayRequirementsById\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("\"getHolidayRequirementsById\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(DbException e) {
+            throw new DbException("Cannot get holiday requirements with id " + requirementsId + ":\n" + e.getMessage());
         }
 
         if(requirements == null || requirements.size() != 1)
@@ -178,12 +176,10 @@ public class HolidayRequirementsDao {
                 requirements = createHolidayRequirementsFromResultSet(rs, maxRequirementsNum);
                 rs.close();
             }
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"searchHolidayRequirements\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("\"searchHolidayRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(DbException e) {
+            throw new DbException("Search of holiday requirements failed:\n" + e.getMessage());
         }
 
         return requirements;
@@ -193,7 +189,7 @@ public class HolidayRequirementsDao {
     // Creates a list of HolidayRequirements using data contained in the given result set.
     // @rs: result set from which the holiday requirements instances will be built
     // @maxReqNum: max size of the list that will be returned (if -1 is given then no limit is imposed)
-    private List<HolidayRequirements> createHolidayRequirementsFromResultSet(ResultSet rs, int maxReqNum) throws SQLException, IllegalArgumentException, DbException
+    private List<HolidayRequirements> createHolidayRequirementsFromResultSet(ResultSet rs, int maxReqNum) throws SQLException, DbException
     {
         ArrayList<HolidayRequirements> result = new ArrayList<>();
 
@@ -201,27 +197,31 @@ public class HolidayRequirementsDao {
         AccommodationRequirementsDao accommodationReqDao = new AccommodationRequirementsDao();
         TransportRequirementsDao transportReqDao = new TransportRequirementsDao();
 
-        while(rs.next())
-        {
-            if(maxReqNum != -1 && result.size() == maxReqNum)
-                break;
+        try {
+            while(rs.next())
+            {
+                if(maxReqNum != -1 && result.size() == maxReqNum)
+                    break;
 
-            // Retrieve profile of the user that posted this holiday requirements
-            Profile requirementsOwner = profileDao.getProfileById(rs.getInt("ownerId"));
+                // Retrieve profile of the user that posted this holiday requirements
+                Profile requirementsOwner = profileDao.getProfileById(rs.getInt("ownerId"));
 
-            HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(
-                    rs.getInt("id"),
-                    requirementsOwner,
-                    rs.getDate("dateOfPost").toLocalDate(),
-                    rs.getInt("numOfOffersReceived"),
-                    rs.getInt("numOfViews")
-            );
+                HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(
+                        rs.getInt("id"),
+                        requirementsOwner,
+                        rs.getDate("dateOfPost").toLocalDate(),
+                        rs.getInt("numOfOffersReceived"),
+                        rs.getInt("numOfViews")
+                );
 
-            DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
-            AccommodationRequirements accommodationReq = accommodationReqDao.getRequirementsById(rs.getInt("accommodationReqId"));
-            TransportRequirements transportReq = transportReqDao.getRequirementsById(rs.getInt("transportReqId"));
+                DateRange duration = new DateRange(rs.getDate("departureDate").toLocalDate(), rs.getDate("returnDate").toLocalDate());
+                AccommodationRequirements accommodationReq = accommodationReqDao.getRequirementsById(rs.getInt("accommodationReqId"));
+                TransportRequirements transportReq = transportReqDao.getRequirementsById(rs.getInt("transportReqId"));
 
-            result.add(new HolidayRequirements(metadata, rs.getString("description"), duration, rs.getInt("budget"), accommodationReq, transportReq));
+                result.add(new HolidayRequirements(metadata, rs.getString("description"), duration, rs.getInt("budget"), accommodationReq, transportReq));
+            }
+        } catch (IllegalArgumentException e) {
+            throw new DbException("persistence layer returned invalid data:\n" + e.getMessage());
         }
 
         return result;

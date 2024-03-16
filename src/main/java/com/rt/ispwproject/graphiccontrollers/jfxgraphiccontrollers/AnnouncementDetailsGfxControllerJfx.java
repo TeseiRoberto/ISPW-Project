@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.List;
 
+// Graphic controller used to display to the "SIMPLE_USER" the details of a posted announcement
 public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     private final Announcement      currAnnounce;
@@ -51,7 +52,6 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     @FXML private VBox              offerContainerVbox;
 
     // Fields for the travel agency offer
-
     @FXML private Text              bidderAgencyNameText;
     @FXML private Text              offerStatusText;
 

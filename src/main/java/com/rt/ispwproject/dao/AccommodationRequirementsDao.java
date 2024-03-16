@@ -2,6 +2,7 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.model.AccommodationRequirements;
 import com.rt.ispwproject.model.AccommodationType;
 
@@ -26,8 +27,7 @@ public class AccommodationRequirementsDao {
 
             createReqProc.execute();
             accommodationReqId = createReqProc.getInt("accommodationReqId_out");
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"createAccommodationRequirements\" stored procedure:\n" + e.getMessage());
         }
 
@@ -54,19 +54,22 @@ public class AccommodationRequirementsDao {
             {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
-                    accommodationReq = new AccommodationRequirements(rs.getInt("id"),
+                {
+                    accommodationReq = AccommodationFactory.getInstance().createRequirements(
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
-                            rs.getInt("accommodationQuality"), rs.getInt("numOfRooms"));
+                            rs.getInt("accommodationQuality"),
+                            rs.getInt("numOfRooms")
+                    );
 
+                    accommodationReq.setId(rs.getInt("id"));
+                }
                 rs.close();
             }
 
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"getAccommodationRequirements\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("\"getAccommodationRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(IllegalArgumentException e) {
+            throw new DbException("Cannot get accommodation requirements, persistence layer returned invalid data:\n" + e.getMessage());
         }
 
         if(accommodationReq == null)
@@ -88,8 +91,7 @@ public class AccommodationRequirementsDao {
             deleteReqProc.execute();
 
             deleteReqProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"deleteAccommodationRequirements\" stored procedure:\n" + e.getMessage());
         }
     }

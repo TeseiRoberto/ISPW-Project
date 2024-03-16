@@ -3,6 +3,7 @@ package com.rt.ispwproject.dao;
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -25,16 +26,15 @@ public class TransportOfferDao {
             createOfferProc.setInt(     "transportQuality_in", offer.getQuality());
             createOfferProc.setInt(     "numOfTravelers_in", offer.getNumOfTravelers());
             createOfferProc.setInt(     "pricePerTraveler_in", offer.getPricePerTraveler());
-            createOfferProc.setString(  "departureLocationAddress_in", offer.getDepartureLocation().getAddress());
-            createOfferProc.setString(  "arrivalLocationAddress_in", offer.getArrivalLocation().getAddress());
-            createOfferProc.setDate(    "departureDate_in", Date.valueOf(offer.getDepartureDate()));
-            createOfferProc.setDate(    "returnDate_in", Date.valueOf(offer.getReturnDate()));
+            createOfferProc.setString(  "departureLocationAddress_in", offer.getRoute().getDepartureLocation().getAddress());
+            createOfferProc.setString(  "arrivalLocationAddress_in", offer.getRoute().getArrivalLocation().getAddress());
+            createOfferProc.setDate(    "departureDate_in", Date.valueOf(offer.getDepartureAndReturnDates().getStartDate()));
+            createOfferProc.setDate(    "returnDate_in", Date.valueOf(offer.getDepartureAndReturnDates().getEndDate()));
 
             createOfferProc.registerOutParameter("transportOfferId_out", Types.INTEGER);
             createOfferProc.execute();
             transportOfferId = createOfferProc.getInt("transportOfferId_out");
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"createTransportOffer\" stored procedure:\n" + e.getMessage());
         }
 
@@ -69,26 +69,24 @@ public class TransportOfferDao {
                             rs.getDate("returnDate").toLocalDate()
                     );
 
-                    offer = new TransportOffer(
+                    offer = TransportFactory.getInstance().createOffer(
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getString("companyName"),
-                            rs.getInt("transportQuality"),
                             transportRoute,
+                            departureAndReturnDates,
+                            rs.getInt("transportQuality"),
                             rs.getInt("numOfTravelers"),
-                            rs.getInt("pricePerTraveler"),
-                            departureAndReturnDates
+                            rs.getInt("pricePerTraveler")
                     );
 
                     offer.setCompanyId(rs.getInt("companyId"));
                 }
                 rs.close();
             }
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"getTransportOffer\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("The \"getTransportOffer\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(IllegalArgumentException e) {
+            throw new DbException("Cannot get transport offer, persistence layer returned invalid data:\n" + e.getMessage());
         }
 
         if(offer == null)
@@ -110,14 +108,13 @@ public class TransportOfferDao {
             updateOfferProc.setInt(     "newTransportQuality_in", newOffer.getQuality());
             updateOfferProc.setInt(     "newNumOfTravelers_in", newOffer.getNumOfTravelers());
             updateOfferProc.setInt(     "newPricePerTraveler_in", newOffer.getPricePerTraveler());
-            updateOfferProc.setString(  "newDepartureLocationAddress_in", newOffer.getDepartureLocation().getAddress());
-            updateOfferProc.setString(  "newArrivalLocationAddress_in", newOffer.getArrivalLocation().getAddress());
-            updateOfferProc.setDate(    "newDepartureDate_in", Date.valueOf(newOffer.getDepartureDate()));
-            updateOfferProc.setDate(    "newReturnDate_in", Date.valueOf(newOffer.getReturnDate()));
+            updateOfferProc.setString(  "newDepartureLocationAddress_in", newOffer.getRoute().getDepartureLocation().getAddress());
+            updateOfferProc.setString(  "newArrivalLocationAddress_in", newOffer.getRoute().getArrivalLocation().getAddress());
+            updateOfferProc.setDate(    "newDepartureDate_in", Date.valueOf(newOffer.getDepartureAndReturnDates().getStartDate()));
+            updateOfferProc.setDate(    "newReturnDate_in", Date.valueOf(newOffer.getDepartureAndReturnDates().getEndDate()));
 
             updateOfferProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"updateTransportOffer\" stored procedure:\n\"" + e.getMessage());
         }
     }
@@ -133,8 +130,7 @@ public class TransportOfferDao {
         {
             deleteOfferProc.setInt("offerId_in", offer.getId());
             deleteOfferProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"deleteTransportOffer\" stored procedure:\n" + e.getMessage());
         }
     }

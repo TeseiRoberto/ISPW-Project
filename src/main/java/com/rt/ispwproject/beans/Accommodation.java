@@ -81,8 +81,8 @@ public class Accommodation {
 
     public void setPrice(int price) throws IllegalArgumentException
     {
-        if(price <= 0)
-            throw new IllegalArgumentException("Price cannot be negative or zero!");
+        if(price < 0)
+            throw new IllegalArgumentException("Price cannot be negative!");
 
         this.totalPrice = price;
     }

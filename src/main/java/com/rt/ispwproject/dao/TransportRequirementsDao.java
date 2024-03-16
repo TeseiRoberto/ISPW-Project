@@ -3,6 +3,7 @@ package com.rt.ispwproject.dao;
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -21,14 +22,13 @@ public class TransportRequirementsDao {
             createReqProc.setString(  "transportType_in", req.getType().toPersistenceType());
             createReqProc.setInt(     "transportQuality_in", req.getQuality());
             createReqProc.setInt(     "numOfTravelers_in", req.getNumOfTravelers());
-            createReqProc.setString(  "departureLocationAddress_in", req.getDepartureLocation().getAddress());
-            createReqProc.setString(  "arrivalLocationAddress_in", req.getArrivalLocation().getAddress());
+            createReqProc.setString(  "departureLocationAddress_in", req.getRoute().getDepartureLocation().getAddress());
+            createReqProc.setString(  "arrivalLocationAddress_in", req.getRoute().getArrivalLocation().getAddress());
             createReqProc.registerOutParameter("transportReqId_out", Types.INTEGER);
 
             createReqProc.execute();
             transportReqId = createReqProc.getInt("transportReqId_out");
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"createTransportRequirements\" stored procedure:\n" + e.getMessage());
         }
 
@@ -61,23 +61,22 @@ public class TransportRequirementsDao {
                             LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
-                    transportReq = new TransportRequirements(
-                            rs.getInt("id"),
+                    transportReq = TransportFactory.getInstance().createRequirements(
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getInt("transportQuality"),
-                            rs.getInt("numOfTravelers"),
-                            fromToLocation
+                            fromToLocation,
+                            rs.getInt("numOfTravelers")
                     );
+
+                    transportReq.setId(rs.getInt("id"));
                 }
 
                 rs.close();
             }
 
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"getTransportRequirements\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
+        } catch(IllegalArgumentException e) {
             throw new DbException("\"getTransportRequirements\" stored procedure has returned invalid data:\n" + e.getMessage());
         }
 
@@ -100,8 +99,7 @@ public class TransportRequirementsDao {
             deleteReqProc.execute();
 
             deleteReqProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"deleteTransportRequirements\" stored procedure:\n" + e.getMessage());
         }
     }

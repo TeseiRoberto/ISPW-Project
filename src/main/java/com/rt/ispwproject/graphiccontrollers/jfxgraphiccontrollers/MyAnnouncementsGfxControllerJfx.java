@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-
+// Graphic controller that displays the list of announcements posted by a "SIMPLE_USER"
 public class MyAnnouncementsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     @FXML VBox                      announcementsVbox;

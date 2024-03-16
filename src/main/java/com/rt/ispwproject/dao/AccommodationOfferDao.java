@@ -2,6 +2,7 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
@@ -25,15 +26,14 @@ public class AccommodationOfferDao {
             createOfferProc.setString(  "accommodationAddress_in", offer.getLocation().getAddress());
             createOfferProc.setInt(     "accommodationQuality_in", offer.getQuality());
             createOfferProc.setInt(     "numOfRoomsOffered_in", offer.getNumOfRooms());
-            createOfferProc.setInt(     "totalPrice_in", offer.getTotalPrice());
-            createOfferProc.setDate(    "checkInDate_in", Date.valueOf(offer.getCheckInDate()));
-            createOfferProc.setDate(    "checkOutDate_in", Date.valueOf(offer.getCheckOutDate()));
+            createOfferProc.setInt(     "totalPrice_in", offer.getPrice());
+            createOfferProc.setDate(    "checkInDate_in", Date.valueOf(offer.getLengthOfStay().getStartDate()));
+            createOfferProc.setDate(    "checkOutDate_in", Date.valueOf(offer.getLengthOfStay().getEndDate()));
 
             createOfferProc.registerOutParameter("accommodationOfferId_out", Types.INTEGER);
             createOfferProc.execute();
             accommodationOfferId = createOfferProc.getInt("accommodationOfferId_out");
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"createAccommodationOffer\" stored procedure:\n" + e.getMessage());
         }
 
@@ -59,18 +59,18 @@ public class AccommodationOfferDao {
                 if(rs.next())                                   // Construct accommodation offer with data in the result set
                 {
                     Location locatedIn = LocationFactory.getInstance().createLocation(rs.getString("accommodationAddress"));
-                    DateRange checkInOutDates = new DateRange(
+                    DateRange lengthOfStay = new DateRange(
                             rs.getDate("checkInDate").toLocalDate(),
                             rs.getDate("checkOutDate").toLocalDate()
                     );
 
-                    offer = new AccommodationOffer(
+                    offer = AccommodationFactory.getInstance().createOffer(
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getString("accommodationName"),
                             locatedIn,
+                            lengthOfStay,
                             rs.getInt("accommodationQuality"),
                             rs.getInt("numOfRoomsOffered"),
-                            checkInOutDates,
                             rs.getInt("totalPrice")
                     );
 
@@ -78,12 +78,10 @@ public class AccommodationOfferDao {
                 }
                 rs.close();
             }
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"getAccommodationOffer\" stored procedure:\n" + e.getMessage());
-        } catch(IllegalArgumentException e)
-        {
-            throw new DbException("The \"getAccommodationOffer\" stored procedure has returned invalid data:\n" + e.getMessage());
+        } catch(IllegalArgumentException e) {
+            throw new DbException("Cannot get accommodation offer, persistence layer returned invalid data:\n" + e.getMessage());
         }
 
         if(offer == null)
@@ -106,14 +104,13 @@ public class AccommodationOfferDao {
             updateOfferProc.setString("newAccommodationAddress_in", newOffer.getLocation().getAddress());
             updateOfferProc.setInt("newAccommodationQuality_in", newOffer.getQuality());
             updateOfferProc.setInt("newNumOfRoomsOffered_in", newOffer.getNumOfRooms());
-            updateOfferProc.setInt("newTotalPrice_in", newOffer.getTotalPrice());
-            updateOfferProc.setDate("newCheckInDate_in", Date.valueOf(newOffer.getCheckInDate()));
-            updateOfferProc.setDate("newCheckOutDate_in", Date.valueOf(newOffer.getCheckOutDate()));
+            updateOfferProc.setInt("newTotalPrice_in", newOffer.getPrice());
+            updateOfferProc.setDate("newCheckInDate_in", Date.valueOf(newOffer.getLengthOfStay().getStartDate()));
+            updateOfferProc.setDate("newCheckOutDate_in", Date.valueOf(newOffer.getLengthOfStay().getEndDate()));
 
             updateOfferProc.execute();
-        } catch(SQLException e)
-        {
-            throw new DbException("Failed to invoke the \"updateAccommodationOffer\" stored procedure:\n\"" + e.getMessage());
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"updateAccommodationOffer\" stored procedure:\n" + e.getMessage());
         }
     }
 
@@ -128,8 +125,7 @@ public class AccommodationOfferDao {
         {
             deleteOfferProc.setInt("offerId_in", offer.getId());
             deleteOfferProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"deleteAccommodationOffer\" stored procedure:\n" + e.getMessage());
         }
     }

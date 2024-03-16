@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
+// Graphic controller used by the "SIMPLE_USER" to create and send a request of changes on an offer received
 public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     private final Announcement      currAnnounce;
@@ -86,13 +87,14 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         requestedAccommodationTypeComboBox.valueProperty().addListener( (ov, oldVal, newVal) -> onAccommodationTypeChanged(newVal) );
         requestedAccommodationQuality.setOnValueChangeCallback( newVal -> requestedAccommodationChangeCheckBox.setSelected(true) );
         requestedNumOfRoomsTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onNumOfRoomsChanged(newVal) );
-        requestedAccommodationChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onAccommodationChangeCheckboxChanged(newVal) );
+        requestedAccommodationChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onChangeAccommodationCheckboxChanged(newVal) );
 
+        requestedDestinationTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onLocationChanged(newVal) );
         requestedTransportTypeComboBox.valueProperty().addListener((ov, oldVal, newVal) -> onTransportTypeChanged(newVal) );
         requestedTransportQuality.setOnValueChangeCallback(  newVal -> requestedTransportChangeCheckBox.setSelected(true) );
         requestedNumOfTravelersTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onNumOfTravelersChanged(newVal) );
-        requestedDepartureLocationTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onDepartureLocationChanged(newVal) );
-        requestedTransportChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onTransportChangeCheckboxChanged(newVal) );
+        requestedDepartureLocationTextfield.textProperty().addListener( (ov, oldVal, newVal) -> onLocationChanged(newVal) );
+        requestedTransportChangeCheckBox.selectedProperty().addListener( (ov, oldVal, newVal) -> onChangeTransportCheckboxChanged(newVal) );
     }
 
 
@@ -139,7 +141,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
 
     // Callback invoked when the value of the accommodation change checkbox changes, if the checkbox is unselected then
     // all the accommodation changes selected will be lost
-    private void onAccommodationChangeCheckboxChanged(boolean newValue)
+    private void onChangeAccommodationCheckboxChanged(boolean newValue)
     {
         if(!newValue)
         {
@@ -170,8 +172,8 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Callback invoked when the value of the departure location text field changes, marks as selected the requested transport change checkbox
-    private void onDepartureLocationChanged(String newValue)
+    // Callback invoked when the value of the destination/departure location text field changes, marks as selected the requested transport change checkbox
+    private void onLocationChanged(String newValue)
     {
         if(newValue == null || newValue.isEmpty())
             return;
@@ -180,12 +182,13 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Callback invoked when the value of the transport type combobox changes, if the checkbox is unselected then
+    // Callback invoked when the value of the change transport checkbox changes, if the checkbox is unselected then
     // all the transport changes selected will be lost
-    private void onTransportChangeCheckboxChanged(boolean newValue)
+    private void onChangeTransportCheckboxChanged(boolean newValue)
     {
         if(!newValue)
         {
+            requestedDestinationTextfield.setText(null);
             requestedTransportTypeComboBox.setValue(null);
             requestedTransportQuality.setQualityLevel(0);
             requestedDepartureLocationTextfield.setText(null);
@@ -202,16 +205,15 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Constructs a OfferChanges instance and sends it to the travel agency, then switch back to the "announcement details" screen
+    // Constructs a ChangesOnOffer instance and sends it to the travel agency, then switch back to the "announcement details" screen
     public void onRequestChangesClick()
     {
         try {
-            ChangesOnOffer newRequest = new ChangesOnOffer(currOffer.getId(), currOffer.getBidderUsername());
+            ChangesOnOffer newRequest = new ChangesOnOffer(currSession.getUsername(), currOffer.getId(), currOffer.getBidderUsername());
             newRequest.setChangesDescription(requestedChangesDescriptionTextarea.getText());
-            newRequest.setDestination(requestedDestinationTextfield.getText());
             newRequest.setPrice(getPriceChange());
-            newRequest.setDuration(getDurationChanges());
-            newRequest.setAccommodationChanges(getAccommodationChanges());  // Get requested changes on accommodation if changes are required
+            newRequest.setHolidayDuration(getDurationChanges());
+            newRequest.setAccommodationChanges(getAccommodationChanges());
             newRequest.setTransportChanges(getTransportChanges());
 
             // Ask for user confirm
@@ -225,6 +227,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         } catch (DbException | IllegalArgumentException e)
         {
             displayErrorDialog(e.getMessage());
+            return;
         }
 
         changeScreen(getClass().getResource(ANNOUNCEMENT_DETAILS_SCREEN_NAME),
@@ -276,7 +279,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     private Accommodation getAccommodationChanges() throws IllegalArgumentException
     {
         Accommodation accommodationChanges = null;
-        if(requestedAccommodationChangeCheckBox.isSelected())               // Check if any change is requested
+        if(requestedAccommodationChangeCheckBox.isSelected())               // Check if any change on the accommodation is requested
         {
             String newType = requestedAccommodationTypeComboBox.getValue();
             int newQuality = requestedAccommodationQuality.getQualityLevel();
@@ -311,9 +314,8 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     private Transport getTransportChanges() throws IllegalArgumentException
     {
         Transport transportChanges = null;
-        if(requestedTransportChangeCheckBox.isSelected())                                   // Check if any change is requested
+        if(requestedTransportChangeCheckBox.isSelected())                                   // Check if any change on transport is requested
         {
-            // TODO: Here we are not setting the arrival location correctly, I need to review this whole class....
             String newType = requestedTransportTypeComboBox.getValue();
             int newQuality = requestedTransportQuality.getQualityLevel();
             String newDepartureLocation = requestedDepartureLocationTextfield.getText();
@@ -326,6 +328,9 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
 
             if (newDepartureLocation == null || newDepartureLocation.isEmpty())             // No change is requested on the departure location
                 newDepartureLocation = currOffer.getTransportOffer().getDepartureLocation();
+
+            if(newArrivalLocation == null || newArrivalLocation.isEmpty())                  // No change is requested on the destination
+                newArrivalLocation = currOffer.getDestination();
 
             if(newQuality == 0)                                                             // No change is requested on the transport quality
                 newQuality = currOffer.getTransportOffer().getQuality();

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 
+// Graphic controller used by the "TRAVEL_AGENCY" to make an offer to a selected announcement
 public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private static final Font       DEFAULT_FONT = new Font("System", 18);

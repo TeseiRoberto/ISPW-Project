@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+// Graphic controller used by the "SIMPLE_USER" to create and post a new announcement
 public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     @FXML private TextArea                      descriptionTextarea;

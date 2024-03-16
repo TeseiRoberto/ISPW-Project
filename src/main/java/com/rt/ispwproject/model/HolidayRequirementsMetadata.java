@@ -22,21 +22,16 @@ public class HolidayRequirementsMetadata {
         this.isSatisfied = false;
     }
 
+
     public HolidayRequirementsMetadata(Profile requirementsOwner, LocalDate dateOfPost)
     {
-        this.requirementsId = -1;
+        this.requirementsId = 0;
         this.requirementsOwner = requirementsOwner;
         this.dateOfPost = dateOfPost;
         this.numOfViews = 0;
         this.numOfOffersReceived = 0;
         this.isSatisfied = false;
     }
-
-
-    // Setters
-    public void setNumOfViews(int num)              { this.numOfViews = num; }
-    public void setNumOfOffersReceived(int num)     { this.numOfOffersReceived = num; }
-    public void setSatisfied(boolean isSatisfied)   { this.isSatisfied = isSatisfied; }
 
 
     // Getters

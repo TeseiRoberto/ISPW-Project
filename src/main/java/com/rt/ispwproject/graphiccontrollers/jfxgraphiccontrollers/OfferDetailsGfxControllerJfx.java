@@ -13,7 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+// Graphic controller that display the details of an offer that was made by the "TRAVEL_AGENCY"
+// and the details of the changes requested by the "SIMPLE_USER" (if a request of changes was made)
 public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
     private final Offer         currOffer;
@@ -119,7 +120,53 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
         if(requestedChangesVbox == null || requestedChanges == null)
             return;
 
-        // TODO: Add implementation...
+        requestedChangesDescriptionTextarea.setText(requestedChanges.getChangesDescription());
+
+        if(requestedChanges.isPriceChangeRequired())
+            requestedPriceText.setText(Integer.toString(requestedChanges.getPrice()));
+        else
+            requestedPriceText.setText("");
+
+        if(requestedChanges.isDurationChangeRequired())
+        {
+            requestedDepartureDateText.setText(requestedChanges.getHolidayDuration().getDepartureDate().toString());
+            requestedReturnDateText.setText(requestedChanges.getHolidayDuration().getReturnDate().toString());
+        } else {
+            requestedDepartureDateText.setText("");
+            requestedReturnDateText.setText("");
+        }
+
+        if(requestedChanges.isAccommodationChangeRequired())
+        {
+            requestedAccommodationTypeText.setText(requestedChanges.getAccommodationChanges().getType());
+            requestedAccommodationChangeText.setText("yes");
+            requestedNumOfRoomsText.setText(Integer.toString(requestedChanges.getAccommodationChanges().getNumOfRooms()));
+
+            QualityIndicator accommodationQuality = new QualityIndicator(requestedChanges.getAccommodationChanges().getQuality());
+            requestedAccommodationQualityHbox.getChildren().add(accommodationQuality);
+        } else {
+            requestedAccommodationTypeText.setText("");
+            requestedAccommodationChangeText.setText("no");
+            requestedNumOfRoomsText.setText("");
+        }
+
+        if(requestedChanges.isTransportChangeRequired())
+        {
+            requestedDestinationText.setText(requestedChanges.getTransportChanges().getArrivalLocation());
+            requestedTransportTypeText.setText(requestedChanges.getTransportChanges().getType());
+            requestedTransportChangeText.setText("yes");
+            requestedDepartureLocationText.setText(requestedChanges.getTransportChanges().getDepartureLocation());
+            requestedNumOfTravelersText.setText(Integer.toString(requestedChanges.getTransportChanges().getNumOfTravelers()));
+
+            QualityIndicator transportQuality = new QualityIndicator(requestedChanges.getTransportChanges().getQuality());
+            requestedTransportQualityHbox.getChildren().add(transportQuality);
+        } else {
+            requestedDestinationText.setText("");
+            requestedTransportTypeText.setText("");
+            requestedTransportChangeText.setText("no");
+            requestedDepartureLocationText.setText("");
+            requestedNumOfTravelersText.setText("");
+        }
     }
 
 

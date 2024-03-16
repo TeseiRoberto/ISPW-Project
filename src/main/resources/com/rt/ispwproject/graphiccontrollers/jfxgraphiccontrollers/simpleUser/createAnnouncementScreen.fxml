@@ -151,25 +151,6 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <HBox id="numOfTravelers" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
-                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers" textAlignment="CENTER" wrappingWidth="140.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
-                              <TextField id="destination_textfield" fx:id="numOfTravelersTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Num. of travelers" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0" />
-                     </children>
-                  </HBox>
                   <HBox id="accommodation_title" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
                      <children>
                         <VBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="127.0">
@@ -263,7 +244,7 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <HBox id="transportDepartureFrom" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
+                  <HBox id="transportDepartureAndNumOfTravelers" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="680.0" spacing="20.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
                            <children>
@@ -279,7 +260,19 @@
                               </TextField>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="330.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of travelers" textAlignment="CENTER" wrappingWidth="140.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="destination_textfield" fx:id="numOfTravelersTextfield" maxWidth="260.0" prefHeight="31.0" prefWidth="175.0" promptText="Num. of travelers" style="-fx-background-color: #EBEBEB; -fx-background-radius: 4; -fx-border-color: #2B2B2B; -fx-border-radius: 4;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children></HBox>
                      </children>
                   </HBox>
                   <Button id="postAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onPostAnnouncementClick" prefHeight="40.0" prefWidth="210.0" style="-fx-background-color: E69E0F; -fx-background-radius: 8; -fx-border-color: #2B2B2B; -fx-border-radius: 8;" text="Post announcement" textFill="WHITE">

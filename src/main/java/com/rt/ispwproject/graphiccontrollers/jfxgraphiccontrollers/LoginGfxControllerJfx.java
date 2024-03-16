@@ -32,8 +32,6 @@ public class LoginGfxControllerJfx extends Application {
     }
 
 
-
-
     // Called when login button is clicked
     public void onLoginClick()
     {

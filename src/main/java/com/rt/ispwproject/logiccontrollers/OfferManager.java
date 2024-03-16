@@ -9,7 +9,9 @@ import com.rt.ispwproject.dao.HolidayOfferDao;
 import com.rt.ispwproject.dao.ProfileDao;
 import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.net.URL;
@@ -29,7 +31,7 @@ public class OfferManager {
 
         Profile user = SessionManager.getInstance().getProfile(currSession);
 
-        // Retrieve user that posted the announcement for which the offer is intended
+        // Retrieve profile of the user that posted the announcement for which the offer is intended
         ProfileDao profileDao = new ProfileDao();
         Profile announcementOwner = profileDao.getProfileByUsername(announce.getOwnerUsername());
 
@@ -42,24 +44,24 @@ public class OfferManager {
             LocationFactory.getInstance().createLocation(offer.getTransportOffer().getArrivalLocation())
         );
 
-        AccommodationOffer accommodationOffer = new AccommodationOffer(
+        AccommodationOffer accommodationOffer = AccommodationFactory.getInstance().createOffer(
                 AccommodationType.fromViewType(offer.getAccommodationOffer().getType()),
                 offer.getAccommodationOffer().getName(),
                 accommodationLocation,
+                holidayDuration,
                 offer.getAccommodationOffer().getQuality(),
                 offer.getAccommodationOffer().getNumOfRooms(),
-                holidayDuration,
                 offer.getAccommodationOffer().getPrice()
         );
 
-        TransportOffer transportOffer = new TransportOffer(
+        TransportOffer transportOffer = TransportFactory.getInstance().createOffer(
                 TransportType.fromViewType(offer.getTransportOffer().getType()),
                 offer.getTransportOffer().getCompanyName(),
-                offer.getTransportOffer().getQuality(),
                 transportRoute,
+                holidayDuration,
+                offer.getTransportOffer().getQuality(),
                 offer.getTransportOffer().getNumOfTravelers(),
-                offer.getTransportOffer().getPricePerTraveler(),
-                holidayDuration
+                offer.getTransportOffer().getPricePerTraveler()
         );
 
         accommodationOffer.setAccommodationId(offer.getAccommodationOffer().getAccommodationId());

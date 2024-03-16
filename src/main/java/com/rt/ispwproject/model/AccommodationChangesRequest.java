@@ -2,7 +2,7 @@ package com.rt.ispwproject.model;
 
 import com.rt.ispwproject.beans.Accommodation;
 
-public interface AccommodationRequirements {
+public interface AccommodationChangesRequest {
 
     // Setters
     void setId(int id);
