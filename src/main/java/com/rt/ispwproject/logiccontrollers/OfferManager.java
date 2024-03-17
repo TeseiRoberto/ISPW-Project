@@ -113,7 +113,7 @@ public class OfferManager {
             AccommodationSearcher searcher = new AccommodationSearcher();
             for(HolidayOffer o : holidayOffers)                 // Convert model classes to beans and retrieve accommodations images
             {
-                List<URL> accommodationImgs = searcher.getAccommodationImages(o.getAccommodationOffer().getAccommodationId());
+                List<URL> accommodationImgs = searcher.getAccommodationImages();
 
                 Offer newOffer = o.toOfferBean();
                 newOffer.getAccommodationOffer().setImagesLinks(accommodationImgs);

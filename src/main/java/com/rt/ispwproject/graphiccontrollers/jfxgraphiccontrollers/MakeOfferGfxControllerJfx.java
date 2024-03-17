@@ -25,6 +25,7 @@ import java.util.List;
 // Graphic controller used by the "TRAVEL_AGENCY" to make an offer to a selected announcement
 public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
+    private static final String     NOT_SELECTED_YET_MSG = "Not selected yet...";
     private static final Font       DEFAULT_FONT = new Font("System", 18);
     private final Announcement      currAnnounce;
     private Accommodation           chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
@@ -332,10 +333,10 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
         chosenAccommodation = accommodation;
         if(accommodation == null)
         {
-            offeredAccommodationTypeText.setText("Not selected yet...");
-            offeredAccommodationNameText.setText("Not selected yet...");
+            offeredAccommodationTypeText.setText(NOT_SELECTED_YET_MSG);
+            offeredAccommodationNameText.setText(NOT_SELECTED_YET_MSG);
             offeredAccommodationQuality.setQualityLevel(0);
-            offeredAccommodationAddressText.setText("Not selected yet...");
+            offeredAccommodationAddressText.setText(NOT_SELECTED_YET_MSG);
             offeredNumOfRoomsTextfield.setPromptText("Num. of rooms");
             offeredAccommodationPriceText.setText("0€");
         } else {
@@ -416,8 +417,8 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
         chosenTransport = transport;
         if(transport == null)
         {
-            offeredTransportTypeText.setText("Not selected yet...");
-            offeredTransportCompanyNameText.setText("Not selected yet...");
+            offeredTransportTypeText.setText(NOT_SELECTED_YET_MSG);
+            offeredTransportCompanyNameText.setText(NOT_SELECTED_YET_MSG);
             offeredTransportQuality.setQualityLevel(0);
             offeredDepartureLocationTextfield.setPromptText("Departure from");
             offeredNumOfTravelersTextfield.setPromptText("Num. of travelers");

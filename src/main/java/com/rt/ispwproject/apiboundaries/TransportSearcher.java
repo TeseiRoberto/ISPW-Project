@@ -13,6 +13,7 @@ import java.util.List;
 public class TransportSearcher {
 
     // List of the available transport types
+    private static final String         API_NAME = "TransportApi";
     private static final List<String>   availableTransportTypes = List.of("Airplane", "Train", "Ferry", "Bus");
     private static final int            MAX_OFFERS_NUM = 15;    // Max number of transport offers that can be generated randomly
 
@@ -22,13 +23,13 @@ public class TransportSearcher {
                                                  Duration departureAnsReturnDates, int numOfTravelers) throws ApiException
     {
         if(departureLocation == null || arrivalLocation == null)
-            throw new ApiException("TransportApi", "Departure and/or arrival location has not been specified");
+            throw new ApiException(API_NAME, "Departure and/or arrival location has not been specified");
 
         if(departureAnsReturnDates == null)
-            throw new ApiException("TransportApi", "Departure and return dates has not been specified");
+            throw new ApiException(API_NAME, "Departure and return dates has not been specified");
 
         if(numOfTravelers <= 0)
-            throw new ApiException("TransportApi", "Number of travelers cannot be negative or zero");
+            throw new ApiException(API_NAME, "Number of travelers cannot be negative or zero");
 
         // Here we should query the external transports API to get the available transport offers.
         // For now, we simulate the existence of the API by generating a list of transports with random properties

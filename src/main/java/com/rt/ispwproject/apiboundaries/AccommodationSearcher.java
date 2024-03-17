@@ -13,17 +13,17 @@ import java.util.List;
 // use any real API instead we generate accommodations with random properties
 public class AccommodationSearcher {
 
-    private static final int    MAX_OFFERS_NUM = 15;            // Max number of accommodation offers that can be generated randomly
-    private static final int    IMAGES_NUM = 5;                 // Number of hotel images stored on the file system
-    private static List<URL>    availableImages = null;         // URLs to dummy images that are used for the accommodations
+    private static final String         API_NAME = "AccommodationApi";
+    private static final int            MAX_OFFERS_NUM = 15;                    // Max number of accommodation offers that can be generated randomly
+    private static final int            IMAGES_NUM = 5;                         // Number of hotel images stored on the file system
+    private static final ArrayList<URL> availableImages = new ArrayList<>();    // URLs to dummy images that are used for the accommodations
 
 
     // Loads random images for the accommodations
     public AccommodationSearcher()
     {
-        if(availableImages == null)
+        if(availableImages.isEmpty())
         {
-            availableImages = new ArrayList<>();
             for(int i = 1; i <= IMAGES_NUM; ++i)                // Load URLs for the dummy accommodation images
             {
                 String currUrl = "accommodationImages/hotelRoom" + i + ".jpg";
@@ -37,13 +37,13 @@ public class AccommodationSearcher {
     public List<Accommodation> searchAccommodationOffers(String destination, Duration checkInOutDates, int numOfRoomsRequired) throws ApiException
     {
         if(destination == null)
-            throw new ApiException("AccommodationApi", "Destination has not been specified");
+            throw new ApiException(API_NAME, "Destination has not been specified");
 
         if(checkInOutDates == null)
-            throw new ApiException("AccommodationApi", "Check-in and check-out dates has not been specified");
+            throw new ApiException(API_NAME, "Check-in and check-out dates has not been specified");
 
         if(numOfRoomsRequired <= 0)
-            throw new ApiException("AccommodationApi", "Number of rooms requires cannot be negative or zero");
+            throw new ApiException(API_NAME, "Number of rooms requires cannot be negative or zero");
 
         // Here we should query the external accommodation API to get the available accommodation offers.
         // For now, we simulate the existence of the API by generating a list of accommodations with random properties
@@ -53,10 +53,10 @@ public class AccommodationSearcher {
 
 
     // Returns a list of links to images associated to the given accommodation
-    public List<URL> getAccommodationImages(int accommodationId)
+    public List<URL> getAccommodationImages()
     {
-        // Here we should query the external accommodation API to get the accommodation images URLs
-        // associated to the given accommodationId.
+        // Here we should take as parameter an accommodation id and then query the external accommodation API to get
+        // the accommodation images URLs associated to the given accommodationId.
         // For now, we simulate the existence of the API by selecting some random URLs that refers to dummy images saved in the file system
 
         return generateRandomImages();

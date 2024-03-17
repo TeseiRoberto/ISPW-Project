@@ -15,50 +15,66 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 
-// Widget that implements a clickable element that displays some data for an announcement/offer
+// Widget that implements a clickable element that displays some details for an announcement/offer
 public class DetailsBannerGfxElement extends HBox {
 
     private static final Font   BIG_FONT = new Font("System", 18);      // Font used for main details (destination, departure date, return date and budget/price)
     private static final Font   SMALL_FONT = new Font("System", 12);    // Font used for secondary details (announcement owner)
+
+
     private static final int    DETAILS_CONTAINER_WIDTH = 620;
     private static final int    DETAILS_CONTAINER_HEIGHT = 80;
+    private static final String DETAILS_STYLE =
+            "-fx-background-color: #EBEBEB;" +
+                    "-fx-background-radius: 4px;" +
+                    "-fx-border-color: #2B2B2B;" +
+                    "-fx-border-radius: 4px;" +
+                    "-fx-background-insets: 1px";
+
     private static final int    NOTIFICATION_CONTAINER_WIDTH = 55;
     private static final int    NOTIFICATION_CONTAINER_HEIGHT = 55;
     private static final Paint  NOTIFICATION_TEXT_COLOR = Paint.valueOf("#FFFFFF");
     private static final Insets NOTIFICATION_INSETS = new Insets(0, 0, 0, NOTIFICATION_CONTAINER_WIDTH);
+    private static final String NOTIFICATION_STYLE =
+            "-fx-background-color: #E69E0F;" +
+                    "-fx-background-radius: 4px;" +
+                    "-fx-border-color: #2B2B2B;" +
+                    "-fx-border-radius: 4px;" +
+                    "-fx-background-insets: 1px";
 
 
     public DetailsBannerGfxElement(Announcement announce, EventHandler<MouseEvent> onClick, boolean showOwnerUsername, boolean showNotification)
     {
+        boolean hasNotification = announce.getNumOfOffersReceived() > 0 && showNotification;
         setElementLayout();
 
-        VBox announcementDetailsVbox = createAnnouncementDetails(announce, showOwnerUsername);
+        VBox announcementDetailsVbox = createAnnouncementDetails(announce, showOwnerUsername, hasNotification);
         announcementDetailsVbox.setOnMouseClicked(onClick);
         HBox.setMargin(announcementDetailsVbox, NOTIFICATION_INSETS);
         this.getChildren().add(announcementDetailsVbox);
 
-        if(announce.getNumOfOffersReceived() > 0 && showNotification)
+        // If offers has been received for the announcement (and notification must be shown) then show the notification icon
+        if(hasNotification)
         {
             VBox notificationVbox = createNotificationElement(announce.getNumOfOffersReceived());
             notificationVbox.setOnMouseClicked(onClick);
             this.getChildren().add(notificationVbox);
         }
-
     }
 
 
     public DetailsBannerGfxElement(Offer offer, EventHandler<MouseEvent> onClick)
     {
+        boolean hasNotification = offer.hasRequestOfChanges();
         setElementLayout();
 
-        VBox announcementDetailsVbox = createOfferDetails(offer);
-
+        VBox announcementDetailsVbox = createOfferDetails(offer, hasNotification);
         announcementDetailsVbox.setOnMouseClicked(onClick);
         HBox.setMargin(announcementDetailsVbox, NOTIFICATION_INSETS);
         this.getChildren().add(announcementDetailsVbox);
 
         // If changes has been requested on the offer then show the notification icon
-        if(offer.hasRequestOfChanges())
+        if(hasNotification)
         {
             VBox notificationVbox = createNotificationElement(1);
             notificationVbox.setOnMouseClicked(onClick);
@@ -78,17 +94,17 @@ public class DetailsBannerGfxElement extends HBox {
 
 
     // Creates a vbox that contains the details of the given announcement
-    private VBox createAnnouncementDetails(Announcement announce, boolean showOwnerUsername)
+    private VBox createAnnouncementDetails(Announcement announce, boolean showOwnerUsername, boolean hasNotification)
     {
-        VBox container = createContainer(DETAILS_CONTAINER_WIDTH, DETAILS_CONTAINER_HEIGHT);
+        VBox container = createContainer(
+                !hasNotification ? DETAILS_CONTAINER_WIDTH + NOTIFICATION_CONTAINER_WIDTH : DETAILS_CONTAINER_WIDTH,
+                DETAILS_CONTAINER_HEIGHT
+        );
+
         container.setPadding(new Insets(0.0, 10.0, 0.0, 10.0));
 
         // Set vbox style and layout
-        container.setStyle("-fx-background-color: #EBEBEB;" +
-                "-fx-background-radius: 4px;" +
-                "-fx-border-color: #2B2B2B;" +
-                "-fx-border-radius: 4px;" +
-                "-fx-background-insets: 1px");
+        container.setStyle(DETAILS_STYLE);
 
         // Create text elements
         Text destinationText = createText(announce.getDestination(), BIG_FONT);
@@ -129,17 +145,16 @@ public class DetailsBannerGfxElement extends HBox {
 
 
     // Creates a vbox that contains the details of the given offer
-    private VBox createOfferDetails(Offer offer)
+    private VBox createOfferDetails(Offer offer, boolean hasNotification)
     {
-        VBox container = createContainer(DETAILS_CONTAINER_WIDTH, DETAILS_CONTAINER_HEIGHT);
+        VBox container = createContainer(
+                !hasNotification ? DETAILS_CONTAINER_WIDTH + NOTIFICATION_CONTAINER_WIDTH : DETAILS_CONTAINER_WIDTH,
+                DETAILS_CONTAINER_HEIGHT
+        );
         container.setPadding(new Insets(0.0, 10.0, 0.0, 10.0));
 
         // Set vbox style and layout
-        container.setStyle("-fx-background-color: #EBEBEB;" +
-                "-fx-background-radius: 4px;" +
-                "-fx-border-color: #2B2B2B;" +
-                "-fx-border-radius: 4px;" +
-                "-fx-background-insets: 1px");
+        container.setStyle(DETAILS_STYLE);
 
         // Create text elements
         Text destinationText = createText(offer.getDestination(), BIG_FONT);
@@ -168,11 +183,7 @@ public class DetailsBannerGfxElement extends HBox {
         VBox container = createContainer(NOTIFICATION_CONTAINER_WIDTH, NOTIFICATION_CONTAINER_HEIGHT);
 
         // Set vbox style and layout
-        container.setStyle("-fx-background-color: #E69E0F;" +
-                "-fx-background-radius: 4px;" +
-                "-fx-border-color: #2B2B2B;" +
-                "-fx-border-radius: 4px;" +
-                "-fx-background-insets: 1px");
+        container.setStyle(NOTIFICATION_STYLE);
 
         Label notificationLabel = new Label("+" + notificationNum);
         notificationLabel.setFont(BIG_FONT);
@@ -183,7 +194,7 @@ public class DetailsBannerGfxElement extends HBox {
     }
 
 
-    // Utility method to create vbox
+    // Utility method to create a vbox
     private VBox createContainer(int width, int height)
     {
         VBox container = new VBox();
@@ -197,7 +208,7 @@ public class DetailsBannerGfxElement extends HBox {
     }
 
 
-    // Utility method to create text elements
+    // Utility method to create a text element
     private Text createText(String text, Font font)
     {
         Text t = new Text(text);

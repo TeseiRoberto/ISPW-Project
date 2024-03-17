@@ -281,29 +281,29 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         Accommodation accommodationChanges = null;
         if(requestedAccommodationChangeCheckBox.isSelected())               // Check if any change on the accommodation is requested
         {
-            String newType = requestedAccommodationTypeComboBox.getValue();
-            int newQuality = requestedAccommodationQuality.getQualityLevel();
-            String newNumOfRoomsAsStr = requestedNumOfRoomsTextfield.getText();
-            int newNumOfRooms = 0;
+            String requestedType = currOffer.getAccommodationOffer().getType();
+            int requestedQuality = currOffer.getAccommodationOffer().getQuality();
+            int requestedNumOfRooms = currOffer.getAccommodationOffer().getNumOfRooms();
 
-            if(newType == null || newType.isEmpty())                        // No change is requested on the accommodation type
-                newType = currOffer.getAccommodationOffer().getType();
+            // Check if change is requested on the accommodation type
+            if(requestedAccommodationTypeComboBox.getValue() != null)
+                requestedType = requestedAccommodationTypeComboBox.getValue();
 
-            if(newQuality == 0)                                             // No change is requested on the accommodation quality
-                newQuality = currOffer.getAccommodationOffer().getQuality();
+            // Check if change is requested on the accommodation quality
+            if(requestedAccommodationQuality.getQualityLevel() != 0)
+                requestedQuality = requestedAccommodationQuality.getQualityLevel();
 
-            if(newNumOfRoomsAsStr == null || newNumOfRoomsAsStr.isEmpty())  // No change is requested on the number of rooms
+            // Check if change is requested on the number of rooms
+            if(!requestedNumOfRoomsTextfield.getText().isEmpty())
             {
-                newNumOfRooms = currOffer.getAccommodationOffer().getNumOfRooms();
-            } else {
                 try {
-                    newNumOfRooms = Integer.parseInt(newNumOfRoomsAsStr);
+                    requestedNumOfRooms = Integer.parseInt(requestedNumOfRoomsTextfield.getText());
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("Number of rooms cannot contain letters");
                 }
             }
 
-            accommodationChanges = new Accommodation(newType, newQuality, newNumOfRooms);
+            accommodationChanges = new Accommodation(requestedType, requestedQuality, requestedNumOfRooms);
         }
 
         return accommodationChanges;
@@ -314,39 +314,41 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     private Transport getTransportChanges() throws IllegalArgumentException
     {
         Transport transportChanges = null;
-        if(requestedTransportChangeCheckBox.isSelected())                                   // Check if any change on transport is requested
+        if(requestedTransportChangeCheckBox.isSelected())       // Check if any change on transport is requested
         {
-            String newType = requestedTransportTypeComboBox.getValue();
-            int newQuality = requestedTransportQuality.getQualityLevel();
-            String newDepartureLocation = requestedDepartureLocationTextfield.getText();
-            String newArrivalLocation = requestedDestinationTextfield.getText();
-            String newNumOfTravelersAsStr = requestedNumOfTravelersTextfield.getText();
-            int newNumOfTravelers = 0;
+            String requestedType = currOffer.getTransportOffer().getType();
+            int requestedQuality = currOffer.getTransportOffer().getQuality();
+            String requestedDepartureLocation = currOffer.getTransportOffer().getDepartureLocation();
+            String requestedArrivalLocation = currOffer.getDestination();
+            int requestedNumOfTravelers = currOffer.getTransportOffer().getNumOfTravelers();
 
-            if (newType == null || newType.isEmpty())                                       // No change is requested on the transport type
-                newType = currOffer.getTransportOffer().getType();
+            // Check if change is requested on the transport type
+            if (requestedTransportTypeComboBox.getValue() != null)
+                requestedType = requestedTransportTypeComboBox.getValue();
 
-            if (newDepartureLocation == null || newDepartureLocation.isEmpty())             // No change is requested on the departure location
-                newDepartureLocation = currOffer.getTransportOffer().getDepartureLocation();
+            // Check if change is requested on the departure location
+            if (!requestedDepartureLocationTextfield.getText().isEmpty())
+                requestedDepartureLocation = requestedDepartureLocationTextfield.getText();
 
-            if(newArrivalLocation == null || newArrivalLocation.isEmpty())                  // No change is requested on the destination
-                newArrivalLocation = currOffer.getDestination();
+            // Check if change is requested on the arrival location (the destination)
+            if(!requestedDestinationTextfield.getText().isEmpty())
+                requestedArrivalLocation = requestedDestinationTextfield.getText();
 
-            if(newQuality == 0)                                                             // No change is requested on the transport quality
-                newQuality = currOffer.getTransportOffer().getQuality();
+            // Check if change is requested on the transport quality
+            if(requestedTransportQuality.getQualityLevel() != 0)
+                requestedQuality = requestedTransportQuality.getQualityLevel();
 
-            if(newNumOfTravelersAsStr == null || newNumOfTravelersAsStr.isEmpty())          // No change is requested on the number of travelers
+            // Check if change is requested on the number of travelers
+            if(!requestedNumOfTravelersTextfield.getText().isEmpty())
             {
-                newNumOfTravelers = currOffer.getTransportOffer().getNumOfTravelers();
-            } else {
                 try {
-                    newNumOfTravelers = Integer.parseInt(newNumOfTravelersAsStr);
+                    requestedNumOfTravelers = Integer.parseInt(requestedNumOfTravelersTextfield.getText());
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("Number of travelers cannot contain letters");
                 }
             }
 
-            transportChanges = new Transport(newType, newQuality, newDepartureLocation, newArrivalLocation, newNumOfTravelers);
+            transportChanges = new Transport(requestedType, requestedQuality, requestedDepartureLocation, requestedArrivalLocation, requestedNumOfTravelers);
         }
 
         return transportChanges;

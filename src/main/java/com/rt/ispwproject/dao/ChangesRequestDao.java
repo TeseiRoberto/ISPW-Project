@@ -25,21 +25,19 @@ public class ChangesRequestDao {
             createRequestProc.setInt("relativeOfferId_in", changes.getMetadata().getRelativeOfferId());
             createRequestProc.setInt("bidderAgencyId_in", changes.getMetadata().getRelativeOfferOwner().getUserId());
             createRequestProc.setString("changesDescription_in", changes.getChangesDescription());
+            createRequestProc.setNull("newDepartureDate_in", Types.DATE);
+            createRequestProc.setNull("newReturnDate_in", Types.DATE);
+            createRequestProc.setNull("requiredPrice_in", Types.INTEGER);
 
             // Set parameters of the stored procedure according to the requested changes
             if(changes.isHolidayDurationChangeRequired())
             {
                 createRequestProc.setDate("newDepartureDate_in", Date.valueOf(changes.getHolidayDuration().getStartDate()));
                 createRequestProc.setDate("newReturnDate_in", Date.valueOf(changes.getHolidayDuration().getEndDate()));
-            } else {
-                createRequestProc.setNull("newDepartureDate_in", Types.DATE);
-                createRequestProc.setNull("newReturnDate_in", Types.DATE);
             }
 
             if(changes.isPriceChangeRequired())
                 createRequestProc.setInt("requiredPrice_in", changes.getPrice());
-            else
-                createRequestProc.setNull("requiredPrice_in", Types.INTEGER);
 
             if(changes.isAccommodationChangeRequired())
                 accommodationChangesId = accommodationChangesDao.postChangesRequest(changes.getAccommodationChanges());
@@ -51,8 +49,7 @@ public class ChangesRequestDao {
             createRequestProc.setInt("transportChangesId_in", transportChangesId);
 
             createRequestProc.execute();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e) {
             if(accommodationChangesId != 0)
             {
                 AccommodationChangesRequest accommodationChanges = accommodationChangesDao.getChangesRequestById(accommodationChangesId);
@@ -66,8 +63,7 @@ public class ChangesRequestDao {
             }
 
             throw new DbException("Failed to invoke the \"createChangesRequest\" stored procedure:\n" + e.getMessage());
-        } catch (DbException e)
-        {
+        } catch (DbException e) {
             if(accommodationChangesId != 0)
             {
                 AccommodationChangesRequest accommodationChanges = accommodationChangesDao.getChangesRequestById(accommodationChangesId);

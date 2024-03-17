@@ -121,35 +121,11 @@ public class ChangesManager {
 
         // Check for changes on the accommodation
         if(request.isAccommodationChangeRequired())
-        {
-            if(request.getAccommodationChanges().getType() != offer.getAccommodationOffer().getType())
-                isValid = true;
-
-            if(request.getAccommodationChanges().getQuality() != offer.getAccommodationOffer().getQuality())
-                isValid = true;
-
-            if(request.getAccommodationChanges().getNumOfRooms() != offer.getAccommodationOffer().getNumOfRooms())
-                isValid = true;
-        }
+            isValid = true;
 
         // Check for changes on the transport
         if(request.isTransportChangeRequired())
-        {
-            if(request.getTransportChanges().getType() != offer.getTransportOffer().getType())
-                isValid = true;
-
-            if(request.getTransportChanges().getQuality() != offer.getTransportOffer().getQuality())
-                isValid = true;
-
-            if(request.getTransportChanges().getRoute().getDepartureLocation().isEqual(offer.getTransportOffer().getRoute().getDepartureLocation()))
-                isValid = true;
-
-            if(request.getTransportChanges().getRoute().getArrivalLocation().isEqual(offer.getTransportOffer().getRoute().getArrivalLocation()))
-                isValid = true;
-
-            if(request.getTransportChanges().getNumOfTravelers() != offer.getTransportOffer().getNumOfTravelers())
-                isValid = true;
-        }
+            isValid = true;
 
         return isValid;
     }
