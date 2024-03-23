@@ -140,21 +140,23 @@ public class ChangesRequestDao {
             removeRequestProc.setInt("requestId_in", request.getMetadata().getRequestId());
             removeRequestProc.execute();
 
-            if(request.isAccommodationChangeRequired())
+            if(request.isAccommodationChangeRequired())     // Delete accommodation changes request if is present
             {
                 AccommodationChangesRequestDao accommodationChangesDao = new AccommodationChangesRequestDao();
                 accommodationChangesDao.removeChangesRequest(request.getAccommodationChanges());
             }
 
-            if(request.isTransportChangeRequired())
+            if(request.isTransportChangeRequired())         // Delete transport changes request if is present
             {
                 TransportChangesRequestDao transportChangesDao = new TransportChangesRequestDao();
                 transportChangesDao.removeChangesRequest(request.getTransportChanges());
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage() + e.getCause());
             throw new DbException("Failed to invoke the \"deleteChangesRequest\" stored procedure:\n" + e.getMessage());
         } catch (DbException e) {
+            System.out.println(e.getMessage() + e.getCause());
             throw new DbException("Cannot remove request of changes:\n" + e.getMessage());
         }
     }

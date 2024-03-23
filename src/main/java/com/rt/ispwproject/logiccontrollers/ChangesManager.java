@@ -43,7 +43,7 @@ public class ChangesManager {
 
 
     // Retrieves the changes requested by user on the given offer
-    public ChangesOnOffer getRequestedChangesOnOffer(Session currSession, Offer currOffer) throws DbException
+    public ChangesOnOffer getRequestedChangesOnOffer(Session currSession, Offer currOffer) throws DbException, IllegalArgumentException, IllegalCallerException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to retrieve requests of changes on an offer");
@@ -52,6 +52,29 @@ public class ChangesManager {
         ChangesRequest request = changesDao.getChangesRequestForOffer(currOffer.getId());
 
         return request == null ? null : request.toChangesOnOfferBean();
+    }
+
+
+    // Updates the state of the holiday offer on which changes were requested and delete the request of changes
+    public void rejectChangesRequest(Session currSession, ChangesOnOffer changes) throws DbException, IllegalCallerException
+    {
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
+            throw new IllegalCallerException("You must be logged in to reject a request of changes on an offer");
+
+        // Retrieve changes request from db
+        ChangesRequestDao changesDao = new ChangesRequestDao();
+        ChangesRequest request = changesDao.getChangesRequestById(changes.getId());
+
+        // Delete request from the db
+        changesDao.removeRequest(request);
+
+        // Retrieve holiday offer from db
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        HolidayOffer offer = offerDao.getOfferById(request.getMetadata().getRelativeOfferId());
+
+        // Update state of the offer
+        offer.getMetadata().setOfferState(HolidayOfferState.PENDING_WITH_REJECTED_CHANGES);
+        offerDao.updateOffer(offer);
     }
 
 

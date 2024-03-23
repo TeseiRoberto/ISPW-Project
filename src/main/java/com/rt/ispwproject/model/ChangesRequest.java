@@ -45,7 +45,7 @@ public class ChangesRequest {
 
 
     // Converts this instance into an OfferChanges instance (model to bean class conversion)
-    public ChangesOnOffer toChangesOnOfferBean()
+    public ChangesOnOffer toChangesOnOfferBean() throws IllegalArgumentException
     {
         ChangesOnOffer beanRequest = new ChangesOnOffer(
                 this.metadata.getRequestId(),

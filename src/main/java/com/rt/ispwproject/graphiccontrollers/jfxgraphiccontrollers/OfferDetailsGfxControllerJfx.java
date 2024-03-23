@@ -7,6 +7,7 @@ import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
 import com.rt.ispwproject.logiccontrollers.ChangesManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -80,7 +81,7 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
                 mainContainerVbox.getChildren().remove(requestedChangesVbox);
             else
                 setRequestedChangesFields();
-        } catch (DbException | IllegalArgumentException e)
+        } catch (DbException | IllegalArgumentException | IllegalCallerException e)
         {
             displayErrorDialog(e.getMessage());
         }
@@ -178,11 +179,29 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     }
 
 
-    // Invoked when the "reject changes" button is clicked
+    // Invoked when the "reject changes" button is clicked, deletes the request from db and updates the offer state
     public void onRejectChangesClick()
     {
-        // TODO: Add implementation
-        displayErrorDialog("Reject requested changes functionality is not implemented yet...");
+        if(requestedChanges == null)
+            return;
+
+        // Ask confirm to the user
+        ButtonType res = displayConfirmDialog("Do you really want to reject the changes requested by the user?");
+        if(res != ButtonType.OK)
+            return;
+
+        try {
+            ChangesManager changesManager = new ChangesManager();
+            changesManager.rejectChangesRequest(currSession, requestedChanges);
+        } catch (DbException | IllegalCallerException e) {
+            displayErrorDialog(e.getMessage());
+            return;
+        }
+
+        displayInfoDialog("Request rejected successfully!");
+        offerStatusText.setText("Requested changes has been rejected, waiting for user to evaluate the offer.");
+        mainContainerVbox.getChildren().remove(requestedChangesVbox);   // Delete the requested changes from the screen
+        requestedChanges = null;
     }
 
 
