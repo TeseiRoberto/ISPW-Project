@@ -10,8 +10,11 @@ public class HolidayOfferMetadata {
     private HolidayOfferState   offerState;
 
 
-    public HolidayOfferMetadata(int offerId, Profile offerOwner, HolidayOfferState state, int relativeRequirementsId, Profile relativeRequirementsOwner)
+    public HolidayOfferMetadata(int offerId, Profile offerOwner, HolidayOfferState state, int relativeRequirementsId, Profile relativeRequirementsOwner) throws IllegalArgumentException
     {
+        if(offerOwner == null || relativeRequirementsOwner == null)
+            throw new IllegalArgumentException("Offer/announcement owner is not specified");
+
         this.offerId = offerId;
         this.offerOwner = offerOwner;
         this.relativeRequirementsId = relativeRequirementsId;
@@ -20,8 +23,11 @@ public class HolidayOfferMetadata {
     }
 
 
-    public HolidayOfferMetadata(Profile offerOwner, HolidayOfferState state, int relativeRequirementsId, Profile relativeRequirementsOwner)
+    public HolidayOfferMetadata(Profile offerOwner, HolidayOfferState state, int relativeRequirementsId, Profile relativeRequirementsOwner) throws IllegalArgumentException
     {
+        if(offerOwner == null || relativeRequirementsOwner == null)
+            throw new IllegalArgumentException("Offer/announcement owner is not specified");
+
         this.offerId = 0;
         this.offerOwner = offerOwner;
         this.relativeRequirementsId = relativeRequirementsId;

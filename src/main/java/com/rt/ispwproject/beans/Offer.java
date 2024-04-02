@@ -10,7 +10,7 @@ public class Offer {
     private String              relativeAnnouncementOwnerUsername;
     private String              offerStatus;
     private String              destination;
-    private Duration            duration;
+    private Duration            holidayDuration;
     private int                 price;
     private Accommodation       accommodation;
     private Transport           transport;
@@ -18,13 +18,13 @@ public class Offer {
 
 
     public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername, String destination,
-                 Duration duration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
+                 Duration holidayDuration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         this.id = 0;
         setBidderUsername(bidderAgencyUsername);
         setRelativeAnnouncementOwnerUsername(relativeReqOwnerUsername);
         setDestination(destination);
-        setDuration(duration);
+        setHolidayDuration(holidayDuration);
         setPrice(price);
         setAccommodationOffer(accommodation);
         setTransportOffer(transport);
@@ -68,15 +68,15 @@ public class Offer {
         this.destination = destination;
     }
 
-    public void setDuration(Duration duration) throws IllegalArgumentException
+    public void setHolidayDuration(Duration holidayDuration) throws IllegalArgumentException
     {
-        if(duration == null)
+        if(holidayDuration == null)
             throw new IllegalArgumentException("Duration cannot be empty!");
 
-        if(!duration.getDepartureDate().isAfter(LocalDate.now()))
+        if(!holidayDuration.getDepartureDate().isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Offer departure date cannot be before (or equal to) the current date!");
 
-        this.duration = duration;
+        this.holidayDuration = holidayDuration;
     }
 
     public void setPrice(int price) throws IllegalArgumentException
@@ -112,8 +112,7 @@ public class Offer {
     public String getRelativeAnnouncementOwnerUsername()    { return this.relativeAnnouncementOwnerUsername; }
     public String getOfferStatus()                          { return this.offerStatus; }
     public String getDestination()                          { return this.destination; }
-    public LocalDate getDepartureDate()                     { return this.duration.getDepartureDate(); }
-    public LocalDate getReturnDate()                        { return this.duration.getReturnDate(); }
+    public Duration getHolidayDuration()                    { return this.holidayDuration; }
     public int getPrice()                                   { return this.price; }
     public String getPriceAsStr()                           { return Integer.toString(this.price) + '€'; }
     public Accommodation getAccommodationOffer()            { return this.accommodation; }

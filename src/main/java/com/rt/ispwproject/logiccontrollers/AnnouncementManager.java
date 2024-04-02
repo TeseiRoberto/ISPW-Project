@@ -17,7 +17,9 @@ import java.util.List;
 public class AnnouncementManager {
 
 
-    // Inserts a new announcement in the system
+    // Inserts a new announcement (holiday requirements) in the system
+    // @currSession: user that is posting a new announcement
+    // @announce: bean class that contains holiday requirements requested by the user
     public void postAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
@@ -57,6 +59,8 @@ public class AnnouncementManager {
 
 
     // Removes an existing announcement from the system
+    // @currSession: user that wants to remove the announcement
+    // @announce: the announcement that needs to be removed
     public void removeAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
@@ -68,7 +72,8 @@ public class AnnouncementManager {
     }
 
 
-    // Retrieves the announcements published by the given user
+    // Retrieves the announcements posted by the given user
+    // @returns: list of announcements posted by the given user
     public List<Announcement> getMyAnnouncements(Session currSession) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))

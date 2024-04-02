@@ -50,7 +50,7 @@ public class TransportSearcher {
             String type = availableTransportTypes.get(random.nextInt(0, availableTransportTypes.size() - 1));
             String companyName = "Company " + i;
             int companyId = random.nextInt(0, Integer.MAX_VALUE);
-            int quality = random.nextInt(1, 5);
+            int quality = random.nextInt(1, 6);
             int pricePerTraveler = switch (type)
             {
                 case "Train" -> quality * random.nextInt(40, 300);

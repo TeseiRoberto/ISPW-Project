@@ -103,8 +103,8 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     {
         offeredDestinationText.setText(currOffer.getDestination());
         offeredPriceText.setText(currOffer.getPriceAsStr());
-        offeredDepartureDateText.setText(currOffer.getDepartureDate().toString());
-        offeredReturnDateText.setText(currOffer.getReturnDate().toString());
+        offeredDepartureDateText.setText(currOffer.getHolidayDuration().getDepartureDate().toString());
+        offeredReturnDateText.setText(currOffer.getHolidayDuration().getReturnDate().toString());
         offeredAccommodationTypeText.setText(currOffer.getAccommodationOffer().getType());
         offeredNumOfRoomsText.setText( Integer.toString(currOffer.getAccommodationOffer().getNumOfRooms()) );
         offeredAccommodationNameText.setText(currOffer.getAccommodationOffer().getName());
@@ -242,7 +242,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         int newPrice = 0;
         try {
             String priceAsStr = requestedPriceTextfield.getText();
-            if(priceAsStr != null && !priceAsStr.isEmpty())
+            if(priceAsStr != null && !priceAsStr.isBlank())
             {
                 newPrice = Integer.parseInt(priceAsStr);
 
@@ -269,8 +269,8 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
             return null;
 
         return new Duration(
-                departureDate == null ? currOffer.getDepartureDate() : departureDate,
-                returnDate == null ? currOffer.getReturnDate() : returnDate
+                departureDate == null ? currOffer.getHolidayDuration().getDepartureDate() : departureDate,
+                returnDate == null ? currOffer.getHolidayDuration().getReturnDate() : returnDate
         );
     }
 
@@ -294,7 +294,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
                 requestedQuality = requestedAccommodationQuality.getQualityLevel();
 
             // Check if change is requested on the number of rooms
-            if(!requestedNumOfRoomsTextfield.getText().isEmpty())
+            if(!requestedNumOfRoomsTextfield.getText().isBlank())
             {
                 try {
                     requestedNumOfRooms = Integer.parseInt(requestedNumOfRoomsTextfield.getText());
@@ -327,11 +327,11 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
                 requestedType = requestedTransportTypeComboBox.getValue();
 
             // Check if change is requested on the departure location
-            if (!requestedDepartureLocationTextfield.getText().isEmpty())
+            if (!requestedDepartureLocationTextfield.getText().isBlank())
                 requestedDepartureLocation = requestedDepartureLocationTextfield.getText();
 
             // Check if change is requested on the arrival location (the destination)
-            if(!requestedDestinationTextfield.getText().isEmpty())
+            if(!requestedDestinationTextfield.getText().isBlank())
                 requestedArrivalLocation = requestedDestinationTextfield.getText();
 
             // Check if change is requested on the transport quality
@@ -339,7 +339,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
                 requestedQuality = requestedTransportQuality.getQualityLevel();
 
             // Check if change is requested on the number of travelers
-            if(!requestedNumOfTravelersTextfield.getText().isEmpty())
+            if(!requestedNumOfTravelersTextfield.getText().isBlank())
             {
                 try {
                     requestedNumOfTravelers = Integer.parseInt(requestedNumOfTravelersTextfield.getText());

@@ -23,6 +23,7 @@ public class BaseGfxControllerJfx {
     // Names of the screens used by the travel agency
     protected static final String   SEARCH_ANNOUNCEMENTS_SCREEN_NAME = "travelAgency/searchAnnouncementsScreen.fxml";
     protected static final String   MAKE_OFFER_SCREEN_NAME = "travelAgency/makeOfferScreen.fxml";
+    protected static final String   MAKE_COUNTEROFFER_SCREEN_NAME = "travelAgency/makeCounterofferScreen.fxml";
     protected static final String   MY_OFFERS_SCREEN_NAME = "travelAgency/myOffersScreen.fxml";
     protected static final String   OFFER_DETAILS_SCREEN_NAME = "travelAgency/offerDetailsScreen.fxml";
 

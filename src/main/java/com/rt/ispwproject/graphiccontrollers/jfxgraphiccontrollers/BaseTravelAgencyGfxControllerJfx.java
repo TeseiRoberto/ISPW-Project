@@ -23,7 +23,7 @@ public class BaseTravelAgencyGfxControllerJfx extends BaseGfxControllerJfx {
     // Invoked when the "my offers" button is clicked, switches to the "my offers" screen
     public void onMyOffersClick()
     {
-        changeScreen(getClass().getResource(MY_OFFERS_SCREEN_NAME),
+        changeScreen(BaseTravelAgencyGfxControllerJfx.class.getResource(MY_OFFERS_SCREEN_NAME),
                 c -> new MyOffersGfxControllerJfx(currSession, mainStage));
     }
 

@@ -7,6 +7,7 @@ module com.rt.ispwproject {
 
     opens com.rt.ispwproject to javafx.fxml;
     opens com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers to javafx.fxml;
+    opens com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller to javafx.fxml;
     opens com.rt.ispwproject.beans to com.google.gson;
     opens com.rt.ispwproject.model to com.google.gson;
 

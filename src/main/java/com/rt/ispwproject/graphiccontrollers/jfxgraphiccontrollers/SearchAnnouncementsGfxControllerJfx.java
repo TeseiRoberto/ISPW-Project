@@ -4,6 +4,7 @@ import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.DetailsBannerGfxElement;
+import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller.MakeOfferGfxControllerJfx;
 import com.rt.ispwproject.logiccontrollers.SearchAnnouncementsManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

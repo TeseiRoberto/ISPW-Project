@@ -142,8 +142,8 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
         offerStatusText.setText(offer.getOfferStatus());
         offeredDestinationText.setText(offer.getDestination());
         offeredPriceText.setText(offer.getPriceAsStr());
-        offeredDepartureDateText.setText(offer.getDepartureDate().toString());
-        offeredReturnDateText.setText(offer.getReturnDate().toString());
+        offeredDepartureDateText.setText(offer.getHolidayDuration().getDepartureDate().toString());
+        offeredReturnDateText.setText(offer.getHolidayDuration().getReturnDate().toString());
         offeredAccommodationTypeText.setText(offer.getAccommodationOffer().getType());
         offeredAccommodationNameText.setText(offer.getAccommodationOffer().getName());
         offeredNumOfRoomsText.setText( Integer.toString(offer.getAccommodationOffer().getNumOfRooms()) );

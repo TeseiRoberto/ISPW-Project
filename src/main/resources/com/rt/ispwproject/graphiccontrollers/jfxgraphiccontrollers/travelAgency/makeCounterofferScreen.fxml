@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller.MakeOfferGfxControllerJfx">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller.MakeCounterofferGfxControllerJfx">
    <top>
       <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: E69E0F;" BorderPane.alignment="CENTER">
          <left>
@@ -90,7 +90,7 @@
                      <center>
                         <HBox id="screen_title" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="53.0" prefWidth="616.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Making offer to:">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Making counteroffer to:">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -116,7 +116,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <right>
-                        <Button id="closeAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onCloseAnnouncementClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE" BorderPane.alignment="CENTER">
+                        <Button id="closeAnnouncement_btn" mnemonicParsing="false" onMouseClicked="#onCloseMakeCounterofferClick" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" textFill="WHITE" BorderPane.alignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -603,7 +603,7 @@
                         </HBox>
                      </children>
                   </GridPane>
-                  <Button id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onMakeOfferClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Make offer" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onMakeCounterofferClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Make counteroffer" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>

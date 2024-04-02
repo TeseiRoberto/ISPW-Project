@@ -74,6 +74,7 @@ public class AccommodationOfferDao {
                             rs.getInt("totalPrice")
                     );
 
+                    offer.setId(rs.getInt("id"));
                     offer.setAccommodationId(rs.getInt("accommodationId"));
                 }
                 rs.close();

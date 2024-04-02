@@ -5,6 +5,7 @@ import com.rt.ispwproject.apiboundaries.TransportSearcher;
 import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
+import com.rt.ispwproject.dao.ChangesRequestDao;
 import com.rt.ispwproject.dao.HolidayOfferDao;
 import com.rt.ispwproject.dao.ProfileDao;
 import com.rt.ispwproject.exceptions.ApiException;
@@ -23,57 +24,28 @@ public class OfferManager {
     private static final double  TRAVEL_AGENCY_PERCENTAGE = 0.05;    // Percentage of profit for the travel agency if the offer is accepted by the user
 
 
-    // Inserts a new offer (intended for the given announcement) in the system
+    // Inserts a new offer in the system
+    // @currSession: user that is inserting a new offer
+    // @announce: announcement (holiday requirements) for which the new offer is intended
+    // @offer: bean class that contains the details of the holiday offer
     public void makeOfferToUser(Session currSession, Announcement announce, Offer offer) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to make an offer to another user");
 
-        Profile user = SessionManager.getInstance().getProfile(currSession);
-
-        // Retrieve profile of the user that posted the announcement for which the offer is intended
+        // Retrieve the profiles of the offer owner and announcement owner
         ProfileDao profileDao = new ProfileDao();
-        Profile announcementOwner = profileDao.getProfileByUsername(announce.getOwnerUsername());
+        Profile announcementOwner = profileDao.getProfileByUsername(offer.getRelativeAnnouncementOwnerUsername());
+        Profile offerOwner = SessionManager.getInstance().getProfile(currSession);
 
-        HolidayOfferMetadata metadata = new HolidayOfferMetadata(user, HolidayOfferState.PENDING, announce.getId(), announcementOwner);
-        DateRange holidayDuration = new DateRange(offer.getDepartureDate(), offer.getReturnDate());
-        Location destination = LocationFactory.getInstance().createLocation(offer.getDestination());
-        Location accommodationLocation = LocationFactory.getInstance().createLocation(offer.getAccommodationOffer().getAddress());
-        Route transportRoute = new Route(
-            LocationFactory.getInstance().createLocation(offer.getTransportOffer().getDepartureLocation()),
-            LocationFactory.getInstance().createLocation(offer.getTransportOffer().getArrivalLocation())
-        );
-
-        AccommodationOffer accommodationOffer = AccommodationFactory.getInstance().createOffer(
-                AccommodationType.fromViewType(offer.getAccommodationOffer().getType()),
-                offer.getAccommodationOffer().getName(),
-                accommodationLocation,
-                holidayDuration,
-                offer.getAccommodationOffer().getQuality(),
-                offer.getAccommodationOffer().getNumOfRooms(),
-                offer.getAccommodationOffer().getPrice()
-        );
-
-        TransportOffer transportOffer = TransportFactory.getInstance().createOffer(
-                TransportType.fromViewType(offer.getTransportOffer().getType()),
-                offer.getTransportOffer().getCompanyName(),
-                transportRoute,
-                holidayDuration,
-                offer.getTransportOffer().getQuality(),
-                offer.getTransportOffer().getNumOfTravelers(),
-                offer.getTransportOffer().getPricePerTraveler()
-        );
-
-        accommodationOffer.setAccommodationId(offer.getAccommodationOffer().getAccommodationId());
-        transportOffer.setCompanyId(offer.getTransportOffer().getCompanyId());
-
-        HolidayOffer holidayOffer = new HolidayOffer(metadata, destination, holidayDuration, offer.getPrice(), accommodationOffer, transportOffer);
+        HolidayOffer newOffer = createOffer(offerOwner, offer, announcementOwner, announce.getId());
         HolidayOfferDao offerDao = new HolidayOfferDao();
-        offerDao.postOffer(holidayOffer);
+        offerDao.postOffer(newOffer);
     }
 
 
     // Retrieves all the offers made by the travel agency associated to the given session
+    // @returns: list of offers made by the given user
     public List<Offer> getMyOffers(Session currSession) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
@@ -97,7 +69,10 @@ public class OfferManager {
     }
 
 
-    // Retrieves all the offers made by travel agencies to the given announcement
+    // Retrieves all the offers made by travel agencies
+    // @currSession: user that wants to retrieve the offers
+    // @announce: announcement for which we want to retrieve offers
+    // @returns: list of offers made to the given announcement
     public List<Offer> getOffersForAnnouncement(Session currSession, Announcement announce) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
@@ -129,6 +104,8 @@ public class OfferManager {
 
 
     // Marks the given offer as rejected
+    // @currSession: user that is rejecting the offer
+    // @offer: offer that needs to be marked as rejected
     public void rejectOffer(Session currSession, Offer offer) throws DbException, IllegalCallerException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
@@ -141,7 +118,45 @@ public class OfferManager {
     }
 
 
-    // Queries the accommodation API and returns a list of the available accommodations
+    // Updates the original offer with the new one and removes the request of changes
+    // @currSession: user that is making a counteroffer
+    // @offer: bean class that contains the details of the counteroffer
+    // @requestedChanges: bean class that contains the changes requested by the user on the original holiday offer
+    public void makeCounteroffer(Session currSession, Offer offer, ChangesOnOffer requestedChanges) throws DbException, IllegalCallerException, IllegalArgumentException
+    {
+        if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
+            throw new IllegalCallerException("You must be logged in to make a counteroffer");
+
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        HolidayOffer originalOffer = offerDao.getOfferById(requestedChanges.getRelativeOfferId());
+
+        ChangesRequestDao changesDao = new ChangesRequestDao();
+        ChangesRequest changes = changesDao.getChangesRequestById(requestedChanges.getId());
+
+        // Create an updated holiday offer
+        HolidayOffer counteroffer = createOffer(
+                SessionManager.getInstance().getProfile(currSession),
+                offer,
+                originalOffer.getMetadata().getRelativeRequirementsOwner(),
+                originalOffer.getMetadata().getRelativeRequirementsId()
+        );
+
+        // Set same metadata of the original offer for the counteroffer
+        counteroffer.setMetadata(originalOffer.getMetadata());
+        counteroffer.getMetadata().setOfferState(HolidayOfferState.PENDING_WITH_CHANGES);
+        counteroffer.getAccommodationOffer().setId(originalOffer.getAccommodationOffer().getId());
+        counteroffer.getTransportOffer().setId(originalOffer.getTransportOffer().getId());
+
+        // Save the updated offer and remove the request of changes from the system
+        offerDao.updateOffer(counteroffer);
+        changesDao.removeRequest(changes);
+
+        offer.setOfferStatus(HolidayOfferState.PENDING_WITH_CHANGES.toViewType());
+    }
+
+
+    // Queries the accommodation API to get the available accommodations
+    // @returns: list of accommodations that satisfies the given criteria
     public List<Accommodation> getAvailableAccommodations(String destination, Duration checkInOutDates, int numOfRooms) throws ApiException
     {
         AccommodationSearcher searcher = new AccommodationSearcher();
@@ -149,7 +164,8 @@ public class OfferManager {
     }
 
 
-    // Queries the transportation API and returns a list of the available transports
+    // Queries the transportation API to get the available transports
+    // @returns: list of transportations that satisfies the given criteria
     public List<Transport> getAvailableTransports(String departureLocation, String destination,
                                                   Duration departureAndReturnDates, int numOfTravelers) throws ApiException
     {
@@ -159,6 +175,9 @@ public class OfferManager {
 
 
     // Calculates the price of the offer according to the accommodation and transport prices and the travel agency percentage
+    // @accommodation: bean class that contains details about the accommodation
+    // @transport: bean class that contains details about the transport
+    // @returns: price of the offer with the given accommodation and transport
     public int calculateOfferPrice(Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {
         int price = 0;
@@ -173,6 +192,54 @@ public class OfferManager {
             throw new IllegalArgumentException("Offer price cannot be negative or zero!");
 
         return price;
+    }
+
+
+    // Creates an HolidayOffer instance using the given data
+    // @offerOwner: profile of the user that is making the offer
+    // @offerBean: bean class that contains the details of the offer
+    // @announcementOwner: profile of the user that posted the announcement for which the offer is intended
+    // @announcementId: id of the announcement for which the offer is intended
+    private HolidayOffer createOffer(Profile offerOwner, Offer offerBean, Profile announcementOwner, int announcementId) throws IllegalArgumentException
+    {
+        HolidayOfferMetadata metadata = new HolidayOfferMetadata(offerOwner, HolidayOfferState.PENDING, announcementId, announcementOwner);
+
+        DateRange holidayDuration = new DateRange(offerBean.getHolidayDuration().getDepartureDate(), offerBean.getHolidayDuration().getReturnDate());
+
+        Location destination = LocationFactory.getInstance().createLocation(offerBean.getDestination());
+
+        Location accommodationLocation = LocationFactory.getInstance().createLocation(offerBean.getAccommodationOffer().getAddress());
+
+        Route transportRoute = new Route(
+                LocationFactory.getInstance().createLocation(offerBean.getTransportOffer().getDepartureLocation()),
+                LocationFactory.getInstance().createLocation(offerBean.getTransportOffer().getArrivalLocation())
+        );
+
+        AccommodationOffer accommodationOffer = AccommodationFactory.getInstance().createOffer(
+                AccommodationType.fromViewType(offerBean.getAccommodationOffer().getType()),
+                offerBean.getAccommodationOffer().getName(),
+                accommodationLocation,
+                holidayDuration,
+                offerBean.getAccommodationOffer().getQuality(),
+                offerBean.getAccommodationOffer().getNumOfRooms(),
+                offerBean.getAccommodationOffer().getPrice()
+        );
+
+        TransportOffer transportOffer = TransportFactory.getInstance().createOffer(
+                TransportType.fromViewType(offerBean.getTransportOffer().getType()),
+                offerBean.getTransportOffer().getCompanyName(),
+                transportRoute,
+                holidayDuration,
+                offerBean.getTransportOffer().getQuality(),
+                offerBean.getTransportOffer().getNumOfTravelers(),
+                offerBean.getTransportOffer().getPricePerTraveler()
+        );
+
+        accommodationOffer.setAccommodationId(offerBean.getAccommodationOffer().getAccommodationId());
+        transportOffer.setCompanyId(offerBean.getTransportOffer().getCompanyId());
+
+        // Now we can build the new holiday offer
+        return new HolidayOffer(metadata, destination, holidayDuration, offerBean.getPrice(), accommodationOffer, transportOffer);
     }
 
 }

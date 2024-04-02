@@ -79,6 +79,7 @@ public class TransportOfferDao {
                             rs.getInt("pricePerTraveler")
                     );
 
+                    offer.setId(rs.getInt("id"));
                     offer.setCompanyId(rs.getInt("companyId"));
                 }
                 rs.close();

@@ -17,24 +17,27 @@ import com.rt.ispwproject.model.*;
 public class ChangesManager {
 
 
-    // Sends the given request of changes to the travel agency that made the given offer
-    public void requestChangesOnOffer(Session currSession, ChangesOnOffer changes, Offer currOffer) throws DbException, IllegalArgumentException
+    // Inserts a new request of changes in the system
+    // @currSession: user that requesting changes
+    // @changes: bean class that contains details about the requested changes
+    // @offer: the offer on which changes are requested
+    public void requestChangesOnOffer(Session currSession, ChangesOnOffer changes, Offer offer) throws DbException, IllegalArgumentException, IllegalCallerException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.SIMPLE_USER))
             throw new IllegalCallerException("You must be logged in to request changes on an offer");
 
         // Retrieve profiles of the user that is requesting changes and the user that made the offer
-        Profile requestOwner = SessionManager.getInstance().getProfile(currSession);
         ProfileDao profileDao = new ProfileDao();
-        Profile offerOwner = profileDao.getProfileByUsername(currOffer.getBidderUsername());
+        Profile offerOwner = profileDao.getProfileByUsername(offer.getBidderUsername());
+        Profile requestOwner = SessionManager.getInstance().getProfile(currSession);
 
         // Retrieve the holiday offer on which changes are requested
         HolidayOfferDao offerDao = new HolidayOfferDao();
-        HolidayOffer offer = offerDao.getOfferById(currOffer.getId());
+        HolidayOffer currOffer = offerDao.getOfferById(offer.getId());
 
-        ChangesRequest request = buildRequest(requestOwner, changes, offerOwner, offer.getMetadata().getOfferId());
+        ChangesRequest request = createRequest(requestOwner, changes, offerOwner, currOffer.getMetadata().getOfferId());
 
-        if(!isRequestValid(request, offer))
+        if(!isRequestValid(request, currOffer))
             throw new IllegalArgumentException("No change has been specified");
 
         ChangesRequestDao changesDao = new ChangesRequestDao();
@@ -42,7 +45,10 @@ public class ChangesManager {
     }
 
 
-    // Retrieves the changes requested by user on the given offer
+    // Retrieves the request of changes relative to the given offer
+    // @currSession: user that wants to retrieve the request of changes
+    // @offer: offer to check for changes request
+    // @returns: bean class that contains details about the requested changes, null if no request of changes is available for the given offer
     public ChangesOnOffer getRequestedChangesOnOffer(Session currSession, Offer currOffer) throws DbException, IllegalArgumentException, IllegalCallerException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
@@ -56,12 +62,14 @@ public class ChangesManager {
 
 
     // Updates the state of the holiday offer on which changes were requested and delete the request of changes
+    // @currSession: user that is rejecting the request of changes
+    // @changes: request of changes that will be deleted from the system
     public void rejectChangesRequest(Session currSession, ChangesOnOffer changes) throws DbException, IllegalCallerException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))
             throw new IllegalCallerException("You must be logged in to reject a request of changes on an offer");
 
-        // Retrieve changes request from db
+        // Retrieve the request of changes from db
         ChangesRequestDao changesDao = new ChangesRequestDao();
         ChangesRequest request = changesDao.getChangesRequestById(changes.getId());
 
@@ -78,8 +86,12 @@ public class ChangesManager {
     }
 
 
-    // Returns a ChangesRequest instance that contains the changes specified in the given bean class
-    private ChangesRequest buildRequest(Profile requestOwner, ChangesOnOffer changes, Profile offerOwner, int offerId) throws IllegalArgumentException
+    // Creates a ChangesRequest instance using the given data
+    // @requestOwner: user that is requesting changes
+    // @changes: bean class that contains details about the changes requested
+    // @offerOwner: user that made the offer on which changes are requested
+    // @offerId: id of the holiday offer on which changes are requested
+    private ChangesRequest createRequest(Profile requestOwner, ChangesOnOffer changes, Profile offerOwner, int offerId) throws IllegalArgumentException
     {
         ChangesRequestMetadata metadata = new ChangesRequestMetadata(requestOwner, offerId, offerOwner);
         ChangesRequest newRequest = new ChangesRequest(metadata, changes.getChangesDescription());
@@ -127,8 +139,8 @@ public class ChangesManager {
     }
 
 
-    // Checks that the given changes request is a valid request for the given holiday offer.
-    // A changes request is valid if it contains at least one change and the value specified (for the change) differs from
+    // Checks that the given request of changes is a valid request for the given holiday offer.
+    // A request of changes is valid if it contains at least one change and the value specified (for the change) differs from
     // the value in the relative holiday offer.
     private boolean isRequestValid(ChangesRequest request, HolidayOffer offer)
     {

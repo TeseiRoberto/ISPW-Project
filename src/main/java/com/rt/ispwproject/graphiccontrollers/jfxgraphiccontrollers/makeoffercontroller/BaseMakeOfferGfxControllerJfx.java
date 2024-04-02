@@ -1,8 +1,11 @@
-package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers;
+package com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller;
 
-import com.rt.ispwproject.beans.*;
+import com.rt.ispwproject.beans.Accommodation;
+import com.rt.ispwproject.beans.Duration;
+import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.beans.Transport;
 import com.rt.ispwproject.exceptions.ApiException;
-import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.BaseTravelAgencyGfxControllerJfx;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.AccommodationOfferGfxElement;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.TransportOfferGfxElement;
@@ -22,106 +25,84 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.List;
 
-// Graphic controller used by the "TRAVEL_AGENCY" to make an offer to a selected announcement
-public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
-    private static final String     NOT_SELECTED_YET_MSG = "Not selected yet...";
-    private static final Font       DEFAULT_FONT = new Font("System", 18);
-    private final Announcement      currAnnounce;
-    private Accommodation           chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
-    private Transport               chosenTransport = null;     // TransportOffer offer chosen using the search window
-    private Stage                   searchWindow = null;        // Window used to display a list of the available accommodations/transports
-    private VBox                    availableElements = null;   // Vbox used in the search window to contain the available accommodations/transports
+// This controller implements some basic functionalities for the make offer screen, this is specialized
+// by other graphic controllers to implement the make offer screen and make counteroffer screen.
+public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
+    private static final String         NOT_SELECTED_YET_MSG = "Not selected yet...";
+    private static final Font           DEFAULT_FONT = new Font("System", 18);
+    protected Accommodation             chosenAccommodation = null; // AccommodationOffer offer chosen using the search window
+    protected Transport                 chosenTransport = null;     // TransportOffer offer chosen using the search window
+    private Stage                       searchWindow = null;        // Window used to display a list of the available accommodations/transports
+    private VBox                        availableElements = null;   // Vbox used in the search window to contain the available accommodations/transports
 
     // Fields for the user request
-    @FXML private Text              announcementOwnerText;
-    @FXML private TextArea          announcementDescriptionTextarea;
-    @FXML private Text              requestedDestinationText;
-    @FXML private Text              requestedDepartureDateText;
-    @FXML private Text              requestedReturnDateText;
-    @FXML private Text              requestedAccommodationTypeText;
-    @FXML private HBox              requestedAccommodationQualityHbox;
-    private final QualityIndicator  requestedAccommodationQuality = new QualityIndicator(0);
-    @FXML private Text              requestedNumOfRoomsText;
-    @FXML private Text              requestedTransportTypeText;
-    @FXML private HBox              requestedTransportQualityHbox;
-    private final QualityIndicator  requestedTransportQuality = new QualityIndicator(0);
-    @FXML private Text              requestedNumOfTravelersText;
-    @FXML private Text              requestedDepartureLocationText;
-    @FXML private Text              availableBudgetText;
+    @FXML protected Text                announcementOwnerText;
+    @FXML protected TextArea            announcementDescriptionTextarea;
+    @FXML protected Text                requestedDestinationText;
+    @FXML protected Text                requestedDepartureDateText;
+    @FXML protected Text                requestedReturnDateText;
+    @FXML protected Text                requestedAccommodationTypeText;
+    @FXML protected HBox                requestedAccommodationQualityHbox;
+    protected final QualityIndicator    requestedAccommodationQuality = new QualityIndicator(0);
+    @FXML protected Text                requestedNumOfRoomsText;
+    @FXML protected Text                requestedTransportTypeText;
+    @FXML protected HBox                requestedTransportQualityHbox;
+    protected QualityIndicator          requestedTransportQuality = new QualityIndicator(0);
+    @FXML protected Text                requestedNumOfTravelersText;
+    @FXML protected Text                requestedDepartureLocationText;
+    @FXML protected Text                availableBudgetText;
 
     // Fields for the travel agency offer
-    @FXML private TextField         offeredDestinationTextfield;
-    @FXML private DatePicker        offeredDepartureDatePicker;
-    @FXML private DatePicker        offeredReturnDatePicker;
-    @FXML private Text              offeredAccommodationTypeText;
-    @FXML private Text              offeredAccommodationNameText;
-    @FXML private HBox              offeredAccommodationQualityHbox;
-    private final QualityIndicator  offeredAccommodationQuality = new QualityIndicator(0);
-    @FXML private Text              offeredAccommodationAddressText;
-    @FXML private TextField         offeredNumOfRoomsTextfield;
-    @FXML private Text              offeredAccommodationPriceText;
-    @FXML private Text              offeredTransportTypeText;
-    @FXML private Text              offeredTransportCompanyNameText;
-    @FXML private HBox              offeredTransportQualityHbox;
-    private final QualityIndicator  offeredTransportQuality = new QualityIndicator(0);
-    @FXML private TextField         offeredDepartureLocationTextfield;
-    @FXML private Text              offeredTransportPriceText;
-    @FXML private TextField         offeredNumOfTravelersTextfield;
-    @FXML private Text              offeredPriceText;
+    @FXML protected TextField           offeredDestinationTextfield;
+    @FXML protected DatePicker          offeredDepartureDatePicker;
+    @FXML protected DatePicker          offeredReturnDatePicker;
+    @FXML protected Text                offeredAccommodationTypeText;
+    @FXML protected Text                offeredAccommodationNameText;
+    @FXML protected HBox                offeredAccommodationQualityHbox;
+    protected final QualityIndicator    offeredAccommodationQuality = new QualityIndicator(0);
+    @FXML protected Text                offeredAccommodationAddressText;
+    @FXML protected TextField           offeredNumOfRoomsTextfield;
+    @FXML protected Text                offeredAccommodationPriceText;
+    @FXML protected Text                offeredTransportTypeText;
+    @FXML protected Text                offeredTransportCompanyNameText;
+    @FXML protected HBox                offeredTransportQualityHbox;
+    protected final QualityIndicator    offeredTransportQuality = new QualityIndicator(0);
+    @FXML protected TextField           offeredDepartureLocationTextfield;
+    @FXML protected Text                offeredTransportPriceText;
+    @FXML protected TextField           offeredNumOfTravelersTextfield;
+    @FXML protected Text                offeredPriceText;
 
     /* This variable is used in the onDepartureDateChange and onReturnDateChange callbacks, is needed to avoid getting stuck in
-     * a loop indeed such callbacks can change the value of the property they are related to and when that happens the callback is invoked again
+     * a loop indeed such callbacks can change the value of the property they are related to and when that happens the callback is invoked again.
      * To avoid this we set and check the value of this variable every time a change happens*/
     private boolean                 dataUpdatedOnCallback = false;
 
 
-    public MakeOfferGfxControllerJfx(Session session, Stage stage, Announcement announce)
+    public BaseMakeOfferGfxControllerJfx(Session session, Stage stage)
     {
         super(session, stage);
-        this.currAnnounce = announce;
     }
 
 
-    @FXML void initialize()
+    // Set callbacks for the offer fields and inserts the quality indicators in their relative hboxes,
+    // this method must be called by a derived class in the (fxml) initialize method
+    protected void initializeGui()
     {
-        setRequestFields();
+        this.offeredDestinationTextfield.textProperty().addListener((ov, oldVal, newVal) -> onDestinationChanged(oldVal));
+        this.offeredNumOfRoomsTextfield.textProperty().addListener((ov, oldVal, newVal) -> onNumOfRoomsChanged(oldVal));
+        this.offeredNumOfTravelersTextfield.textProperty().addListener((ov, oldVal, newVal) -> onNumOfTravelersChanged(oldVal));
+        this.offeredDepartureLocationTextfield.textProperty().addListener((ov, oldVal, newVal) -> onDepartureLocationChanged(oldVal));
+        this.offeredDepartureDatePicker.valueProperty().addListener((ov, oldVal, newVal) -> onDepartureDateChanged(oldVal));
+        this.offeredReturnDatePicker.valueProperty().addListener((ov, oldVal, newVal) -> onReturnDateChanged(oldVal));
 
-        // Insert quality indicators for the offer in their hboxes
-        offeredAccommodationQualityHbox.getChildren().add(offeredAccommodationQuality);
-        offeredTransportQualityHbox.getChildren().add(offeredTransportQuality);
+        this.requestedAccommodationQualityHbox.getChildren().add(this.requestedAccommodationQuality);
+        this.requestedTransportQualityHbox.getChildren().add(this.requestedTransportQuality);
 
-        // Set callbacks for the offer fields
-        offeredDestinationTextfield.textProperty().addListener((ov, oldVal, newVal) -> onDestinationChanged(oldVal));
-        offeredNumOfRoomsTextfield.textProperty().addListener((ov, oldVal, newVal) -> onNumOfRoomsChanged(oldVal));
-        offeredNumOfTravelersTextfield.textProperty().addListener((ov, oldVal, newVal) -> onNumOfTravelersChanged(oldVal));
-        offeredDepartureLocationTextfield.textProperty().addListener((ov, oldVal, newVal) -> onDepartureLocationChanged(oldVal));
-        offeredDepartureDatePicker.valueProperty().addListener((ov, oldVal, newVal) -> onDepartureDateChanged(oldVal));
-        offeredReturnDatePicker.valueProperty().addListener((ov, oldVal, newVal) -> onReturnDateChanged(oldVal));
+        this.offeredAccommodationQualityHbox.getChildren().add(this.offeredAccommodationQuality);
+        this.offeredTransportQualityHbox.getChildren().add(this.offeredTransportQuality);
         updateOfferPrice();
-    }
-
-
-    // Fills in the fields of the user request with the announcement data
-    public void setRequestFields()
-    {
-        announcementOwnerText.setText(currAnnounce.getOwnerUsername());
-        announcementDescriptionTextarea.setText(currAnnounce.getHolidayDescription());
-        requestedDestinationText.setText(currAnnounce.getDestination());
-        requestedDepartureDateText.setText(currAnnounce.getHolidayDuration().getDepartureDate().toString());
-        requestedReturnDateText.setText(currAnnounce.getHolidayDuration().getReturnDate().toString());
-        requestedAccommodationTypeText.setText(currAnnounce.getAccommodationRequirements().getType());
-        requestedNumOfRoomsText.setText( Integer.toString(currAnnounce.getAccommodationRequirements().getNumOfRooms()) );
-        requestedTransportTypeText.setText(currAnnounce.getTransportRequirements().getType());
-        requestedDepartureLocationText.setText(currAnnounce.getTransportRequirements().getDepartureLocation());
-        availableBudgetText.setText(currAnnounce.getAvailableBudgetAsStr());
-        requestedNumOfTravelersText.setText( Integer.toString(currAnnounce.getTransportRequirements().getNumOfTravelers()) );
-
-        requestedAccommodationQuality.setQualityLevel(currAnnounce.getAccommodationRequirements().getQuality());
-        requestedAccommodationQualityHbox.getChildren().add(this.requestedAccommodationQuality);
-        requestedTransportQuality.setQualityLevel(currAnnounce.getTransportRequirements().getQuality());
-        requestedTransportQualityHbox.getChildren().add(this.requestedTransportQuality);
     }
 
 
@@ -266,7 +247,7 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
     }
 
 
-    // Invoked when the "search accommodation" button is clicked
+    // Invoked when the "search accommodation" button is clicked, creates a window in which the available accommodations will be displayed
     public void onSearchAccommodationClick()
     {
         int numOfRooms = 0;
@@ -350,7 +331,7 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
     }
 
 
-    // Invoked when the "search transport" button is clicked
+    // Invoked when the "search transport" button is clicked, creates a window in which the available transports will be displayed
     public void onSearchTransportClick()
     {
         int numOfTravelers = 0;
@@ -476,47 +457,6 @@ public class MakeOfferGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx 
             searchWindow = null;
             availableElements = null;
         }
-    }
-
-
-    // Invoked when the "close announcement" button is clicked, switches to the "search announcements" screen
-    public void onCloseAnnouncementClick()
-    {
-        changeScreen(getClass().getResource(SEARCH_ANNOUNCEMENTS_SCREEN_NAME),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
-    }
-
-
-    // Invoked when the "make offer" button is clicked, sends the offer to the user and switches to the "my offers" screen
-    public void onMakeOfferClick()
-    {
-        try {
-            if(chosenAccommodation == null)
-                throw new IllegalArgumentException("No accommodation has been selected yet...");
-
-            if(chosenTransport == null)
-                throw new IllegalArgumentException("No transport has been selected yet...");
-
-            OfferManager offerManager = new OfferManager();
-            int offerPrice = offerManager.calculateOfferPrice(chosenAccommodation, chosenTransport);
-
-            Offer newOffer = new Offer(
-                    currSession.getUsername(), currAnnounce.getOwnerUsername(),
-                    offeredDestinationTextfield.getText(),
-                    new Duration(offeredDepartureDatePicker.getValue(), offeredReturnDatePicker.getValue()),
-                    offerPrice, chosenAccommodation, chosenTransport
-            );
-
-            offerManager.makeOfferToUser(currSession, currAnnounce, newOffer);
-        } catch(IllegalCallerException | IllegalArgumentException | DbException e)
-        {
-            displayErrorDialog(e.getMessage());
-            return;
-        }
-
-        displayInfoDialog("Offer sent correctly!");
-        changeScreen(getClass().getResource(SEARCH_ANNOUNCEMENTS_SCREEN_NAME),
-                c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }
 
 

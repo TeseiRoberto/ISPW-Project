@@ -5,6 +5,7 @@ import com.rt.ispwproject.beans.ChangesOnOffer;
 import com.rt.ispwproject.beans.Session;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.jfxwidgets.QualityIndicator;
+import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.makeoffercontroller.MakeCounterofferGfxControllerJfx;
 import com.rt.ispwproject.logiccontrollers.ChangesManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
@@ -96,8 +97,8 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     {
         offeredDestinationText.setText(currOffer.getDestination());
         offeredPriceText.setText(currOffer.getPriceAsStr());
-        offeredDepartureDateText.setText(currOffer.getDepartureDate().toString());
-        offeredReturnDateText.setText(currOffer.getReturnDate().toString());
+        offeredDepartureDateText.setText(currOffer.getHolidayDuration().getDepartureDate().toString());
+        offeredReturnDateText.setText(currOffer.getHolidayDuration().getReturnDate().toString());
         offeredAccommodationTypeText.setText(currOffer.getAccommodationOffer().getType());
         offeredAccommodationNameText.setText(currOffer.getAccommodationOffer().getName());
         offeredAccommodationAddressText.setText(currOffer.getAccommodationOffer().getAddress());
@@ -205,10 +206,10 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
     }
 
 
-    // Invoked when the "make counteroffer" button is clicked
+    // Invoked when the "make counteroffer" button is clicked, switches to the "make counteroffer" screen
     public void onMakeCounterOfferClick()
     {
-        // TODO: Add implementation
-        displayErrorDialog("Make counter offer functionality is not implemented yet...");
+        changeScreen(getClass().getResource(MAKE_COUNTEROFFER_SCREEN_NAME),
+                c -> new MakeCounterofferGfxControllerJfx(currSession, mainStage, currOffer, requestedChanges));
     }
 }

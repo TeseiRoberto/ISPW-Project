@@ -73,7 +73,7 @@ public class AccommodationSearcher {
         for(int i = 0; i < accommodationsNum; ++i)
         {
             int accommodationId = random.nextInt(0, Integer.MAX_VALUE);
-            int quality = random.nextInt(1, 5);
+            int quality = random.nextInt(1, 6);
             int pricePerNight = quality * random.nextInt(25, 100);
             int totalPrice = pricePerNight * lengthOfStay * numOfRooms;
 

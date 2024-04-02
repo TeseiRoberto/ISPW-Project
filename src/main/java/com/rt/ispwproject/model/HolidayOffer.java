@@ -4,7 +4,7 @@ import com.rt.ispwproject.beans.*;
 
 public class HolidayOffer {
 
-    private final HolidayOfferMetadata  metadata;
+    private HolidayOfferMetadata        metadata;
     private Location                    destination;
     private int                         price;
     private DateRange                   holidayDuration;
@@ -25,6 +25,7 @@ public class HolidayOffer {
 
 
     // Setters
+    public void setMetadata(HolidayOfferMetadata metadata)          { this.metadata = metadata; }
     public void setDestination(Location destination)                { this.destination = destination; }
     public void setHolidayDuration(DateRange duration)              { this.holidayDuration = duration; }
     public void setAccommodationOffer(AccommodationOffer offer)     { this.accommodationOffer = offer; }

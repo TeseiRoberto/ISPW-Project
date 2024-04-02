@@ -158,7 +158,8 @@ public class DetailsBannerGfxElement extends HBox {
 
         // Create text elements
         Text destinationText = createText(offer.getDestination(), BIG_FONT);
-        Text departureAndReturnText = createText(offer.getDepartureDate().toString() + " - " + offer.getReturnDate().toString(), BIG_FONT);
+        Text departureAndReturnText = createText(offer.getHolidayDuration().getDepartureDate().toString() +
+                " - " + offer.getHolidayDuration().getReturnDate().toString(), BIG_FONT);
         Text budgetText = createText(offer.getPriceAsStr(), BIG_FONT);
 
         // Create hboxes and insert text into them
