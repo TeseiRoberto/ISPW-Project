@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class LoginViewCmd {
+public class LoginViewCmd extends BaseView {
 
-    public void showWelcome()
+
+    public void showTitle()
     {
-        System.out.println("****************************************");
-        System.out.println("*              My Holiday              *");
-        System.out.println("****************************************");
+        print("\n****************************************\n");
+        print("*              My Holiday              *\n");
+        print("****************************************\n");
     }
 
 
@@ -18,10 +19,8 @@ public class LoginViewCmd {
     public String getUsername() throws IOException
     {
         String username;
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
-
-        System.out.print("Username: ");
-        username = reader.readLine();
+        print("Username: ");
+        username = getStringFromUser();
 
         return username;
     }
@@ -31,10 +30,8 @@ public class LoginViewCmd {
     public String getPassword() throws IOException
     {
         String password;
-        BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
-
         System.out.print("Password: ");
-        password = reader.readLine();
+        password = getStringFromUser();
 
         return password;
     }
