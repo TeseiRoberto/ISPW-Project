@@ -14,26 +14,26 @@ public class LoginGfxControllerCmd {
 
     public void start()
     {
-        while(true)
-        {
-            loginView.showTitle();
-            try {
-                String username = loginView.getUsername();
-                String password = loginView.getPassword();
+        loginView.showTitle();
+        try {
+            String username = loginView.getUsername();
+            String password = loginView.getPassword();
 
-                LoginManager loginMan = new LoginManager();
-                Session currSession = loginMan.login(username, password);
+            LoginManager loginMan = new LoginManager();
+            Session currSession = loginMan.login(username, password);
 
-                // TODO: Need to switch to new "screen" according to user role
-                switch(currSession.getUserRole())
-                {
-                    case UserRole.SIMPLE_USER ->    loginView.print("Hello SIMPLE_USER!\n");
-                    case UserRole.TRAVEL_AGENCY ->  loginView.print("Hello TRAVEL_AGENCY!\n");
-                }
-            } catch(RuntimeException | DbException | IOException e)
+            // TODO: Need to switch to new "screen" according to user role
+            if(currSession.getUserRole() == UserRole.SIMPLE_USER)
             {
-                loginView.displayErrorDialog(e.getMessage());
+                loginView.print("Hello SIMPLE_USER!\n");
+            } else if(currSession.getUserRole() == UserRole.TRAVEL_AGENCY)
+            {
+                loginView.print("Hello TRAVEL_AGENCY!\n");
             }
+
+        } catch(RuntimeException | DbException | IOException e)
+        {
+            loginView.displayErrorDialog(e.getMessage());
         }
     }
 

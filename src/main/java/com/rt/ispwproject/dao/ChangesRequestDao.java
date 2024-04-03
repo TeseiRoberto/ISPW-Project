@@ -153,10 +153,8 @@ public class ChangesRequestDao {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage() + e.getCause());
             throw new DbException("Failed to invoke the \"deleteChangesRequest\" stored procedure:\n" + e.getMessage());
         } catch (DbException e) {
-            System.out.println(e.getMessage() + e.getCause());
             throw new DbException("Cannot remove request of changes:\n" + e.getMessage());
         }
     }

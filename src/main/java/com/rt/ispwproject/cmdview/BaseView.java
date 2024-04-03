@@ -18,17 +18,9 @@ public class BaseView {
     }
 
 
-    public String getStringFromUser()
+    public String getStringFromUser() throws IOException
     {
-        String input = "";
-        try {
-            input = reader.readLine();
-        } catch(IOException e)
-        {
-            displayErrorDialog("Failed to read input string from user");
-        }
-
-        return input;
+        return reader.readLine();
     }
 
 
@@ -41,32 +33,29 @@ public class BaseView {
 
     // Prints the given message and waits for the user to enter (Y/y) or (N/n)
     // Returns true if user inserted Y/y, false otherwise
-    public boolean displayConfirmDialog(String msg)
+    public boolean displayConfirmDialog(String msg) throws IOException
     {
-        boolean res = false;
-        print(msg + " Enter Y for yes, N for no\n==> ");
+        int res = -1;
+        print(msg + ' ');
 
-        while(true)
+        while(res != 0 && res != 1)
         {
+            print("Enter Y for yes, N for no: ");
             String in = getStringFromUser();
 
             if(!in.isBlank())
             {
                 in = in.toLowerCase();
-                if(in.charAt(0) == 'y')
+                res = switch(in.charAt(0))
                 {
-                    res = true;
-                    break;
-                } else if(in.charAt(0) == 'n')
-                {
-                    break;
-                }
+                    case 'y' -> 1;
+                    case 'n' -> 0;
+                    default -> -1;
+                };
             }
-
-            print("Please insert Y (for yes) or N (for no)\n==> ");
         }
 
-        return res;
+        return res != 0;
     }
 
 }

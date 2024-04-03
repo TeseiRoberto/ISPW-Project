@@ -1,8 +1,6 @@
 package com.rt.ispwproject.cmdview;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class LoginViewCmd extends BaseView {
 
@@ -30,7 +28,7 @@ public class LoginViewCmd extends BaseView {
     public String getPassword() throws IOException
     {
         String password;
-        System.out.print("Password: ");
+        print("Password: ");
         password = getStringFromUser();
 
         return password;

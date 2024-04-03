@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 
 // A row with some buttons shaped as stars, it is used to represents a quality level in the range [0, maxQualityLevel]
@@ -67,7 +67,7 @@ public class QualitySelector extends HBox {
 
 
     // Enables the user of this widget to execute arbitrary code when the quality value changes
-    public void setOnValueChangeCallback(Consumer<Integer> callback)
+    public void setOnValueChangeCallback(IntConsumer callback)
     {
         ObservableList<Node> buttons = this.getChildren();
 
