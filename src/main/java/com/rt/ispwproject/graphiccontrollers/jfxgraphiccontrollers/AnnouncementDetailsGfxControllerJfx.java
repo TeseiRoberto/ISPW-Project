@@ -103,7 +103,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
         } catch (DbException | IllegalArgumentException e)
         {
             offers.clear();
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
     }
 
@@ -185,14 +185,14 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     // Invoked when the "edit announcement" button is clicked
     public void onEditAnnouncementClick()
     {
-        displayErrorDialog("Edit announcement functionality is not available yet...");
+        showErrorDialog("Edit announcement functionality is not available yet...");
     }
 
 
     // Invoked when the "delete announcement" button is clicked
     public void onDeleteAnnouncementClick()
     {
-        displayErrorDialog("Delete announcement functionality is not available yet...");
+        showErrorDialog("Delete announcement functionality is not available yet...");
     }
 
 
@@ -279,7 +279,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
             accommodationImageView.setImage(new Image(imgUrl.toString()));
         } catch(NullPointerException e)
         {
-            displayErrorDialog("Could not load accommodation image!");
+            showErrorDialog("Could not load accommodation image!");
         }
     }
 
@@ -290,7 +290,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
         if(offers == null || offers.isEmpty())
             return;
 
-        ButtonType res = displayConfirmDialog("Do you really want to reject this offer?");
+        ButtonType res = showConfirmDialog("Do you really want to reject this offer?");
         if(res != ButtonType.OK)
             return;
 
@@ -312,10 +312,10 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
 
         } catch(IndexOutOfBoundsException e)
         {
-            displayErrorDialog("No offer has been selected");
+            showErrorDialog("No offer has been selected");
         }
         catch (DbException | IllegalCallerException | IllegalArgumentException e) {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
     }
 
@@ -336,7 +336,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     public void onAcceptOfferClick()
     {
         // TODO: Add implementation...
-        displayErrorDialog("Accept offer functionality is not implemented yet...");
+        showErrorDialog("Accept offer functionality is not implemented yet...");
     }
 
 }

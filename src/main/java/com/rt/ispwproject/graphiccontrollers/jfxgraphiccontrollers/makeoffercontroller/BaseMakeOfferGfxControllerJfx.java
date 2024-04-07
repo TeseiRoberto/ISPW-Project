@@ -118,7 +118,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the destination then the selected accommodation/transport will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the destination then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -142,7 +142,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenAccommodation != null)
         {
-            if(displayConfirmDialog("If you change the number of rooms then the selected accommodation will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the number of rooms then the selected accommodation will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
             } else {
@@ -165,7 +165,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the number of travelers then the selected transport will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the number of travelers then the selected transport will be lost.") == ButtonType.OK)
             {
                 setChosenTransport(null);
             } else {
@@ -188,7 +188,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the departure location then the selected transport will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the departure location then the selected transport will be lost.") == ButtonType.OK)
             {
                 setChosenTransport(null);
             } else {
@@ -211,7 +211,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the departure date then the selected accommodation/transport will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the departure date then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -235,7 +235,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         if(chosenAccommodation != null || chosenTransport != null)
         {
-            if(displayConfirmDialog("If you change the return date then the selected accommodation/transport will be lost.") == ButtonType.OK)
+            if(showConfirmDialog("If you change the return date then the selected accommodation/transport will be lost.") == ButtonType.OK)
             {
                 setChosenAccommodation(null);
                 setChosenTransport(null);
@@ -276,14 +276,14 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         } catch(IllegalArgumentException e)                     // Some parameter is not set or is invalid
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             return;
         } catch(IllegalStateException e)                        // The search window is already open
         {
             return;
         } catch(ApiException e)                                 // Errors during the retrieval of the available  accommodations
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
 
         // Creates graphic elements for the accommodation offers
@@ -364,14 +364,14 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
         } catch(IllegalArgumentException e)                     // Some parameter is not set or is invalid
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             return;
         } catch(IllegalStateException e)                        // The search window is already open
         {
             return;
         } catch(ApiException e)                                 // Errors during the retrieval of the available transports
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
 
         if(availableTransports == null || availableTransports.isEmpty())
@@ -471,7 +471,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
             try {
                 currPrice = offerManager.calculateOfferPrice(chosenAccommodation, chosenTransport);
             } catch (IllegalArgumentException e) {
-                displayErrorDialog("Error during update of the offer price:\n" + e.getMessage());
+                showErrorDialog("Error during update of the offer price:\n" + e.getMessage());
             }
         }
 

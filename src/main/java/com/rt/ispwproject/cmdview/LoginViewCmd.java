@@ -1,36 +1,26 @@
 package com.rt.ispwproject.cmdview;
 
-import java.io.IOException;
 
 public class LoginViewCmd extends BaseView {
 
+    private String username;
+    private String password;
 
-    public void showTitle()
+
+    // Implements the login form
+    public void showLoginForm()
     {
-        print("\n****************************************\n");
-        print("*              My Holiday              *\n");
-        print("****************************************\n");
-    }
+        showScreenTitle(BaseView.LOGIN_SCREEN_NAME);
 
-
-    // Reads username from console
-    public String getUsername() throws IOException
-    {
-        String username;
         print("Username: ");
         username = getStringFromUser();
 
-        return username;
-    }
-
-
-    // Reads password from console
-    public String getPassword() throws IOException
-    {
-        String password;
         print("Password: ");
         password = getStringFromUser();
-
-        return password;
     }
+
+
+    // Getters
+    public String getUsername()     { return this.username; }
+    public String getPassword()     { return this.password; }
 }

@@ -117,13 +117,13 @@ public class MakeCounterofferGfxControllerJfx extends BaseMakeOfferGfxController
             );
 
             offerManager.makeCounteroffer(currSession, newOffer, requestedChanges);
-            displayInfoDialog("Counteroffer sent correctly!");
+            showInfoDialog("Counteroffer sent correctly!");
             changeScreen(BaseGfxControllerJfx.class.getResource(OFFER_DETAILS_SCREEN_NAME),
                     c -> new OfferDetailsGfxControllerJfx(currSession, mainStage, newOffer));
 
         } catch(IllegalCallerException | IllegalArgumentException | DbException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
     }
 

@@ -59,7 +59,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControl
             availableBudget = Integer.parseInt(availableBudgetTextfield.getText());
         } catch (NumberFormatException e)
         {
-            displayErrorDialog("Available budget is empty or contains letters");
+            showErrorDialog("Available budget is empty or contains letters");
             return;
         }
 
@@ -67,7 +67,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControl
             numOfRoomsRequired = Integer.parseInt(numOfRoomsTextfield.getText());
         } catch (NumberFormatException e)
         {
-            displayErrorDialog("Number of rooms is empty or contains letters");
+            showErrorDialog("Number of rooms is empty or contains letters");
             return;
         }
 
@@ -75,7 +75,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControl
             numOfTravelers = Integer.parseInt(numOfTravelersTextfield.getText());
         } catch (NumberFormatException e)
         {
-            displayErrorDialog("Number of travelers is empty or contains letters");
+            showErrorDialog("Number of travelers is empty or contains letters");
             return;
         }
 
@@ -110,7 +110,7 @@ public class CreateAnnouncementGfxControllerJfx extends BaseSimpleUserGfxControl
                     c -> new MyAnnouncementsGfxControllerJfx(currSession, mainStage));
         } catch(IllegalArgumentException | DbException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
     }
 

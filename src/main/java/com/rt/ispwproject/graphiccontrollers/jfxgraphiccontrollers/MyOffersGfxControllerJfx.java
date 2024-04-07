@@ -37,7 +37,7 @@ public class MyOffersGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
         } catch(DbException | IllegalArgumentException e)
         {
             offers.clear();
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
 
         if(offers == null || offers.isEmpty())

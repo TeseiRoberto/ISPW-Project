@@ -84,7 +84,7 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
                 setRequestedChangesFields();
         } catch (DbException | IllegalArgumentException | IllegalCallerException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
         }
 
         announcementOwnerUsernameText.setText(currOffer.getRelativeAnnouncementOwnerUsername());
@@ -187,7 +187,7 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
             return;
 
         // Ask confirm to the user
-        ButtonType res = displayConfirmDialog("Do you really want to reject the changes requested by the user?");
+        ButtonType res = showConfirmDialog("Do you really want to reject the changes requested by the user?");
         if(res != ButtonType.OK)
             return;
 
@@ -195,11 +195,11 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
             ChangesManager changesManager = new ChangesManager();
             changesManager.rejectChangesRequest(currSession, requestedChanges);
         } catch (DbException | IllegalCallerException e) {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             return;
         }
 
-        displayInfoDialog("Request rejected successfully!");
+        showInfoDialog("Request rejected successfully!");
         offerStatusText.setText("Requested changes has been rejected, waiting for user to evaluate the offer.");
         mainContainerVbox.getChildren().remove(requestedChangesVbox);   // Delete the requested changes from the screen
         requestedChanges = null;

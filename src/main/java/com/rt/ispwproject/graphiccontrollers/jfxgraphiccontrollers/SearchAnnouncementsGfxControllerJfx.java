@@ -39,7 +39,7 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
             announcements = searchManager.searchAnnouncements(currSession, 0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
         } catch(DbException | IllegalCallerException | IllegalArgumentException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             announcements.clear();
         }
 

@@ -1,7 +1,6 @@
 package com.rt.ispwproject;
 
 import com.rt.ispwproject.config.GuiType;
-import com.rt.ispwproject.graphiccontrollers.cmdgraphiccontrollers.LoginGfxControllerCmd;
 import com.rt.ispwproject.graphiccontrollers.jfxgraphiccontrollers.LoginGfxControllerJfx;
 import javafx.application.Application;
 
@@ -21,13 +20,9 @@ public class Main {
         loadConfigurationFile(Main.CONFIG_FILE_NAME);
 
         if(typeOfGui == GuiType.JAVAFX_GUI)
-        {
             Application.launch(LoginGfxControllerJfx.class, args);
-        } else {
-            LoginGfxControllerCmd loginCtrl = new LoginGfxControllerCmd();
-            loginCtrl.start();
-        }
-
+        else
+            CmdApplication.launch();
     }
 
 

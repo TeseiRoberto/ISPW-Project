@@ -72,11 +72,11 @@ public class MakeOfferGfxControllerJfx extends BaseMakeOfferGfxControllerJfx {
             offerManager.makeOfferToUser(currSession, currAnnounce, newOffer);
         } catch(IllegalCallerException | IllegalArgumentException | DbException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             return;
         }
 
-        displayInfoDialog("Offer sent correctly!");
+        showInfoDialog("Offer sent correctly!");
         changeScreen(BaseGfxControllerJfx.class.getResource(SEARCH_ANNOUNCEMENTS_SCREEN_NAME),
                 c -> new SearchAnnouncementsGfxControllerJfx(currSession, mainStage));
     }

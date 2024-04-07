@@ -217,16 +217,16 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
             newRequest.setTransportChanges(getTransportChanges());
 
             // Ask for user confirm
-            ButtonType res = displayConfirmDialog("Do you really want to request the specified changes?");
+            ButtonType res = showConfirmDialog("Do you really want to request the specified changes?");
             if(res != ButtonType.OK)
                 return;
 
             ChangesManager changesManager = new ChangesManager();
             changesManager.requestChangesOnOffer(currSession, newRequest, currOffer);
-            displayInfoDialog("Request of changes sent correctly!");
+            showInfoDialog("Request of changes sent correctly!");
         } catch (DbException | IllegalArgumentException e)
         {
-            displayErrorDialog(e.getMessage());
+            showErrorDialog(e.getMessage());
             return;
         }
 

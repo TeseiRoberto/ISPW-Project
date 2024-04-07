@@ -51,13 +51,13 @@ public class BaseGfxControllerJfx {
             mainStage.setScene(newScene);
         } catch(IOException e)
         {
-            displayErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
+            showErrorDialog("Change of JavaFX screen failed:\n" + e.getMessage());
         }
     }
 
 
     // Displays an error dialog box with the given error message
-    protected void displayErrorDialog(String errorMsg)
+    protected void showErrorDialog(String errorMsg)
     {
         Alert msg = new Alert(Alert.AlertType.ERROR);
         msg.setContentText(errorMsg);
@@ -66,7 +66,7 @@ public class BaseGfxControllerJfx {
 
 
     // Displays a confirmation dialog box and returns the value selected by the user
-    protected ButtonType displayConfirmDialog(String msg)
+    protected ButtonType showConfirmDialog(String msg)
     {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setContentText(msg);
@@ -76,7 +76,7 @@ public class BaseGfxControllerJfx {
 
 
     // Displays an info dialog box
-    protected void displayInfoDialog(String msg)
+    protected void showInfoDialog(String msg)
     {
         Alert confirm = new Alert(Alert.AlertType.INFORMATION);
         confirm.setContentText(msg);
