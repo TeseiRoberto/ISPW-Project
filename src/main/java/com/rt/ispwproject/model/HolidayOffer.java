@@ -15,22 +15,60 @@ public class HolidayOffer {
     public HolidayOffer(HolidayOfferMetadata metadata, Location destination, DateRange duration, int price,
                         AccommodationOffer accommodationOffer, TransportOffer transportOffer)
     {
-        this.metadata = metadata;
-        this.destination = destination;
-        this.price = price;
-        this.holidayDuration = duration;
-        this.accommodationOffer = accommodationOffer;
-        this.transportOffer = transportOffer;
+        setMetadata(metadata);
+        setDestination(destination);
+        setHolidayDuration(duration);
+        setPrice(price);
+        setAccommodationOffer(accommodationOffer);
+        setTransportOffer(transportOffer);
     }
 
 
     // Setters
-    public void setMetadata(HolidayOfferMetadata metadata)          { this.metadata = metadata; }
-    public void setDestination(Location destination)                { this.destination = destination; }
-    public void setHolidayDuration(DateRange duration)              { this.holidayDuration = duration; }
-    public void setAccommodationOffer(AccommodationOffer offer)     { this.accommodationOffer = offer; }
-    public void setTransportOffer(TransportOffer offer)             { this.transportOffer = offer; }
-    public void setPrice(int price)                                 { this.price = price; }
+    public void setMetadata(HolidayOfferMetadata metadata) throws IllegalArgumentException
+    {
+        if(metadata == null)
+            throw new IllegalArgumentException("Metadata must be specified for the holiday offer");
+
+        this.metadata = metadata;
+    }
+
+    public void setDestination(Location destination) throws IllegalArgumentException
+    {
+        this.destination = destination;
+    }
+
+    public void setPrice(int price) throws IllegalArgumentException
+    {
+        if(price <= 0)
+            throw new IllegalArgumentException("The price of the holiday offer must be equal to (or greater than) 1");
+
+        this.price = price;
+    }
+
+    public void setHolidayDuration(DateRange holidayDuration) throws IllegalArgumentException
+    {
+        if(holidayDuration == null)
+            throw new IllegalArgumentException("A duration of the holiday must be specified");
+
+        this.holidayDuration = holidayDuration;
+    }
+
+    public void setAccommodationOffer(AccommodationOffer offer) throws IllegalArgumentException
+    {
+        if(offer == null)
+            throw new IllegalArgumentException("An accommodation offer must be specified for the holiday offer");
+
+        this.accommodationOffer = offer;
+    }
+
+    public void setTransportOffer(TransportOffer offer) throws IllegalArgumentException
+    {
+        if(offer == null)
+            throw new IllegalArgumentException("A transport offer must be specified for the holiday offer");
+
+        this.transportOffer = offer;
+    }
 
 
     // Getters

@@ -19,10 +19,10 @@ public class DateRange {
     public void setStartDate(LocalDate date) throws IllegalArgumentException
     {
         if(date == null)
-            throw new IllegalArgumentException("Start date cannot be empty!");
+            throw new IllegalArgumentException("A start date must be specified");
 
         if(this.endDate != null && date.isAfter(this.endDate))
-            throw new IllegalArgumentException("Start date cannot be after the end date!");
+            throw new IllegalArgumentException("The start date cannot be after the end date");
 
         this.startDate = date;
     }
@@ -30,10 +30,10 @@ public class DateRange {
     public void setEndDate(LocalDate date) throws IllegalArgumentException
     {
         if(date == null)
-            throw new IllegalArgumentException("End date cannot be empty!");
+            throw new IllegalArgumentException("An end date must be specified");
 
         if(this.startDate != null && date.isBefore(this.startDate))
-            throw new IllegalArgumentException("End date cannot be before the start date!");
+            throw new IllegalArgumentException("The End date cannot be before the start date");
 
         this.endDate = date;
     }

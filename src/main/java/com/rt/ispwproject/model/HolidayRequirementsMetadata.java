@@ -12,30 +12,25 @@ public class HolidayRequirementsMetadata {
     private boolean             isSatisfied;
 
 
+    public HolidayRequirementsMetadata(Profile requirementsOwner, LocalDate dateOfPost) throws IllegalArgumentException
+    {
+        this(0, requirementsOwner, dateOfPost, 0, 0);
+    }
+
+
     public HolidayRequirementsMetadata(int requirementsId, Profile requirementsOwner, LocalDate dateOfPost, int numOfOffersReceived, int numOfViews) throws IllegalArgumentException
     {
         if(requirementsOwner == null)
-            throw new IllegalArgumentException("Requirements owner is not specified");
+            throw new IllegalArgumentException("Requirements owner must be specified");
+
+        if(dateOfPost == null)
+            throw new IllegalArgumentException("Date of post must be specified");
 
         this.requirementsId = requirementsId;
         this.requirementsOwner = requirementsOwner;
         this.dateOfPost = dateOfPost;
         this.numOfViews = numOfViews;
         this.numOfOffersReceived = numOfOffersReceived;
-        this.isSatisfied = false;
-    }
-
-
-    public HolidayRequirementsMetadata(Profile requirementsOwner, LocalDate dateOfPost) throws IllegalArgumentException
-    {
-        if(requirementsOwner == null)
-            throw new IllegalArgumentException("Requirements owner is not specified");
-
-        this.requirementsId = 0;
-        this.requirementsOwner = requirementsOwner;
-        this.dateOfPost = dateOfPost;
-        this.numOfViews = 0;
-        this.numOfOffersReceived = 0;
         this.isSatisfied = false;
     }
 

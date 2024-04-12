@@ -3,6 +3,8 @@ package com.rt.ispwproject.cmdview;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import static java.lang.System.exit;
 
@@ -28,6 +30,8 @@ public class BaseView {
     private static final BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
 
+    // ========================[ Simple output methods ]========================
+
     // Prints the given string to system out
     public void print(String str)
     {
@@ -42,48 +46,22 @@ public class BaseView {
     }
 
 
-    // Prints the given strings as a numerated list
-    public void printNumeratedList(String[] strings)
+    // Prints the given strings as a list
+    // @numbered: If true then a number is displayed before each element of the list
+    public void printList(String[] strings, boolean numbered)
     {
-        for(int i = 0; i < strings.length; i++)
-            print(i + 1 + "] " + strings[i] + "\n");
+        if(numbered)
+            for(int i = 0; i < strings.length; i++)
+                print(i + 1 + "] " + strings[i] + "\n");
+        else
+            for (String string : strings)
+                print(string + "\n");
     }
 
 
-    public String getStringFromUser()
-    {
-        String res = "";
-        try {
-            res = reader.readLine();
+    // ========================[ Complex output methods ]========================
 
-        } catch(IOException e)
-        {
-            showErrorDialog("Cannot get input from user, program is terminating...");
-            exit(0);
-        }
-
-        return res;
-    }
-
-
-    public int getIntFromUser(int minValue, int maxValue)
-    {
-        int val = Integer.MAX_VALUE;
-
-        do {
-            print("Insert a number between " + minValue + " and " + maxValue + ": ");
-            try {
-                val = Integer.parseInt(getStringFromUser());
-            } catch(NumberFormatException e)
-            {
-                showErrorDialog("Please insert a number.");
-            }
-        } while(val < minValue && val > maxValue);
-        return val;
-    }
-
-
-    // Prints the given string in between 2 lines made with the character *
+    // Displays the given string in between 2 lines made with the character *
     public void showScreenTitle(String title)
     {
         int len = title.length() + 10;
@@ -113,16 +91,6 @@ public class BaseView {
         print(titleLine.toString());
         print(separatorLine.toString());
     }
-
-
-    // Displays the given possibilities and returns the one chosen by the user
-    public int showMenu(String[] possibilities)
-    {
-        print("What do you want to do?\n");
-        printNumeratedList(possibilities);
-        return getIntFromUser(1, possibilities.length);
-    }
-
 
     // Displays the given error message
     public void showErrorDialog(String msg)
@@ -156,6 +124,69 @@ public class BaseView {
         }
 
         return res != 0;
+    }
+
+
+    // ========================[ Simple input methods ]========================
+
+    // Reads a string from system in and returns it
+    public String getStringFromUser()
+    {
+        String res = "";
+        try {
+            res = reader.readLine();
+
+        } catch(IOException e)
+        {
+            showErrorDialog("Cannot get input from user, program is terminating...");
+            exit(0);
+        }
+
+        return res;
+    }
+
+
+    // Reads an int from system in and returns it
+    public int getIntFromUser(int minValue, int maxValue)
+    {
+        int val = Integer.MAX_VALUE;
+
+        do {
+            try {
+                val = Integer.parseInt(getStringFromUser());
+            } catch(NumberFormatException e)
+            {
+                showErrorDialog("Please insert a number between " + minValue + " and " + maxValue);
+            }
+        } while(val < minValue || val > maxValue);
+        return val;
+    }
+
+
+    // Reads a date from system in and returns it
+    public LocalDate getDateFromUser()
+    {
+        LocalDate result = null;
+        do {
+            String dateAsStr = getStringFromUser();
+            try {
+                result = LocalDate.parse(dateAsStr);
+            } catch(DateTimeParseException e)
+            {
+                showErrorDialog("Please insert a date (i.e 2000-12-24)");
+            }
+
+        } while(result == null);
+        return result;
+    }
+
+
+    // Displays the given strings as a numbered list and returns the int associated to the string chosen by the user
+    public int getChoiceFromUser(String[] possibilities)
+    {
+        printList(possibilities, true);
+        print("==> ");
+        return getIntFromUser(1, possibilities.length);
     }
 
 }

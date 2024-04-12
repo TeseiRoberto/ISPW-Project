@@ -15,30 +15,86 @@ public class AccommodationDetails implements AccommodationRequirements, Accommod
     private int                     price;
 
 
-    public AccommodationDetails(AccommodationType type, String name, int quality, Location location, int numOfRooms, DateRange lengthOfStay, int price)
+    public AccommodationDetails()
     {
         this.id = 0;
-        this.type = type;
-        this.name = name;
+        this.type = AccommodationType.UNSPECIFIED;
+        this.name = "";
         this.accommodationId = 0;
-        this.quality = quality;
-        this.location = location;
-        this.numOfRooms = numOfRooms;
-        this.lengthOfStay = lengthOfStay;
-        this.price = price;
+        this.quality = 0;
+        this.location = null;
+        this.numOfRooms = 0;
+        this.lengthOfStay = null;
+        this.price = 0;
     }
 
 
     // Setters
-    public void setId(int id)                               { this.id = id; }
-    public void setType(AccommodationType type)             { this.type = type; }
-    public void setName(String name)                        { this.name = name; }
-    public void setAccommodationId(int id)                  { this.accommodationId = id; }
-    public void setQuality(int quality)                     { this.quality = quality; }
-    public void setLocation(Location loc)                   { this.location = loc; }
-    public void setNumOfRooms(int num)                      { this.numOfRooms = num; }
-    public void setLengthOfStay(DateRange length)           { this.lengthOfStay = length; }
-    public void setPrice(int price)                         { this.price = price; }
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public void setType(AccommodationType type) throws IllegalArgumentException
+    {
+        if(type == null)
+            throw new IllegalArgumentException("An accommodation type must be specified");
+
+        this.type = type;
+    }
+
+    public void setName(String name) throws IllegalArgumentException
+    {
+        if(name == null || name.isBlank())
+            throw new IllegalArgumentException("An accommodation name must be specified");
+
+        this.name = name;
+    }
+
+    public void setAccommodationId(int accommodationId)
+    {
+        this.accommodationId = accommodationId;
+    }
+
+    public void setQuality(int quality) throws IllegalArgumentException
+    {
+        if(quality < 1 || quality > 5)
+            throw new IllegalArgumentException("Accommodation quality must be an integer between 1 and 5");
+
+        this.quality = quality;
+    }
+
+    public void setLocation(Location location) throws IllegalArgumentException
+    {
+        if(location == null)
+            throw new IllegalArgumentException("The location of an Accommodation must be specified");
+
+        this.location = location;
+    }
+
+    public void setNumOfRooms(int numOfRooms) throws IllegalArgumentException
+    {
+        if(numOfRooms <= 0)
+            throw new IllegalArgumentException("The number of rooms of an accommodation must be equal to (or greater than) 1");
+
+        this.numOfRooms = numOfRooms;
+    }
+
+    public void setLengthOfStay(DateRange lengthOfStay) throws IllegalArgumentException
+    {
+        if(lengthOfStay == null)
+            throw new IllegalArgumentException("The length of stay in an accommodation must be specified");
+
+        this.lengthOfStay = lengthOfStay;
+    }
+
+    public void setPrice(int price) throws IllegalArgumentException
+    {
+        if (price <= 0)
+            throw new IllegalArgumentException("The price of an accommodation must be equal to (or greater than) 1");
+
+        this.price = price;
+    }
 
 
     // Getters

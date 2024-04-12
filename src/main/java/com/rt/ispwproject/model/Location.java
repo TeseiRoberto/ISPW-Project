@@ -8,7 +8,7 @@ public class Location {
     public Location(String address) throws IllegalArgumentException
     {
         if(address == null || address.isEmpty())
-            throw new IllegalArgumentException("Location address cannot be empty!");
+            throw new IllegalArgumentException("Location address must be specified");
 
         this.address = address;
     }

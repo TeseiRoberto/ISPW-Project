@@ -15,8 +15,23 @@ public class HolidayRequirements {
 
 
     public HolidayRequirements(HolidayRequirementsMetadata metadata, String description, DateRange duration, int availableBudget,
-                               AccommodationRequirements accommodationReq, TransportRequirements transportReq)
+                               AccommodationRequirements accommodationReq, TransportRequirements transportReq) throws IllegalArgumentException
     {
+        if(metadata == null)
+            throw new IllegalArgumentException("Metadata must be specified for the holiday requirements");
+
+        if(duration == null)
+            throw new IllegalArgumentException("A duration of the holiday must be specified");
+
+        if(availableBudget <= 0)
+            throw new IllegalArgumentException("The available budget for the holiday must be equal to (or greater than) 1");
+
+        if(accommodationReq == null)
+            throw new IllegalArgumentException("Accommodation requirements must be specified for the holiday requirements");
+
+        if(transportReq == null)
+            throw new IllegalArgumentException("Transport requirements must be specified for the holiday requirements");
+
         this.metadata = metadata;
         this.holidayDescription = description;
         this.holidayDuration = duration;

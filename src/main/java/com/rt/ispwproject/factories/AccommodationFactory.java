@@ -20,24 +20,43 @@ public class AccommodationFactory {
 
 
     // Creates an AccommodationDetails instance that will be treated as an AccommodationRequirements
-    public AccommodationRequirements createRequirements(AccommodationType type, int quality, int numOfRooms)
+    public AccommodationRequirements createRequirements(AccommodationType type, int quality, int numOfRooms) throws IllegalArgumentException
     {
-        return new AccommodationDetails(type, "", quality, null, numOfRooms, null, 0);
+        AccommodationDetails newReq = new AccommodationDetails();
+        newReq.setType(type);
+        newReq.setQuality(quality);
+        newReq.setNumOfRooms(numOfRooms);
+
+        return newReq;
     }
 
 
     // Creates an AccommodationDetails instance that will be treated as an AccommodationOffer
     public AccommodationOffer createOffer(AccommodationType type, String accommodationName, Location location, DateRange lengthOfStay,
-                                          int quality, int numOfRooms, int price)
+                                          int quality, int numOfRooms, int price) throws IllegalArgumentException
     {
-        return new AccommodationDetails(type, accommodationName, quality, location, numOfRooms, lengthOfStay, price);
+        AccommodationDetails newOffer = new AccommodationDetails();
+        newOffer.setType(type);
+        newOffer.setName(accommodationName);
+        newOffer.setLocation(location);
+        newOffer.setLengthOfStay(lengthOfStay);
+        newOffer.setQuality(quality);
+        newOffer.setNumOfRooms(numOfRooms);
+        newOffer.setPrice(price);
+
+        return newOffer;
     }
 
 
     // Creates an AccommodationDetails instance that will be treated as an AccommodationChangesRequest
-    public AccommodationChangesRequest createChangesRequest(AccommodationType newType, int newQuality, int newNumOfRooms)
+    public AccommodationChangesRequest createChangesRequest(AccommodationType newType, int newQuality, int newNumOfRooms) throws IllegalArgumentException
     {
-        return new AccommodationDetails(newType, "", newQuality, null, newNumOfRooms, null, 0);
+        AccommodationDetails changes = new AccommodationDetails();
+        changes.setType(newType);
+        changes.setQuality(newQuality);
+        changes.setNumOfRooms(newNumOfRooms);
+
+        return changes;
     }
 
 

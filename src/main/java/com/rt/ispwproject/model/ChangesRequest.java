@@ -15,8 +15,11 @@ public class ChangesRequest {
     private TransportChangesRequest         transportChanges = null;
 
 
-    public ChangesRequest(ChangesRequestMetadata metadata, String changesDescription)
+    public ChangesRequest(ChangesRequestMetadata metadata, String changesDescription) throws IllegalArgumentException
     {
+        if(metadata == null)
+            throw new IllegalArgumentException("Metadata must be specified for the request of changes");
+
         this.metadata = metadata;
         this.changesDescription = changesDescription;
     }
@@ -85,11 +88,11 @@ public class ChangesRequest {
         {
             beanRequest.setTransportChanges(
                     new Transport(
-                        transportChanges.getType().toViewType(),
-                        transportChanges.getQuality(),
-                        transportChanges.getRoute().getDepartureLocation().getAddress(),
-                        transportChanges.getRoute().getArrivalLocation().getAddress(),
-                        transportChanges.getNumOfTravelers()
+                            transportChanges.getType().toViewType(),
+                            transportChanges.getQuality(),
+                            transportChanges.getRoute().getDepartureLocation().getAddress(),
+                            transportChanges.getRoute().getArrivalLocation().getAddress(),
+                            transportChanges.getNumOfTravelers()
                     )
             );
         }

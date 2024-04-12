@@ -17,10 +17,10 @@ public class Route {
     public void setDepartureLocation(Location location) throws IllegalArgumentException
     {
         if(location == null)
-            throw new IllegalArgumentException("Departure location cannot be empty!");
+            throw new IllegalArgumentException("Departure location of route must be specified");
 
         if(location.isEqual(this.arrivalLocation))
-            throw new IllegalArgumentException("Departure and arrival location cannot be the same!");
+            throw new IllegalArgumentException("Departure and arrival location of route cannot be the same");
 
         this.departureLocation = location;
     }
@@ -28,10 +28,10 @@ public class Route {
     public void setArrivalLocation(Location location) throws IllegalArgumentException
     {
         if(location == null)
-            throw new IllegalArgumentException("Arrival location cannot be empty!");
+            throw new IllegalArgumentException("Arrival location of route must be specified");
 
         if(location.isEqual(this.departureLocation))
-            throw new IllegalArgumentException("Departure and arrival location cannot be the same!");
+            throw new IllegalArgumentException("Departure and arrival location of route cannot be the same");
 
         this.arrivalLocation = location;
     }
