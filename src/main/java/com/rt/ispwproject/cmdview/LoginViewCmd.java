@@ -1,26 +1,28 @@
 package com.rt.ispwproject.cmdview;
 
 
-public class LoginViewCmd extends BaseView {
-
-    private String username;
-    private String password;
+public class LoginViewCmd extends BaseViewCmd {
 
 
-    // Implements the login form
-    public void showLoginForm()
+    public void showScreenTitle()
     {
-        showScreenTitle(BaseView.LOGIN_SCREEN_NAME);
-
-        print("Username: ");
-        username = getStringFromUser();
-
-        print("Password: ");
-        password = getStringFromUser();
+        printTitle(BaseViewCmd.LOGIN_SCREEN_NAME);
     }
 
 
-    // Getters
-    public String getUsername()     { return this.username; }
-    public String getPassword()     { return this.password; }
+    // Asks the username to be used for the login
+    public String getUsername()
+    {
+        print("Username: ");
+        return getStringFromUser();
+    }
+
+    // Asks the password to be used for the login
+    public String getPassword()
+    {
+        print("Password: ");
+        return getStringFromUser();
+    }
+
+
 }
