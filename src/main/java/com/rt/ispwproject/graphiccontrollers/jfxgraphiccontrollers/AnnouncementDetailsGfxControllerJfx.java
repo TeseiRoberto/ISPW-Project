@@ -335,7 +335,9 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     // Invoked when the "accept offer" button is clicked
     public void onAcceptOfferClick()
     {
-        // TODO: Add implementation...
+        /* TODO: Add implementation...
+        *   Note: If changes were requested on the offer but now the user is accepting it
+            then the request must be canceled from the system*/
         showErrorDialog("Accept offer functionality is not implemented yet...");
     }
 

@@ -17,6 +17,21 @@ public class Offer {
     private boolean             hasRequestOfChanges;
 
 
+    public Offer()
+    {
+        this.id = 0;
+        this.bidderAgencyUsername = "";
+        this.relativeAnnouncementOwnerUsername = "";
+        this.offerStatus = "";
+        this.destination = "";
+        this.holidayDuration = null;
+        this.price = 0;
+        this.accommodation = new Accommodation();
+        this.transport = new Transport();
+        this.hasRequestOfChanges = false;
+    }
+
+
     public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername, String destination,
                  Duration holidayDuration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {

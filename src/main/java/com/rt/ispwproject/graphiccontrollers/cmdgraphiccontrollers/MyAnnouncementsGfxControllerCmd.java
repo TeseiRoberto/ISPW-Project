@@ -3,6 +3,7 @@ package com.rt.ispwproject.graphiccontrollers.cmdgraphiccontrollers;
 import com.rt.ispwproject.CmdApplication;
 import com.rt.ispwproject.beans.Announcement;
 import com.rt.ispwproject.beans.Session;
+import com.rt.ispwproject.cmdview.BaseViewCmd;
 import com.rt.ispwproject.cmdview.MyAnnouncementsViewCmd;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
@@ -42,9 +43,10 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
         int choice = view.getChoiceFromUser(possibilities);
         switch(choice)
         {
-            case 1: onSeeAnnouncementDetailsSelected(); break;
-            case 2: onCreateAnnouncementSelected(); break;
-            case 3: onExitSelected(); break;
+            case 1:     onSeeAnnouncementDetailsSelected(); break;
+            case 2:     onCreateAnnouncementSelected(); break;
+            case 3:     onExitSelected(); break;
+            default:    view.showErrorDialog(BaseViewCmd.INVALID_OPTION_MSG); break;
         }
     }
 
@@ -52,10 +54,16 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     // Invoked when the user wants to see the details of an announcement
     public void onSeeAnnouncementDetailsSelected()
     {
-        view.print("Insert the number of the announcement ==>");
+        if(announcements.isEmpty())
+        {
+            view.print("No announcement has been posted yet...\n");
+            return;
+        }
+
+        view.print("Insert the number of the announcement ==> ");
         view.getIntFromUser(1, announcements.size());
 
-        // TODO: Need to switch to the "show announcement view" passing the selected announcement...
+        // TODO: Need to switch to the "show announcement view" and pass the selected announcement...
     }
 
 

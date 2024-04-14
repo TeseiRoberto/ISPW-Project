@@ -20,7 +20,7 @@ public class MyAnnouncementsViewCmd extends BaseViewCmd {
             print("No announcement has been posted yet...\n");
         } else {
             print("List of posted announcements:\n");
-            showAnnouncementsList(announcements);
+            showAnnouncementsList(announcements, false);
         }
     }
 

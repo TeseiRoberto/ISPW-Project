@@ -9,6 +9,13 @@ public class Duration {
     private LocalDate returnDate;
 
 
+    public Duration()
+    {
+        this.departureDate = null;
+        this.returnDate = null;
+    }
+
+
     public Duration(LocalDate start, LocalDate end) throws IllegalArgumentException
     {
         setDepartureDate(start);
@@ -47,6 +54,9 @@ public class Duration {
     // Returns the number of days between the departure and return dates
     public int getDurationInDays()
     {
+        if(departureDate == null || returnDate == null)
+            return 0;
+
         return Period.between(departureDate, returnDate).getDays();
     }
 }

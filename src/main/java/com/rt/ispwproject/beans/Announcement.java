@@ -17,6 +17,21 @@ public class Announcement {
     private int                 numOfOffersReceived;            // Number of offers that this announcement has received
 
 
+    public Announcement()
+    {
+        this.id = 0;
+        this.ownerUsername = "";
+        this.holidayDescription = "";
+        this.availableBudget = 0;
+        this.dateOfPost = null;
+        this.holidayDuration = new Duration();
+        this.accommodationReq = new Accommodation();
+        this.transportReq = new Transport();
+        this.numOfViews = 0;
+        this.numOfOffersReceived = 0;
+    }
+
+
     public Announcement(String ownerUsername, String holidayDescription, int availableBudget,
                         Duration holidayDuration, Accommodation accommodationReq, Transport transportReq) throws IllegalArgumentException
     {
@@ -62,7 +77,7 @@ public class Announcement {
         if(date == null)
             throw new IllegalArgumentException("Date of post cannot be empty!");
 
-        if(this.holidayDuration != null && date.isAfter(this.holidayDuration.getDepartureDate()))
+        if(this.holidayDuration != null && this.holidayDuration.getDepartureDate() != null && date.isAfter(this.holidayDuration.getDepartureDate()))
             throw new IllegalArgumentException("Date of post cannot be after the departure date of the holiday!");
 
         this.dateOfPost = date;

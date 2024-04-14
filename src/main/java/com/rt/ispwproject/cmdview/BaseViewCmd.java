@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.exit;
 
@@ -38,6 +39,23 @@ public abstract class BaseViewCmd {
 
     // Generic messages used to communicate with the user
     public static final String          INVALID_OPTION_MSG = "Selected option is not valid";
+    public static final String          UNKNOWN_STRING = "unknown";
+
+    // Map used to associate user input to the announcement fields
+    public static final Map<Integer, String> ANNOUNCEMENT_FIELDS = Map.ofEntries(
+            Map.entry(1, "holiday description"),
+            Map.entry(2, "destination"),
+            Map.entry(3, "available budget"),
+            Map.entry(4, "departure date"),
+            Map.entry(5, "return date"),
+            Map.entry(6, "accommodation type"),
+            Map.entry(7, "accommodation quality"),
+            Map.entry(8, "number of rooms"),
+            Map.entry(9, "transport type"),
+            Map.entry(10, "transport quality"),
+            Map.entry(11, "departure location"),
+            Map.entry(12, "number of travelers")
+    );
 
     private static final BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
@@ -81,6 +99,13 @@ public abstract class BaseViewCmd {
     public void showErrorDialog(String msg)
     {
         print(SET_RED_TEXT + "[ERROR] " + msg + "\n" + SET_WHITE_TEXT);
+    }
+
+
+    // Displays the given info message
+    public void showInfoDialog(String msg)
+    {
+        print(SET_GREEN_TEXT + "[ERROR] " + msg + "\n" + SET_WHITE_TEXT);
     }
 
 
@@ -145,25 +170,51 @@ public abstract class BaseViewCmd {
 
 
     // Displays some info for each announcement in the given list
-    public void showAnnouncementsList(List<Announcement> announcements)
+    public void showAnnouncementsList(List<Announcement> announcements, boolean showOwnerUsername)
     {
         for(int i = 0; i < announcements.size(); i++)
         {
-            printf("%d] %s - %s - %s - %s\n", i + 1,
-                    announcements.get(i).getDestination(),
-                    announcements.get(i).getHolidayDuration().getDepartureDate().toString(),
-                    announcements.get(i).getHolidayDuration().getReturnDate().toString(),
-                    announcements.get(i).getAvailableBudgetAsStr()
+            Announcement a = announcements.get(i);
+            printf("%d] %s - %s - %s - %s - %d views ", i + 1,
+                    a.getDestination(),
+                    a.getHolidayDuration().getDepartureDate().toString(),
+                    a.getHolidayDuration().getReturnDate().toString(),
+                    a.getAvailableBudgetAsStr(),
+                    a.getNumOfViews()
             );
+
+            if(showOwnerUsername)
+                printf("posted by: %s\n", a.getOwnerUsername());
+            else
+                print("\n");
         }
     }
 
 
     // Displays all the details of the given announcement
     // @numbered: if true then a number is displayed before each field of the announcement
-    public void showAnnouncementDetails(Announcement a, boolean numberedFields)
+    public void showAnnouncementDetails(Announcement a,  boolean showMetadata, boolean numberedFields)
     {
-        // TODO: Add implementation
+        if(showMetadata)
+            printf("Announcement posted on: %s by %s\n", a.getDateOfPost() == null ? "unknown" : a.getDateOfPost().toString(),
+                    a.getOwnerUsername() == null ? "unknown" : a.getOwnerUsername());
+
+        String[] fields = {
+                ANNOUNCEMENT_FIELDS.get(1) + ": " + a.getHolidayDescription(),
+                ANNOUNCEMENT_FIELDS.get(2) + ": " + ( a.getDestination().isBlank() ? UNKNOWN_STRING : a.getDestination() ),
+                ANNOUNCEMENT_FIELDS.get(3) + ": " + a.getAvailableBudgetAsStr(),
+                ANNOUNCEMENT_FIELDS.get(4) + ": " + ( a.getHolidayDuration().getDepartureDate() == null ? UNKNOWN_STRING : a.getHolidayDuration().getDepartureDate().toString() ),
+                ANNOUNCEMENT_FIELDS.get(5) + ": " + ( a.getHolidayDuration().getReturnDate() == null ? UNKNOWN_STRING : a.getHolidayDuration().getReturnDate().toString() ),
+                ANNOUNCEMENT_FIELDS.get(6) + ": " + ( a.getAccommodationRequirements().getType().isBlank() ? UNKNOWN_STRING : a.getAccommodationRequirements().getType() ),
+                ANNOUNCEMENT_FIELDS.get(7) + ": " + ( a.getAccommodationRequirements().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( a.getAccommodationRequirements().getQuality()  )),
+                ANNOUNCEMENT_FIELDS.get(8) + ": " + ( a.getAccommodationRequirements().getNumOfRooms() == 0 ? UNKNOWN_STRING : Integer.toString( a.getAccommodationRequirements().getNumOfRooms() ) ),
+                ANNOUNCEMENT_FIELDS.get(9) + ": " + ( a.getTransportRequirements().getType().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getType() ),
+                ANNOUNCEMENT_FIELDS.get(10) + ": " + ( a.getTransportRequirements().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getQuality() ) ),
+                ANNOUNCEMENT_FIELDS.get(11) + ": " + ( a.getTransportRequirements().getDepartureLocation().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getDepartureLocation() ),
+                ANNOUNCEMENT_FIELDS.get(12) + ": " + ( a.getTransportRequirements().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getNumOfTravelers() ) ),
+        };
+
+        printList(fields, numberedFields);
     }
 
 
@@ -189,16 +240,23 @@ public abstract class BaseViewCmd {
     // Reads an int from system in and returns it
     public int getIntFromUser(int minValue, int maxValue)
     {
+        boolean repeatRead;
         int val = Integer.MAX_VALUE;
 
         do {
+            repeatRead = false;
             try {
                 val = Integer.parseInt(getStringFromUser());
+                if(val < minValue || val > maxValue)
+                    throw new NumberFormatException();
+
             } catch(NumberFormatException e)
             {
                 showErrorDialog("Please insert a number between " + minValue + " and " + maxValue);
+                repeatRead = true;
             }
-        } while(val < minValue || val > maxValue);
+        } while(repeatRead);
+
         return val;
     }
 
@@ -213,7 +271,7 @@ public abstract class BaseViewCmd {
                 result = LocalDate.parse(dateAsStr);
             } catch(DateTimeParseException e)
             {
-                showErrorDialog("Please insert a date (i.e 2000-12-24)");
+                showErrorDialog("Please insert a date (i.e 2000-12-24, year-month-day)");
             }
 
         } while(result == null);

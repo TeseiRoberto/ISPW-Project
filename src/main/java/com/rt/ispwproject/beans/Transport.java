@@ -1,8 +1,6 @@
 package com.rt.ispwproject.beans;
 
 
-import java.util.List;
-
 public class Transport {
 
     private String      type;
@@ -13,6 +11,19 @@ public class Transport {
     private String      departureLocation;
     private String      arrivalLocation;
     private int         pricePerTraveler;
+
+
+    public Transport()
+    {
+        this.type = "";
+        this.companyName = "";
+        this.companyId = 0;
+        this.quality = 0;
+        this.numOfTravelers = 0;
+        this.departureLocation = "";
+        this.arrivalLocation = "";
+        this.pricePerTraveler = 0;
+    }
 
 
     // Constructor used to create transport offer
@@ -121,8 +132,8 @@ public class Transport {
     public int getPrice()                       { return this.pricePerTraveler * this.numOfTravelers; }
 
     // Returns all the available transport types
-    public static List<String> getAvailableTypes()
+    public static String[] getAvailableTypes()
     {
-        return List.of("Not specified", "Airplane", "Train", "Ferry", "Bus");
+        return new String[] { "Not specified", "Airplane", "Train", "Ferry", "Bus" };
     }
 }

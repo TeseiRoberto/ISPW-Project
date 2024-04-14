@@ -15,6 +15,19 @@ public class Accommodation {
     private List<URL>   imagesLinks;
 
 
+    public Accommodation()
+    {
+        this.type = "";
+        this.name = "";
+        this.accommodationId = 0;
+        this.address = "";
+        this.quality = 0;
+        this.numOfRooms = 0;
+        this.totalPrice = 0;
+        this.imagesLinks = null;
+    }
+
+
     public Accommodation(String type, String name, String address, int quality, int numOfRooms, int totalPrice) throws IllegalArgumentException
     {
         setType(type);
@@ -105,8 +118,8 @@ public class Accommodation {
     public List<URL> getImagesLinks()       { return this.imagesLinks; }
 
     // Returns all the available accommodation types
-    public static List<String> getAvailableTypes()
+    public static String[] getAvailableTypes()
     {
-        return List.of("Not specified", "Hotel");
+        return new String[] {"Not specified", "Hotel"};
     }
 }
