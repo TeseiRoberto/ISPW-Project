@@ -26,7 +26,7 @@ import java.util.List;
 public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     private final Announcement      currAnnounce;
-    List<Offer>                     offers;                     // Offers received for the currAnnounce
+    private List<Offer>             offers;                     // Offers received for the currAnnounce
     private int                     offerIndex;                 // Index in the offers list for the offer that is currently being shown
 
     @FXML private VBox              mainContainerVbox;
@@ -284,7 +284,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     }
 
 
-    // Invoked when the "reject offer" button is clicked, informs travel agency that offer was rejected
+    // Invoked when the "reject offer" button is clicked, informs travel agency that the offer was rejected
     public void onRejectOfferClick()
     {
         if(offers == null || offers.isEmpty())
@@ -320,7 +320,7 @@ public class AnnouncementDetailsGfxControllerJfx extends BaseSimpleUserGfxContro
     }
 
 
-    // Invoked when the "request changes" button is clicked
+    // Invoked when the "request changes" button is clicked, switches to the "request changes" screen
     public void onRequestChangesClick()
     {
         if(offers == null || offers.isEmpty())

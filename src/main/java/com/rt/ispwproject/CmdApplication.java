@@ -9,6 +9,8 @@ public class CmdApplication {
 
     private static BaseGfxControllerCmd currGfxController = null;
 
+    private CmdApplication() {}
+
 
     // Updates the current graphics controller with the given one
     public static void changeScreen(BaseGfxControllerCmd newGfxController)

@@ -8,7 +8,7 @@ public abstract class BaseGfxControllerCmd {
     protected final Session             currSession;
 
 
-    public BaseGfxControllerCmd(Session session)
+    protected BaseGfxControllerCmd(Session session)
     {
         this.currSession = session;
     }

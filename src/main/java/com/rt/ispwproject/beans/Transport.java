@@ -1,6 +1,8 @@
 package com.rt.ispwproject.beans;
 
 
+import java.util.List;
+
 public class Transport {
 
     private String      type;
@@ -132,8 +134,8 @@ public class Transport {
     public int getPrice()                       { return this.pricePerTraveler * this.numOfTravelers; }
 
     // Returns all the available transport types
-    public static String[] getAvailableTypes()
+    public static List<String> getAvailableTypes()
     {
-        return new String[] { "Not specified", "Airplane", "Train", "Ferry", "Bus" };
+        return List.of( "Not specified", "Airplane", "Train", "Ferry", "Bus" );
     }
 }

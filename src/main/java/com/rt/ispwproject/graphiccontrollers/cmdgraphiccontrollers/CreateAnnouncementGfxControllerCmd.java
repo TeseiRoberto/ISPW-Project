@@ -11,7 +11,9 @@ import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 
 import java.time.LocalDate;
+import java.util.List;
 
+// Graphic controller used by the "SIMPLE_USER" to create and post a new announcement
 public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
 
     private final CreateAnnouncementViewCmd view;
@@ -29,16 +31,21 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
 
     public void start()
     {
+        menu();
+    }
+
+
+    private void menu()
+    {
         runLoop = true;
-        String[] possibilities = { "edit announcement field", "post announcement", "back to my announcements" };
-        int choice = 0;
+        List<String> possibilities = List.of( "edit announcement field", "post announcement", "back to my announcements" );
 
         do {
             view.showScreenTitle();
             view.showAnnouncementDetails(newAnnounce, false, true);
             view.print("\n");
 
-            choice = view.getChoiceFromUser(possibilities);
+            int choice = view.getChoiceFromUser(possibilities);
             switch(choice)
             {
                 case 1:     onEditFieldSelected(); break;
@@ -52,7 +59,7 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
-    // Invoked when the user wants to edit one of the fields of the announcement, it converts the int inserted
+    // Invoked when "edit announcement field" is selected. It converts the int inserted
     // by the user to a string and asks the user to insert a new value for the announcement field associated to that string
     private void onEditFieldSelected()
     {
@@ -88,12 +95,12 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
                     break;
 
                 case "accommodation type": {
-                    String[] types = Accommodation.getAvailableTypes();
+                    List<String> types = Accommodation.getAvailableTypes();
                     view.printList(types, true);
 
                     view.print("Chose your accommodation type: ");
-                    int chosenType = view.getIntFromUser(1, types.length);
-                    newAnnounce.getAccommodationRequirements().setType(types[chosenType - 1]);
+                    int chosenType = view.getIntFromUser(1, types.size());
+                    newAnnounce.getAccommodationRequirements().setType(types.get(chosenType - 1));
                 }   break;
 
                 case "accommodation quality":
@@ -107,12 +114,12 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
                     break;
 
                 case "transport type": {
-                    String[] types = Transport.getAvailableTypes();
+                    List<String> types = Transport.getAvailableTypes();
                     view.printList(types, true);
 
                     view.print("Chose your transport type: ");
-                    int chosenType = view.getIntFromUser(1, types.length);
-                    newAnnounce.getTransportRequirements().setType(types[chosenType - 1]);
+                    int chosenType = view.getIntFromUser(1, types.size());
+                    newAnnounce.getTransportRequirements().setType(types.get(chosenType - 1));
                 }   break;
 
                 case "transport quality":
@@ -141,7 +148,7 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
-    // Invoked when the user wants to post the announcement
+    // Invoked when "post announcement" is selected, invokes the logic controller functionalities
     private void onPostAnnouncementSelected()
     {
         try {

@@ -118,8 +118,8 @@ public class Accommodation {
     public List<URL> getImagesLinks()       { return this.imagesLinks; }
 
     // Returns all the available accommodation types
-    public static String[] getAvailableTypes()
+    public static List<String> getAvailableTypes()
     {
-        return new String[] {"Not specified", "Hotel"};
+        return List.of( "Not specified", "Hotel" );
     }
 }

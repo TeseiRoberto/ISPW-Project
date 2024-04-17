@@ -10,6 +10,7 @@ import com.rt.ispwproject.logiccontrollers.AnnouncementManager;
 
 import java.util.List;
 
+// Graphic controller that displays the list of announcements posted by a "SIMPLE_USER"
 public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
 
     private List<Announcement>              announcements;
@@ -23,9 +24,9 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
+    // Load the announcements posted by the user and starts the menu
     public void start()
     {
-        // Load the announcements posted by the user
         try {
             AnnouncementManager annManager = new AnnouncementManager();
             announcements = annManager.getMyAnnouncements(currSession);
@@ -35,11 +36,17 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
             announcements.clear();
         }
 
+        menu();
+    }
+
+
+    private void menu()
+    {
         view.showScreenTitle();
         view.showMyAnnouncements(announcements);
         view.print("\n");
 
-        String[] possibilities = { "see announcement details", "create announcement", "exit" };
+        List<String> possibilities = List.of( "see announcement details", "create announcement", "exit" );
         int choice = view.getChoiceFromUser(possibilities);
         switch(choice)
         {
@@ -51,8 +58,8 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
-    // Invoked when the user wants to see the details of an announcement
-    public void onSeeAnnouncementDetailsSelected()
+    // Invoked when the user wants to see the details of an announcement, switches to the "announcement details" view
+    private void onSeeAnnouncementDetailsSelected()
     {
         if(announcements.isEmpty())
         {
@@ -61,21 +68,20 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
         }
 
         view.print("Insert the number of the announcement ==> ");
-        view.getIntFromUser(1, announcements.size());
-
-        // TODO: Need to switch to the "show announcement view" and pass the selected announcement...
+        int choice = view.getIntFromUser(1, announcements.size());
+        CmdApplication.changeScreen( new AnnouncementDetailsGfxControllerCmd(currSession, announcements.get(choice - 1)) );
     }
 
 
     // Invoked when the user wants to create a new announcement, switches to the "create announcement view"
-    public void onCreateAnnouncementSelected()
+    private void onCreateAnnouncementSelected()
     {
         CmdApplication.changeScreen( new CreateAnnouncementGfxControllerCmd(currSession) );
     }
 
 
     // Invoked when the user wants to exit the application
-    public void onExitSelected()
+    private void onExitSelected()
     {
         CmdApplication.changeScreen(null);
         view.print("Goodbye!\n");

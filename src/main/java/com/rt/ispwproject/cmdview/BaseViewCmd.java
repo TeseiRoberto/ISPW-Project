@@ -1,6 +1,7 @@
 package com.rt.ispwproject.cmdview;
 
 import com.rt.ispwproject.beans.Announcement;
+import com.rt.ispwproject.beans.Offer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,6 +58,24 @@ public abstract class BaseViewCmd {
             Map.entry(12, "number of travelers")
     );
 
+    // Map used to associate user input to the offer fields
+    public static final Map<Integer, String> OFFER_FIELDS = Map.ofEntries(
+            Map.entry(1, "destination"),
+            Map.entry(2, "departure date"),
+            Map.entry(3, "return date"),
+            Map.entry(4, "price"),
+            Map.entry(5, "accommodation type"),
+            Map.entry(6, "accommodation name"),
+            Map.entry(7, "accommodation quality"),
+            Map.entry(8, "accommodation address"),
+            Map.entry(9, "number of rooms"),
+            Map.entry(10, "transport type"),
+            Map.entry(11, "transport company name"),
+            Map.entry(12, "transport quality"),
+            Map.entry(13, "departure location"),
+            Map.entry(14, "number of travelers")
+    );
+
     private static final BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
 
@@ -81,11 +100,11 @@ public abstract class BaseViewCmd {
 
     // Prints the given strings as a list
     // @numbered: if true then a number is displayed before each element of the list
-    public void printList(String[] strings, boolean numbered)
+    public void printList(List<String> strings, boolean numbered)
     {
         if(numbered)
-            for(int i = 0; i < strings.length; i++)
-                print(i + 1 + "] " + strings[i] + "\n");
+            for(int i = 0; i < strings.size(); i++)
+                print(i + 1 + "] " + strings.get(i) + "\n");
         else
             for (String string : strings)
                 print(string + "\n");
@@ -163,9 +182,18 @@ public abstract class BaseViewCmd {
         titleLine.setCharAt(len - 1, sep.charAt(0));
         titleLine.append('\n');
 
+        print(SET_YELLOW_TEXT);
         print(separatorLine.toString());
         print(titleLine.toString());
         print(separatorLine.toString());
+        print(SET_WHITE_TEXT);
+    }
+
+
+    // Displays the given string in a line like "=====[ subtitle ]===="
+    public void printSubtitle(String subtitle)
+    {
+        printf("%s=======[ %s ]=======%s\n", SET_YELLOW_TEXT, subtitle, SET_WHITE_TEXT);
     }
 
 
@@ -196,10 +224,10 @@ public abstract class BaseViewCmd {
     public void showAnnouncementDetails(Announcement a,  boolean showMetadata, boolean numberedFields)
     {
         if(showMetadata)
-            printf("Announcement posted on: %s by %s\n", a.getDateOfPost() == null ? "unknown" : a.getDateOfPost().toString(),
-                    a.getOwnerUsername() == null ? "unknown" : a.getOwnerUsername());
+            printf("Announcement posted on: %s by: %s\n", a.getDateOfPost() == null ? UNKNOWN_STRING : a.getDateOfPost().toString(),
+                    a.getOwnerUsername() == null ? UNKNOWN_STRING : a.getOwnerUsername());
 
-        String[] fields = {
+        List<String> fields = List.of(
                 ANNOUNCEMENT_FIELDS.get(1) + ": " + a.getHolidayDescription(),
                 ANNOUNCEMENT_FIELDS.get(2) + ": " + ( a.getDestination().isBlank() ? UNKNOWN_STRING : a.getDestination() ),
                 ANNOUNCEMENT_FIELDS.get(3) + ": " + a.getAvailableBudgetAsStr(),
@@ -211,10 +239,55 @@ public abstract class BaseViewCmd {
                 ANNOUNCEMENT_FIELDS.get(9) + ": " + ( a.getTransportRequirements().getType().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getType() ),
                 ANNOUNCEMENT_FIELDS.get(10) + ": " + ( a.getTransportRequirements().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getQuality() ) ),
                 ANNOUNCEMENT_FIELDS.get(11) + ": " + ( a.getTransportRequirements().getDepartureLocation().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getDepartureLocation() ),
-                ANNOUNCEMENT_FIELDS.get(12) + ": " + ( a.getTransportRequirements().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getNumOfTravelers() ) ),
-        };
+                ANNOUNCEMENT_FIELDS.get(12) + ": " + ( a.getTransportRequirements().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getNumOfTravelers() ) )
+        );
 
         printList(fields, numberedFields);
+    }
+
+
+    // Displays some info for each offer in the given list
+    public void showOffersList(List<Offer> offers)
+    {
+        for(int i = 0; i < offers.size(); i++)
+        {
+            Offer o = offers.get(i);
+            printf("%d] %s - %s - %s - %s", i + 1,
+                    o.getDestination(),
+                    o.getHolidayDuration().getDepartureDate().toString(),
+                    o.getHolidayDuration().getReturnDate().toString(),
+                    o.getPriceAsStr()
+            );
+        }
+    }
+
+
+    // Displays all the details of the given offer
+    // @numbered: if true then a number is displayed before each field of the offer
+    public void showOfferDetails(Offer o, boolean showMetadata, boolean numberedFields)
+    {
+        if(showMetadata)
+            printf("Offer made by: %s\n", o.getBidderUsername() == null ? UNKNOWN_STRING : o.getBidderUsername());
+
+        List<String> fields = List.of(
+                OFFER_FIELDS.get(1) + ": " + ( o.getDestination().isBlank() ? UNKNOWN_STRING : o.getDestination() ),
+                OFFER_FIELDS.get(2) + ": " + ( o.getHolidayDuration().getDepartureDate() == null ? UNKNOWN_STRING : o.getHolidayDuration().getDepartureDate().toString() ),
+                OFFER_FIELDS.get(3) + ": " + ( o.getHolidayDuration().getReturnDate() == null ? UNKNOWN_STRING : o.getHolidayDuration().getReturnDate().toString() ),
+                OFFER_FIELDS.get(4) + ": " + o.getPriceAsStr(),
+                OFFER_FIELDS.get(5) + ": " + ( o.getAccommodationOffer().getType().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getType() ),
+                OFFER_FIELDS.get(6) + ": " + ( o.getAccommodationOffer().getName().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getName() ),
+                OFFER_FIELDS.get(7) + ": " + ( o.getAccommodationOffer().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( o.getAccommodationOffer().getQuality()  )),
+                OFFER_FIELDS.get(8) + ": " + ( o.getAccommodationOffer().getAddress().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getAddress() ),
+                OFFER_FIELDS.get(9) + ": " + ( o.getAccommodationOffer().getNumOfRooms() == 0 ? UNKNOWN_STRING : Integer.toString( o.getAccommodationOffer().getNumOfRooms() ) ),
+                OFFER_FIELDS.get(10) + ": " + ( o.getTransportOffer().getType().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getType() ),
+                OFFER_FIELDS.get(11) + ": " + ( o.getTransportOffer().getCompanyName().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getCompanyName() ),
+                OFFER_FIELDS.get(12) + ": " + ( o.getTransportOffer().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( o.getTransportOffer().getQuality() ) ),
+                OFFER_FIELDS.get(13) + ": " + ( o.getTransportOffer().getDepartureLocation().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getDepartureLocation() ),
+                OFFER_FIELDS.get(14) + ": " + ( o.getTransportOffer().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( o.getTransportOffer().getNumOfTravelers() ) )
+        );
+
+        printList(fields, numberedFields);
+        printf("\nOffer status: %s\n", o.getOfferStatus());
     }
 
 
@@ -280,11 +353,12 @@ public abstract class BaseViewCmd {
 
 
     // Displays the given strings as a numbered list and returns the int associated to the string chosen by the user
-    public int getChoiceFromUser(String[] possibilities)
+    public int getChoiceFromUser(List<String> possibilities)
     {
+        printSubtitle("Available options");
         printList(possibilities, true);
-        print("What do you want to do? ==> ");
-        return getIntFromUser(1, possibilities.length);
+        print("What do you want to do? ");
+        return getIntFromUser(1, possibilities.size());
     }
 
 }
