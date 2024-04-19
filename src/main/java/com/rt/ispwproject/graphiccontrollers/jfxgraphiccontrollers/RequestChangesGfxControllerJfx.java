@@ -208,7 +208,13 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     // Constructs a ChangesOnOffer instance and sends it to the travel agency, then switch back to the "announcement details" screen
     public void onRequestChangesClick()
     {
+        // Ask for user confirm
+        ButtonType res = showConfirmDialog("Do you really want to request the specified changes?");
+        if(res != ButtonType.OK)
+            return;
+
         try {
+            // Build the changes request
             ChangesOnOffer newRequest = new ChangesOnOffer(currSession.getUsername(), currOffer.getId(), currOffer.getBidderUsername());
             newRequest.setChangesDescription(requestedChangesDescriptionTextarea.getText());
             newRequest.setPrice(getPriceChange());
@@ -216,11 +222,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
             newRequest.setAccommodationChanges(getAccommodationChanges());
             newRequest.setTransportChanges(getTransportChanges());
 
-            // Ask for user confirm
-            ButtonType res = showConfirmDialog("Do you really want to request the specified changes?");
-            if(res != ButtonType.OK)
-                return;
-
+            // Send the request
             ChangesManager changesManager = new ChangesManager();
             changesManager.requestChangesOnOffer(currSession, newRequest, currOffer);
             showInfoDialog("Request of changes sent correctly!");
@@ -259,7 +261,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Returns the duration that the user would like for his holiday, null if no change is requested
+    // Returns the duration that the user would like for his holiday, null if no change is requested on the holiday duration
     private Duration getDurationChanges() throws IllegalArgumentException
     {
         LocalDate departureDate = requestedDepartureDatePicker.getValue();
@@ -275,7 +277,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Returns an Accommodation instance that contains the requested changes, null if no change is requested
+    // Returns an Accommodation instance that contains the requested changes, returns null if no change is requested on the accommodation
     private Accommodation getAccommodationChanges() throws IllegalArgumentException
     {
         Accommodation accommodationChanges = null;
@@ -310,7 +312,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
     }
 
 
-    // Returns a Transport instance that contains the requested changes, null if no change is requested
+    // Returns a Transport instance that contains the requested changes, returns null if no change is requested on the transport
     private Transport getTransportChanges() throws IllegalArgumentException
     {
         Transport transportChanges = null;

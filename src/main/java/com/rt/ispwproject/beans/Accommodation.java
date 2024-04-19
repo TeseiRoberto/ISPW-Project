@@ -43,6 +43,11 @@ public class Accommodation {
 
     public Accommodation(String type, int quality, int numOfRooms) throws IllegalArgumentException
     {
+        this.name = "";
+        this.accommodationId = 0;
+        this.address = "";
+        this.totalPrice = 0;
+        this.imagesLinks = null;
         setType(type);
         setQuality(quality);
         setNumOfRooms(numOfRooms);

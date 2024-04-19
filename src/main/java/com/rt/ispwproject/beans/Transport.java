@@ -47,6 +47,8 @@ public class Transport {
     public Transport(String type, int quality, String departureLocation, String arrivalLocation, int numOfTravelers) throws IllegalArgumentException
     {
         this.companyId = 0;
+        this.companyName = "";
+        this.pricePerTraveler = 0;
         setType(type);
         setQuality(quality);
         setDepartureLocation(departureLocation);

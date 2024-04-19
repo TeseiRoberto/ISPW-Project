@@ -98,7 +98,7 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
                     List<String> types = Accommodation.getAvailableTypes();
                     view.printList(types, true);
 
-                    view.print("Chose your accommodation type: ");
+                    view.print("Choose your accommodation type: ");
                     int chosenType = view.getIntFromUser(1, types.size());
                     newAnnounce.getAccommodationRequirements().setType(types.get(chosenType - 1));
                 }   break;
@@ -117,7 +117,7 @@ public class CreateAnnouncementGfxControllerCmd extends BaseGfxControllerCmd {
                     List<String> types = Transport.getAvailableTypes();
                     view.printList(types, true);
 
-                    view.print("Chose your transport type: ");
+                    view.print("Choose your transport type: ");
                     int chosenType = view.getIntFromUser(1, types.size());
                     newAnnounce.getTransportRequirements().setType(types.get(chosenType - 1));
                 }   break;

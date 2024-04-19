@@ -1,6 +1,7 @@
 package com.rt.ispwproject.cmdview;
 
 import com.rt.ispwproject.beans.Announcement;
+import com.rt.ispwproject.beans.ChangesOnOffer;
 import com.rt.ispwproject.beans.Offer;
 
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +78,7 @@ public abstract class BaseViewCmd {
             Map.entry(14, "number of travelers")
     );
 
+
     private static final BufferedReader reader = new BufferedReader( new InputStreamReader(System.in) );
 
 
@@ -124,7 +127,7 @@ public abstract class BaseViewCmd {
     // Displays the given info message
     public void showInfoDialog(String msg)
     {
-        print(SET_GREEN_TEXT + "[ERROR] " + msg + "\n" + SET_WHITE_TEXT);
+        print(SET_GREEN_TEXT + "[INFO] " + msg + "\n" + SET_WHITE_TEXT);
     }
 
 
@@ -229,17 +232,17 @@ public abstract class BaseViewCmd {
 
         List<String> fields = List.of(
                 ANNOUNCEMENT_FIELDS.get(1) + ": " + a.getHolidayDescription(),
-                ANNOUNCEMENT_FIELDS.get(2) + ": " + ( a.getDestination().isBlank() ? UNKNOWN_STRING : a.getDestination() ),
+                ANNOUNCEMENT_FIELDS.get(2) + ": " + a.getDestination(),
                 ANNOUNCEMENT_FIELDS.get(3) + ": " + a.getAvailableBudgetAsStr(),
-                ANNOUNCEMENT_FIELDS.get(4) + ": " + ( a.getHolidayDuration().getDepartureDate() == null ? UNKNOWN_STRING : a.getHolidayDuration().getDepartureDate().toString() ),
-                ANNOUNCEMENT_FIELDS.get(5) + ": " + ( a.getHolidayDuration().getReturnDate() == null ? UNKNOWN_STRING : a.getHolidayDuration().getReturnDate().toString() ),
-                ANNOUNCEMENT_FIELDS.get(6) + ": " + ( a.getAccommodationRequirements().getType().isBlank() ? UNKNOWN_STRING : a.getAccommodationRequirements().getType() ),
-                ANNOUNCEMENT_FIELDS.get(7) + ": " + ( a.getAccommodationRequirements().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( a.getAccommodationRequirements().getQuality()  )),
-                ANNOUNCEMENT_FIELDS.get(8) + ": " + ( a.getAccommodationRequirements().getNumOfRooms() == 0 ? UNKNOWN_STRING : Integer.toString( a.getAccommodationRequirements().getNumOfRooms() ) ),
-                ANNOUNCEMENT_FIELDS.get(9) + ": " + ( a.getTransportRequirements().getType().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getType() ),
-                ANNOUNCEMENT_FIELDS.get(10) + ": " + ( a.getTransportRequirements().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getQuality() ) ),
-                ANNOUNCEMENT_FIELDS.get(11) + ": " + ( a.getTransportRequirements().getDepartureLocation().isBlank() ? UNKNOWN_STRING : a.getTransportRequirements().getDepartureLocation() ),
-                ANNOUNCEMENT_FIELDS.get(12) + ": " + ( a.getTransportRequirements().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( a.getTransportRequirements().getNumOfTravelers() ) )
+                ANNOUNCEMENT_FIELDS.get(4) + ": " + ( a.getHolidayDuration().getDepartureDate() == null ? "" : a.getHolidayDuration().getDepartureDate().toString() ),
+                ANNOUNCEMENT_FIELDS.get(5) + ": " + ( a.getHolidayDuration().getReturnDate() == null ? "" : a.getHolidayDuration().getReturnDate().toString() ),
+                ANNOUNCEMENT_FIELDS.get(6) + ": " + a.getAccommodationRequirements().getType(),
+                ANNOUNCEMENT_FIELDS.get(7) + ": " + a.getAccommodationRequirements().getQuality(),
+                ANNOUNCEMENT_FIELDS.get(8) + ": " + a.getAccommodationRequirements().getNumOfRooms(),
+                ANNOUNCEMENT_FIELDS.get(9) + ": " + a.getTransportRequirements().getType(),
+                ANNOUNCEMENT_FIELDS.get(10) + ": " +a.getTransportRequirements().getQuality(),
+                ANNOUNCEMENT_FIELDS.get(11) + ": " +a.getTransportRequirements().getDepartureLocation(),
+                ANNOUNCEMENT_FIELDS.get(12) + ": " +a.getTransportRequirements().getNumOfTravelers()
         );
 
         printList(fields, numberedFields);
@@ -270,24 +273,64 @@ public abstract class BaseViewCmd {
             printf("Offer made by: %s\n", o.getBidderUsername() == null ? UNKNOWN_STRING : o.getBidderUsername());
 
         List<String> fields = List.of(
-                OFFER_FIELDS.get(1) + ": " + ( o.getDestination().isBlank() ? UNKNOWN_STRING : o.getDestination() ),
-                OFFER_FIELDS.get(2) + ": " + ( o.getHolidayDuration().getDepartureDate() == null ? UNKNOWN_STRING : o.getHolidayDuration().getDepartureDate().toString() ),
-                OFFER_FIELDS.get(3) + ": " + ( o.getHolidayDuration().getReturnDate() == null ? UNKNOWN_STRING : o.getHolidayDuration().getReturnDate().toString() ),
+                OFFER_FIELDS.get(1) + ": " + o.getDestination(),
+                OFFER_FIELDS.get(2) + ": " + ( o.getHolidayDuration().getDepartureDate() == null ? "" : o.getHolidayDuration().getDepartureDate().toString() ),
+                OFFER_FIELDS.get(3) + ": " + ( o.getHolidayDuration().getReturnDate() == null ? "" : o.getHolidayDuration().getReturnDate().toString() ),
                 OFFER_FIELDS.get(4) + ": " + o.getPriceAsStr(),
-                OFFER_FIELDS.get(5) + ": " + ( o.getAccommodationOffer().getType().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getType() ),
-                OFFER_FIELDS.get(6) + ": " + ( o.getAccommodationOffer().getName().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getName() ),
-                OFFER_FIELDS.get(7) + ": " + ( o.getAccommodationOffer().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( o.getAccommodationOffer().getQuality()  )),
-                OFFER_FIELDS.get(8) + ": " + ( o.getAccommodationOffer().getAddress().isBlank() ? UNKNOWN_STRING : o.getAccommodationOffer().getAddress() ),
-                OFFER_FIELDS.get(9) + ": " + ( o.getAccommodationOffer().getNumOfRooms() == 0 ? UNKNOWN_STRING : Integer.toString( o.getAccommodationOffer().getNumOfRooms() ) ),
-                OFFER_FIELDS.get(10) + ": " + ( o.getTransportOffer().getType().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getType() ),
-                OFFER_FIELDS.get(11) + ": " + ( o.getTransportOffer().getCompanyName().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getCompanyName() ),
-                OFFER_FIELDS.get(12) + ": " + ( o.getTransportOffer().getQuality() == 0 ? UNKNOWN_STRING : Integer.toString( o.getTransportOffer().getQuality() ) ),
-                OFFER_FIELDS.get(13) + ": " + ( o.getTransportOffer().getDepartureLocation().isBlank() ? UNKNOWN_STRING : o.getTransportOffer().getDepartureLocation() ),
-                OFFER_FIELDS.get(14) + ": " + ( o.getTransportOffer().getNumOfTravelers() == 0 ? UNKNOWN_STRING : Integer.toString( o.getTransportOffer().getNumOfTravelers() ) )
+                OFFER_FIELDS.get(5) + ": " + o.getAccommodationOffer().getType(),
+                OFFER_FIELDS.get(6) + ": " + o.getAccommodationOffer().getName(),
+                OFFER_FIELDS.get(7) + ": " + o.getAccommodationOffer().getQuality(),
+                OFFER_FIELDS.get(8) + ": " + o.getAccommodationOffer().getAddress(),
+                OFFER_FIELDS.get(9) + ": " + o.getAccommodationOffer().getNumOfRooms(),
+                OFFER_FIELDS.get(10) + ": " + o.getTransportOffer().getType(),
+                OFFER_FIELDS.get(11) + ": " + o.getTransportOffer().getCompanyName(),
+                OFFER_FIELDS.get(12) + ": " + o.getTransportOffer().getQuality(),
+                OFFER_FIELDS.get(13) + ": " + o.getTransportOffer().getDepartureLocation(),
+                OFFER_FIELDS.get(14) + ": " + o.getTransportOffer().getNumOfTravelers()
         );
 
         printList(fields, numberedFields);
         printf("\nOffer status: %s\n", o.getOfferStatus());
+    }
+
+
+    // Displays all the details of the given changes
+    public void showChangesOnOfferDetails(ChangesOnOffer c)
+    {
+        ArrayList<String> fields = new ArrayList<>();
+
+        if(!c.getChangesDescription().isBlank())
+            fields.add(ANNOUNCEMENT_FIELDS.get(1) + ": " + c.getChangesDescription());
+
+        if(c.isPriceChangeRequired())
+            fields.add(ANNOUNCEMENT_FIELDS.get(3) + ": " + c.getPriceAsStr());
+
+        if(c.isDurationChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(4) + ": " + c.getHolidayDuration().getDepartureDate().toString());
+            fields.add(ANNOUNCEMENT_FIELDS.get(5) + ": " + c.getHolidayDuration().getReturnDate().toString());
+        }
+
+        if(c.isAccommodationChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(6) + ": " + c.getAccommodationChanges().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(7) + ": " + c.getAccommodationChanges().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(8) + ": " + c.getAccommodationChanges().getNumOfRooms());
+        }
+
+        if(c.isTransportChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(2) + ": " +  c.getTransportChanges().getArrivalLocation());
+            fields.add(ANNOUNCEMENT_FIELDS.get(9) + ": " +  c.getTransportChanges().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(10) + ": " + c.getTransportChanges().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(11) + ": " + c.getTransportChanges().getDepartureLocation());
+            fields.add(ANNOUNCEMENT_FIELDS.get(12) + ": " + c.getTransportChanges().getNumOfTravelers());
+        }
+
+        if(fields.isEmpty())
+            print("No change has been requested...\n");
+        else
+            printList(fields, false);
     }
 
 
