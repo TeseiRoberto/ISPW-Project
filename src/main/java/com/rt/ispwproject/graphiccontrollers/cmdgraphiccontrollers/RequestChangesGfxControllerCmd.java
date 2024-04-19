@@ -62,7 +62,7 @@ public class RequestChangesGfxControllerCmd extends BaseGfxControllerCmd {
                 case 1:     onEditFieldSelected(); break;
                 case 2:     onSendRequestSelected(); break;
                 case 3:     onBackSelected(); break;
-                case 4:     onResetRequestedChangesSelected();
+                case 4:     onResetRequestedChangesSelected(); break;
                 default:    view.showErrorDialog(BaseViewCmd.INVALID_OPTION_MSG); break;
             }
         } while(runLoop);
@@ -141,8 +141,7 @@ public class RequestChangesGfxControllerCmd extends BaseGfxControllerCmd {
                     isAccommodationChangeRequired = true;
                 }   break;
 
-                case "accommodation name":
-                case "accommodation address":
+                case "accommodation name", "accommodation address":
                     if(view.showConfirmDialog("Do you want to request a change on the accommodation?"))
                         isAccommodationChangeRequired = true;
                     break;
