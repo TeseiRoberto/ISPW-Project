@@ -49,7 +49,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
     @FXML protected Text                requestedNumOfRoomsText;
     @FXML protected Text                requestedTransportTypeText;
     @FXML protected HBox                requestedTransportQualityHbox;
-    protected QualityIndicator          requestedTransportQuality = new QualityIndicator(0);
+    protected final QualityIndicator    requestedTransportQuality = new QualityIndicator(0);
     @FXML protected Text                requestedNumOfTravelersText;
     @FXML protected Text                requestedDepartureLocationText;
     @FXML protected Text                availableBudgetText;
@@ -77,7 +77,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
     /* This variable is used in the onDepartureDateChange and onReturnDateChange callbacks, is needed to avoid getting stuck in
      * a loop indeed such callbacks can change the value of the property they are related to and when that happens the callback is invoked again.
      * To avoid this we set and check the value of this variable every time a change happens*/
-    private boolean                 dataUpdatedOnCallback = false;
+    private boolean                     dataUpdatedOnCallback = false;
 
 
     public BaseMakeOfferGfxControllerJfx(Session session, Stage stage)

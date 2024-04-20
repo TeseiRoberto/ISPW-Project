@@ -33,9 +33,8 @@ public class LoginGfxControllerCmd {
     {
         if(session.getUserRole() == UserRole.SIMPLE_USER)
             CmdApplication.changeScreen( new MyAnnouncementsGfxControllerCmd(session) );
-        /*else if(session.getUserRole() == UserRole.TRAVEL_AGENCY)
-            // TODO: CmdApplication.changeScreen( new SearchAnnouncementsGfxControllerCmd(currSession) );
-         */
+        else if(session.getUserRole() == UserRole.TRAVEL_AGENCY)
+            CmdApplication.changeScreen( new SearchAnnouncementsGfxControllerCmd(session) );
     }
 
 }
