@@ -18,7 +18,7 @@ public class SearchAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     private List<Announcement>              announcements;
     private final SearchAnnouncementsViewCmd view;
 
-    private static final int                MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 2;
+    private static final int                MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 10;
 
 
     public SearchAnnouncementsGfxControllerCmd(Session session)

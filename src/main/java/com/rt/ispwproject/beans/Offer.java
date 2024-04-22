@@ -24,7 +24,7 @@ public class Offer {
         this.relativeAnnouncementOwnerUsername = "";
         this.offerStatus = "";
         this.destination = "";
-        this.holidayDuration = null;
+        this.holidayDuration = new Duration();
         this.price = 0;
         this.accommodation = new Accommodation();
         this.transport = new Transport();

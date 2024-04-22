@@ -257,10 +257,10 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
         List<Accommodation> availableAccommodations = null;
 
         try {
-            if(destination == null || destination.isEmpty())
+            if(destination == null || destination.isBlank())
                 throw new IllegalArgumentException("Please insert a destination to get the available accommodations.");
 
-            if(numOfRoomsAsStr == null || numOfRoomsAsStr.isEmpty())
+            if(numOfRoomsAsStr == null || numOfRoomsAsStr.isBlank())
                 throw new IllegalArgumentException("Please insert the number of rooms required to get the available accommodations.");
 
             numOfRooms = Integer.parseInt(numOfRoomsAsStr);

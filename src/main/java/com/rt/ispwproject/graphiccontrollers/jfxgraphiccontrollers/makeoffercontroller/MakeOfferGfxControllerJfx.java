@@ -11,6 +11,7 @@ import com.rt.ispwproject.logiccontrollers.OfferManager;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
+// Graphic controller used by the TRAVEL_AGENCY to make an offer for the announcement posted by a user
 public class MakeOfferGfxControllerJfx extends BaseMakeOfferGfxControllerJfx {
 
     private final Announcement  currAnnounce;

@@ -36,7 +36,7 @@ public class AccommodationSearcher {
     // Returns accommodation offers that matches the given criteria
     public List<Accommodation> searchAccommodationOffers(String destination, Duration checkInOutDates, int numOfRoomsRequired) throws ApiException
     {
-        if(destination == null)
+        if(destination == null || destination.isBlank())
             throw new ApiException(API_NAME, "Destination has not been specified");
 
         if(checkInOutDates == null)

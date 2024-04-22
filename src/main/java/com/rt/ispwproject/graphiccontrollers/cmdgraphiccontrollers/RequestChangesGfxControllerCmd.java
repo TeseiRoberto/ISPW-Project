@@ -98,8 +98,9 @@ public class RequestChangesGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
-    // Invoked when "edit request field" is selected. It converts the int inserted
-    // by the user to a string and asks the user to insert a new value for the announcement field associated to that string
+    // Invoked when "edit request field" is selected.
+    // It converts the int inserted by the user to a string and asks the user to insert
+    // a new value for the field of the announcement associated to that the string
     private void onEditFieldSelected()
     {
         view.print("Which field do you want to edit? ==> ");

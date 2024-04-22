@@ -22,7 +22,7 @@ public class TransportSearcher {
     public List<Transport> searchTransportOffers(String departureLocation, String arrivalLocation,
                                                  Duration departureAnsReturnDates, int numOfTravelers) throws ApiException
     {
-        if(departureLocation == null || arrivalLocation == null)
+        if(departureLocation == null ||  departureLocation.isBlank() || arrivalLocation == null  || arrivalLocation.isBlank())
             throw new ApiException(API_NAME, "Departure and/or arrival location has not been specified");
 
         if(departureAnsReturnDates == null)
