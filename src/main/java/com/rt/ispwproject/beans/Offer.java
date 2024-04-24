@@ -32,6 +32,32 @@ public class Offer {
     }
 
 
+    // Copy constructor
+    public Offer(Offer other)
+    {
+        this.id = other.getId();
+        this.bidderAgencyUsername = other.getBidderUsername();
+        this.relativeAnnouncementOwnerUsername = other.getRelativeAnnouncementOwnerUsername();
+        this.offerStatus = other.getOfferStatus();
+        this.destination = other.getDestination();
+        this.holidayDuration = new Duration();
+
+        LocalDate date = other.getHolidayDuration().getDepartureDate();
+        if(date != null)
+            this.getHolidayDuration().setDepartureDate(date);
+
+        date = other.getHolidayDuration().getReturnDate();
+        if(date != null)
+            this.getHolidayDuration().setReturnDate(date);
+
+        this.price = other.getPrice();
+        this.accommodation = new Accommodation(other.getAccommodationOffer());
+        this.transport = new Transport(other.getTransportOffer());
+
+        this.hasRequestOfChanges = other.hasRequestOfChanges;
+    }
+
+
     public Offer(String bidderAgencyUsername, String relativeReqOwnerUsername, String destination,
                  Duration holidayDuration, int price, Accommodation accommodation, Transport transport) throws IllegalArgumentException
     {

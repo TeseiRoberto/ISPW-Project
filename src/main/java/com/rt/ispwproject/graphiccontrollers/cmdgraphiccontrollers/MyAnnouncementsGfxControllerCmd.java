@@ -73,7 +73,7 @@ public class MyAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     }
 
 
-    // Invoked when the user wants to create a new announcement, switches to the "create announcement view"
+    // Invoked when the user wants to create a new announcement, switches to the "create announcement" view
     private void onCreateAnnouncementSelected()
     {
         CmdApplication.changeScreen( new CreateAnnouncementGfxControllerCmd(currSession) );

@@ -10,10 +10,11 @@ import com.rt.ispwproject.logiccontrollers.OfferManager;
 
 import java.util.List;
 
-// Graphic controller used by the TRAVEL_AGENCY to make an offer for the announcement posted by a user
-public class MakeOfferGfxControllerCmd extends BaseMakeGfxOfferControllerCmd {
+// Graphic controller used by the "TRAVEL_AGENCY" to make an offer for the announcement posted by a user
+public class MakeOfferGfxControllerCmd extends BaseMakeOfferGfxControllerCmd {
 
     private final Announcement      currAnnounce;
+
 
     public MakeOfferGfxControllerCmd(Session session, Announcement announce)
     {
@@ -32,7 +33,8 @@ public class MakeOfferGfxControllerCmd extends BaseMakeGfxOfferControllerCmd {
 
     protected void menu()
     {
-        List<String> possibilities = List.of( "Edit offer field", "send offer", "back to search announcements" );
+        runLoop = true;
+        List<String> possibilities = List.of( "Edit offer field", "make offer to user", "back to search announcements" );
 
         do {
             view.showScreenTitle();
@@ -43,7 +45,7 @@ public class MakeOfferGfxControllerCmd extends BaseMakeGfxOfferControllerCmd {
             switch(choice)
             {
                 case 1:     onEditOfferFieldSelected(); break;
-                case 2:     onSendOfferSelected(); break;
+                case 2:     onMakeOfferSelected(); break;
                 case 3:     onBackSelected(); break;
                 default:    view.showErrorDialog(BaseViewCmd.INVALID_OPTION_MSG); break;
             }
@@ -51,8 +53,8 @@ public class MakeOfferGfxControllerCmd extends BaseMakeGfxOfferControllerCmd {
     }
 
 
-    // Invoked when "send offer" is selected, uses the logic controller to insert the offer in the system
-    private void onSendOfferSelected()
+    // Invoked when "make offer to user" is selected, uses the logic controller to insert the offer in the system
+    private void onMakeOfferSelected()
     {
         try {
             if(!accommodationChosen)
@@ -69,6 +71,7 @@ public class MakeOfferGfxControllerCmd extends BaseMakeGfxOfferControllerCmd {
             return;
         }
 
+        runLoop = false;
         view.showInfoDialog("Offer sent correctly!");
         CmdApplication.changeScreen( new SearchAnnouncementsGfxControllerCmd(currSession) );
     }

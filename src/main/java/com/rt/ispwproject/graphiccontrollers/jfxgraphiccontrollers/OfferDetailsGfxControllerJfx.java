@@ -212,4 +212,5 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
         changeScreen(getClass().getResource(MAKE_COUNTEROFFER_SCREEN_NAME),
                 c -> new MakeCounterofferGfxControllerJfx(currSession, mainStage, currOffer, requestedChanges));
     }
+
 }

@@ -42,14 +42,7 @@ public class SearchAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
 
         do {
             view.showScreenTitle();
-
-            if(announcements.isEmpty())
-            {
-                view.print("\nNo announcement is currently available.\n");
-            } else {
-                view.showAnnouncementsList(announcements, true);
-                view.print("\n");
-            }
+            view.showAnnouncements(announcements);
 
             int choice = view.getChoiceFromUser(possibilities);
             switch(choice)
@@ -103,8 +96,8 @@ public class SearchAnnouncementsGfxControllerCmd extends BaseGfxControllerCmd {
     // Invoked when the user wants to see the offers sent by him, switches to the "my offers" view
     private void onSeeMyOffersSelected()
     {
-        view.showErrorDialog("NOT IMPLEMENTED YET...");
-        // TODO: Add implementation
+        runLoop = false;
+        CmdApplication.changeScreen( new MyOffersGfxControllerCmd(currSession) );
     }
 
 

@@ -1,9 +1,6 @@
 package com.rt.ispwproject.cmdview.makeofferview;
 
-import com.rt.ispwproject.beans.Accommodation;
-import com.rt.ispwproject.beans.Announcement;
-import com.rt.ispwproject.beans.Offer;
-import com.rt.ispwproject.beans.Transport;
+import com.rt.ispwproject.beans.*;
 import com.rt.ispwproject.cmdview.BaseViewCmd;
 
 import java.util.List;
@@ -16,6 +13,16 @@ public abstract class BaseMakeOfferViewCmd extends BaseViewCmd {
     {
         printSubtitle("User request");
         showAnnouncementDetails(announce, true, false);
+        print("\n");
+    }
+
+
+    // Displays the changes requested by the user (uses the original offer to display values of
+    // fields for which no change is required)
+    public void showUserRequest(ChangesOnOffer changes, Offer originalOffer)
+    {
+        printSubtitle("User request");
+        showChangesOnOfferDetails(changes, originalOffer);
         print("\n");
     }
 

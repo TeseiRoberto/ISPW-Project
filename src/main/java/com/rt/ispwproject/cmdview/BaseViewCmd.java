@@ -221,8 +221,8 @@ public abstract class BaseViewCmd {
         }
     }
 
-
-    // Displays all the details of the given announcement
+    // Builds and prints a list of strings that describes all the details of the given Announcement instance
+    // @showMetadata: if true then the username of the announcement owner (and the date of post) are displayed
     // @numbered: if true then a number is displayed before each field of the announcement
     public void showAnnouncementDetails(Announcement a,  boolean showMetadata, boolean numberedFields)
     {
@@ -265,7 +265,8 @@ public abstract class BaseViewCmd {
     }
 
 
-    // Displays all the details of the given offer
+    // Builds and prints a list of strings that describes all the details of the given Offer instance
+    // @showMetadata: if true then the name of the travel agency that made the offer is displayed
     // @numbered: if true then a number is displayed before each field of the offer
     public void showOfferDetails(Offer o, boolean showMetadata, boolean numberedFields)
     {
@@ -294,7 +295,7 @@ public abstract class BaseViewCmd {
     }
 
 
-    // Displays all the details of the given changes
+    // Builds and prints a list of strings that describes the changes specified in the given ChangesOnOffer instance
     public void showChangesOnOfferDetails(ChangesOnOffer c)
     {
         ArrayList<String> fields = new ArrayList<>();
@@ -331,6 +332,57 @@ public abstract class BaseViewCmd {
             print("No change has been requested...\n");
         else
             printList(fields, false);
+    }
+
+
+    // Builds and prints a list of strings that describes the changes specified in the given ChangesOnOffer instance,
+    // (if no change is specified for a specific field then the value in the offer is used instead)
+    public void showChangesOnOfferDetails(ChangesOnOffer c, Offer o)
+    {
+        ArrayList<String> fields = new ArrayList<>();
+
+        if(!c.getChangesDescription().isBlank())
+            fields.add(ANNOUNCEMENT_FIELDS.get(1) + ": " + c.getChangesDescription());
+
+        fields.add(ANNOUNCEMENT_FIELDS.get(2) + ": " +
+                (c.isTransportChangeRequired() ? c.getTransportChanges().getArrivalLocation() : o.getTransportOffer().getArrivalLocation()));
+
+        fields.add(ANNOUNCEMENT_FIELDS.get(3) + ": " + (c.isPriceChangeRequired() ? c.getPriceAsStr() : o.getPriceAsStr()) );
+
+        if(c.isDurationChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(4) + ": " + c.getHolidayDuration().getDepartureDate());
+            fields.add(ANNOUNCEMENT_FIELDS.get(5) + ": " + c.getHolidayDuration().getReturnDate());
+        } else {
+            fields.add(ANNOUNCEMENT_FIELDS.get(4) + ": " + o.getHolidayDuration().getDepartureDate());
+            fields.add(ANNOUNCEMENT_FIELDS.get(5) + ": " + o.getHolidayDuration().getReturnDate());
+        }
+
+        if(c.isAccommodationChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(6) + ": " + c.getAccommodationChanges().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(7) + ": " + c.getAccommodationChanges().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(8) + ": " + c.getAccommodationChanges().getNumOfRooms());
+        } else {
+            fields.add(ANNOUNCEMENT_FIELDS.get(6) + ": " + o.getAccommodationOffer().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(7) + ": " + o.getAccommodationOffer().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(8) + ": " + o.getAccommodationOffer().getNumOfRooms());
+        }
+
+        if(c.isTransportChangeRequired())
+        {
+            fields.add(ANNOUNCEMENT_FIELDS.get(9) + ": " + c.getTransportChanges().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(10) + ": " + c.getTransportChanges().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(11) + ": " + c.getTransportChanges().getDepartureLocation());
+            fields.add(ANNOUNCEMENT_FIELDS.get(12) + ": " + c.getTransportChanges().getNumOfTravelers());
+        } else {
+            fields.add(ANNOUNCEMENT_FIELDS.get(9) + ":"  + o.getTransportOffer().getType());
+            fields.add(ANNOUNCEMENT_FIELDS.get(10) + ": " + o.getTransportOffer().getQuality());
+            fields.add(ANNOUNCEMENT_FIELDS.get(11) + ": " + o.getTransportOffer().getDepartureLocation());
+            fields.add(ANNOUNCEMENT_FIELDS.get(12) + ": " + o.getTransportOffer().getNumOfTravelers());
+        }
+
+        printList(fields, false);
     }
 
 

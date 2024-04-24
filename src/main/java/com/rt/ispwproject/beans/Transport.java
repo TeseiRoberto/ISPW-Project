@@ -28,6 +28,20 @@ public class Transport {
     }
 
 
+    // Copy constructor
+    public Transport(Transport other)
+    {
+        this.type = other.getType();
+        this.companyName = other.getCompanyName();
+        this.companyId = other.getCompanyId();
+        this.quality = other.getQuality();
+        this.numOfTravelers = other.getNumOfTravelers();
+        this.departureLocation = other.getDepartureLocation();
+        this.arrivalLocation = other.getArrivalLocation();
+        this.pricePerTraveler = other.getPricePerTraveler();
+    }
+
+
     // Constructor used to create transport offer
     public Transport(String type, String companyName, int quality, String departureLocation, String arrivalLocation,
                      int numOfTravelers, int pricePerTraveler) throws IllegalArgumentException

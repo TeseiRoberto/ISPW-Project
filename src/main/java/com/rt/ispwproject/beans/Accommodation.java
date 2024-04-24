@@ -1,6 +1,7 @@
 package com.rt.ispwproject.beans;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Accommodation {
@@ -25,6 +26,25 @@ public class Accommodation {
         this.numOfRooms = 0;
         this.totalPrice = 0;
         this.imagesLinks = null;
+    }
+
+
+    // Copy constructor
+    public Accommodation(Accommodation other)
+    {
+        this.type = other.getType();
+        this.name = other.getName();
+        this.accommodationId = other.getAccommodationId();
+        this.address = other.getAddress();
+        this.quality = other.getQuality();
+        this.numOfRooms = other.getNumOfRooms();
+        this.totalPrice = other.getPrice();
+
+        if(other.imagesLinks != null)
+        {
+            this.imagesLinks = new ArrayList<>();
+            this.imagesLinks.addAll(other.imagesLinks);
+        }
     }
 
 

@@ -15,16 +15,16 @@ import java.util.List;
 
 // This controller implements some basic functionalities for the make offer screen, this is specialized
 // by other graphic controllers to implement the make offer screen and make counteroffer screen.
-public abstract class BaseMakeGfxOfferControllerCmd extends BaseGfxControllerCmd {
+public abstract class BaseMakeOfferGfxControllerCmd extends BaseGfxControllerCmd {
 
     protected boolean                       runLoop;
     protected boolean                       accommodationChosen;    // Indicates if accommodation has been chosen for the offer
     protected boolean                       transportChosen;        // Indicates if transport has been chosen for the offer
     protected final BaseMakeOfferViewCmd    view;
-    protected final Offer                   currOffer;
+    protected Offer                         currOffer;
 
 
-    public BaseMakeGfxOfferControllerCmd(Session session, BaseMakeOfferViewCmd view)
+    protected BaseMakeOfferGfxControllerCmd(Session session, BaseMakeOfferViewCmd view)
     {
         super(session);
         this.view = view;
@@ -105,15 +105,15 @@ public abstract class BaseMakeGfxOfferControllerCmd extends BaseGfxControllerCmd
         if(!view.showConfirmDialog("Do you want to see the available accommodation offers?"))
             return;
 
-        int numOfRooms = 0;
-        List<Accommodation> availableAccommodations;
-
         try {
             if(currOffer.getDestination().isBlank())
                 throw new IllegalArgumentException("Please insert a destination to get the available accommodations.");
 
             if(currOffer.getHolidayDuration().getDepartureDate() == null || currOffer.getHolidayDuration().getReturnDate() == null)
                 throw new IllegalArgumentException("Please insert the departure and return date to get the available accommodations.");
+
+            int numOfRooms;
+            List<Accommodation> availableAccommodations;
 
             view.print("Insert the number of rooms required: ");
             numOfRooms = view.getIntFromUser(1, Integer.MAX_VALUE);
@@ -149,16 +149,16 @@ public abstract class BaseMakeGfxOfferControllerCmd extends BaseGfxControllerCmd
         if(!view.showConfirmDialog("Do you want to see the available transport offers?"))
             return;
 
-        int numOfTravelers = 0;
-        String departureLocation;
-        List<Transport> availableTransport;
-
         try {
             if(currOffer.getDestination().isBlank())
                 throw new IllegalArgumentException("Please insert a destination to get the available transport.");
 
             if(currOffer.getHolidayDuration().getDepartureDate() == null || currOffer.getHolidayDuration().getReturnDate() == null)
                 throw new IllegalArgumentException("Please insert the departure and return date to get the available transport.");
+
+            int numOfTravelers;
+            String departureLocation;
+            List<Transport> availableTransport;
 
             view.print("Insert the departure location: ");
             departureLocation = view.getStringFromUser();
