@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestAnnouncementManager {
 
-    // Try to post an announcement and verify that the announcement gets inserted in the system
+
+    // Tries to insert an announcement in the system and verify that the announcement gets inserted correctly
     @Test
     void testPostAnnouncement() throws IllegalArgumentException, DbException
     {
@@ -84,7 +85,7 @@ class TestAnnouncementManager {
     }
 
 
-    // Creates a test session
+    // Creates a session associated to a test account
     private Session createTestSession() throws IllegalArgumentException, DbException
     {
         return SessionManager.getInstance().createNewSession("testUser", "0000");
@@ -106,6 +107,5 @@ class TestAnnouncementManager {
                 transportReq
         );
     }
-
 
 }
