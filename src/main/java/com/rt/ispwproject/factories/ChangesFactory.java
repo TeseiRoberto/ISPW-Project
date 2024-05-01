@@ -80,8 +80,9 @@ public class ChangesFactory {
 
         if(changes.isTransportChangeRequired())
         {
-            Location departureLocation = LocationFactory.getInstance().createLocation(changes.getTransportChanges().getDepartureLocation());
-            Location arrivalLocation = LocationFactory.getInstance().createLocation(changes.getTransportChanges().getArrivalLocation());
+            LocationFactory locationFactory = new LocationFactory();
+            Location departureLocation = locationFactory.createLocation(changes.getTransportChanges().getDepartureLocation());
+            Location arrivalLocation = locationFactory.createLocation(changes.getTransportChanges().getArrivalLocation());
 
             Route desiredRoute = new Route(departureLocation, arrivalLocation);
 
@@ -113,14 +114,14 @@ public class ChangesFactory {
     // Constructs an AccommodationOffer instance that represents the accommodation offer desired by a user
     public AccommodationOffer createDesiredAccommodationOffer(AccommodationType type, int quality, int numOfRooms)
     {
-        return new AccommodationOffer(type, "", 0, quality, null, numOfRooms, null, 0);
+        return new AccommodationOffer(type, "", quality, null, numOfRooms, null, 0);
     }
 
 
     // Constructs a TransportOffer instance that represents the transport offer desired by a user
     public TransportOffer createDesiredTransportOffer(TransportType type, int quality, int numOfTravelers, Route fromToLocation) throws IllegalArgumentException
     {
-        return new TransportOffer(type, "", 0, quality, numOfTravelers, 0, fromToLocation, null);
+        return new TransportOffer(type, "", quality, numOfTravelers, 0, fromToLocation, null);
     }
 
 

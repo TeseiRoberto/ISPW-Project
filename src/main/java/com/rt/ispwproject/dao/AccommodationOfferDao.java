@@ -58,23 +58,26 @@ public class AccommodationOfferDao {
                 ResultSet rs = getOfferProc.getResultSet();
                 if(rs.next())                                   // Construct accommodation offer with data in the result set
                 {
-                    Location locatedIn = LocationFactory.getInstance().createLocation(rs.getString("accommodationAddress"));
+                    LocationFactory locationFactory = new LocationFactory();
+                    Location locatedIn = locationFactory.createLocation(rs.getString("accommodationAddress"));
+
                     DateRange lengthOfStay = new DateRange(
                             rs.getDate("checkInDate").toLocalDate(),
                             rs.getDate("checkOutDate").toLocalDate()
                     );
 
                     offer = new AccommodationOffer(
-                            rs.getInt("id"),
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getString("accommodationName"),
-                            rs.getInt("accommodationId"),
                             rs.getInt("accommodationQuality"),
                             locatedIn,
                             rs.getInt("numOfRoomsOffered"),
                             lengthOfStay,
                             rs.getInt("totalPrice")
                     );
+
+                    offer.setId(rs.getInt("id"));
+                    offer.setAccommodationId(rs.getInt("accommodationId"));
                 }
                 rs.close();
             }

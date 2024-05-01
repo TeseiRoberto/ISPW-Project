@@ -8,7 +8,7 @@ public class AccommodationOffer implements AccommodationChanges {
     private int                     id;                             // Internal identifier used to locate the offer in our persistence layer
     private final AccommodationType type;
     private final String            name;
-    private final int               accommodationId;                // External identifier used by the accommodation api
+    private int                     accommodationId;                // External identifier used by the accommodation api
     private final int               quality;
     private final Location          location;
     private final int               numOfRooms;
@@ -16,20 +16,12 @@ public class AccommodationOffer implements AccommodationChanges {
     private final int               price;
 
 
-    public AccommodationOffer(AccommodationType type, String name, int accommodationId, int quality,
-                              Location location, int numOfRooms, DateRange lengthOfStay, int price)
+    public AccommodationOffer(AccommodationType type, String name, int quality, Location location, int numOfRooms, DateRange lengthOfStay, int price)
     {
-        this(0, type, name, accommodationId, quality, location, numOfRooms, lengthOfStay, price);
-    }
-
-
-    public AccommodationOffer(int id, AccommodationType type, String name, int accommodationId, int quality,
-                              Location location, int numOfRooms, DateRange lengthOfStay, int price)
-    {
-        this.id = id;
+        this.id = 0;
         this.type = type;
         this.name = name;
-        this.accommodationId = accommodationId;
+        this.accommodationId = 0;
         this.quality = quality;
         this.location = location;
         this.numOfRooms = numOfRooms;
@@ -39,7 +31,8 @@ public class AccommodationOffer implements AccommodationChanges {
 
 
     // Setters
-    public void setId(int id)           { this.id = id; }
+    public void setId(int id)               { this.id = id; }
+    public void setAccommodationId(int id)  { this.accommodationId = id; }
 
 
     // Getters

@@ -7,7 +7,7 @@ public class TransportOffer implements TransportChanges {
     private int                 id;                                 // Internal identifier used to locate the offer in our persistence layer
     private final TransportType type;
     private final String        companyName;
-    private final int           companyId;                          // External identifier used by the transport api
+    private int                 companyId;                          // External identifier used by the transport api
     private final int           quality;
     private final int           numOfTravelers;
     private final int           pricePerTraveler;
@@ -15,20 +15,13 @@ public class TransportOffer implements TransportChanges {
     private final DateRange     departureAndReturnDates;
 
 
-    public TransportOffer(TransportType type, String companyName, int companyId, int quality, int numOfTravelers,
+    public TransportOffer(TransportType type, String companyName, int quality, int numOfTravelers,
                           int pricePerTraveler, Route fromToLocation, DateRange departureAndReturnDates)
     {
-        this(0, type, companyName, companyId, quality, numOfTravelers, pricePerTraveler, fromToLocation, departureAndReturnDates);
-    }
-
-
-    public TransportOffer(int id, TransportType type, String companyName, int companyId, int quality, int numOfTravelers,
-                          int pricePerTraveler, Route fromToLocation, DateRange departureAndReturnDates)
-    {
-        this.id = id;
+        this.id = 0;
         this.type = type;
         this.companyName = companyName;
-        this.companyId = companyId;
+        this.companyId = 0;
         this.quality = quality;
         this.numOfTravelers = numOfTravelers;
         this.pricePerTraveler = pricePerTraveler;
@@ -39,6 +32,7 @@ public class TransportOffer implements TransportChanges {
 
     // Setters
     public void setId(int id)           { this.id = id; }
+    public void setCompanyId(int id)    { this.companyId = id; }
 
 
     // Getters

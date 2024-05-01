@@ -192,6 +192,7 @@ public class HolidayOfferDao {
         ProfileDao profileDao = new ProfileDao();
         AccommodationOfferDao accommodationOfferDao = new AccommodationOfferDao();
         TransportOfferDao transportOfferDao = new TransportOfferDao();
+        LocationFactory locationFactory = new LocationFactory();
 
         try {
             while(rs.next())
@@ -218,7 +219,7 @@ public class HolidayOfferDao {
                 AccommodationOffer accommodationOffer = accommodationOfferDao.getOfferById(accommodationOfferId);
                 TransportOffer transportOffer = transportOfferDao.getOfferById(transportOfferId);
 
-                Location destination = LocationFactory.getInstance().createLocation(rs.getString("destinationAddress"));
+                Location destination = locationFactory.createLocation(rs.getString("destinationAddress"));
                 result.add(new HolidayOffer(metadata, destination, duration, rs.getInt("holidayPrice"), accommodationOffer, transportOffer));
             }
         } catch (IllegalArgumentException e) {

@@ -33,9 +33,10 @@ public class AnnouncementManager {
                 announce.getHolidayDuration().getReturnDate()
         );
 
+        LocationFactory locationFactory = new LocationFactory();
         Route fromToLocation = new Route(
-                LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getDepartureLocation() ),
-                LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getArrivalLocation() )
+                locationFactory.createLocation( announce.getTransportRequirements().getDepartureLocation() ),
+                locationFactory.createLocation( announce.getTransportRequirements().getArrivalLocation() )
         );
 
         AccommodationRequirements accommodationReq = new AccommodationRequirements(

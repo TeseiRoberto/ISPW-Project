@@ -212,20 +212,19 @@ public class OfferManager {
                 offerBean.getHolidayDuration().getReturnDate()
         );
 
-        Location destination = LocationFactory.getInstance().createLocation(offerBean.getDestination());
+        LocationFactory locationFactory = new LocationFactory();
+        Location destination = locationFactory.createLocation(offerBean.getDestination());
 
-        Location accommodationLocation = LocationFactory.getInstance().createLocation(offerBean.getAccommodationOffer().getAddress());
+        Location accommodationLocation = locationFactory.createLocation(offerBean.getAccommodationOffer().getAddress());
 
         Route transportRoute = new Route(
-                LocationFactory.getInstance().createLocation(offerBean.getTransportOffer().getDepartureLocation()),
-                LocationFactory.getInstance().createLocation(offerBean.getTransportOffer().getArrivalLocation())
+                locationFactory.createLocation(offerBean.getTransportOffer().getDepartureLocation()),
+                locationFactory.createLocation(offerBean.getTransportOffer().getArrivalLocation())
         );
 
-        // TODO: We should check that data used to build the accommodation and transport offer are valid (???)
         AccommodationOffer accommodationOffer = new AccommodationOffer(
                 AccommodationType.fromViewType(offerBean.getAccommodationOffer().getType()),
                 offerBean.getAccommodationOffer().getName(),
-                offerBean.getAccommodationOffer().getAccommodationId(),
                 offerBean.getAccommodationOffer().getQuality(),
                 accommodationLocation,
                 offerBean.getAccommodationOffer().getNumOfRooms(),
@@ -236,13 +235,15 @@ public class OfferManager {
         TransportOffer transportOffer = new TransportOffer(
                 TransportType.fromViewType(offerBean.getTransportOffer().getType()),
                 offerBean.getTransportOffer().getCompanyName(),
-                offerBean.getTransportOffer().getCompanyId(),
                 offerBean.getTransportOffer().getQuality(),
                 offerBean.getTransportOffer().getNumOfTravelers(),
                 offerBean.getTransportOffer().getPricePerTraveler(),
                 transportRoute,
                 holidayDuration
         );
+
+        accommodationOffer.setAccommodationId(offerBean.getAccommodationOffer().getAccommodationId());
+        transportOffer.setCompanyId(offerBean.getTransportOffer().getCompanyId());
 
         // Now we can build the new holiday offer
         return new HolidayOffer(metadata, destination, holidayDuration, offerBean.getPrice(), accommodationOffer, transportOffer);

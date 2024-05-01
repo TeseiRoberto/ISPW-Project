@@ -55,9 +55,11 @@ public class TransportRequirementsDao {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
                 {
+                    LocationFactory locationFactory = new LocationFactory();
+
                     Route fromToLocation = new Route(
-                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
-                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
+                            locationFactory.createLocation(rs.getString("departureLocationAddress")),
+                            locationFactory.createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
                     transportReq = new TransportRequirements(

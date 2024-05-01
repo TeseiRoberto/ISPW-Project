@@ -249,6 +249,8 @@ public class ChangesRequestDao {
                 TransportOfferDao transportDao = new TransportOfferDao();
                 TransportOffer desiredTransport = transportDao.getOfferDesiredByUser(transportId);
                 desiredOffer.setTransportOffer(desiredTransport);
+
+                desiredOffer.setDestination(desiredTransport.getRoute().getArrivalLocation());
             }
 
         } catch (IllegalArgumentException e) {

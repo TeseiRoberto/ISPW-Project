@@ -5,24 +5,14 @@ import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.model.Location;
 
 // This class is responsible for the creation of Location instances, in particular
-// before creating an instance with the given address it checks that the address exists using the AddressChecker class.
+// before creating a new Location instance using the given address it checks that the address exists using the AddressChecker class.
 public class LocationFactory {
 
-    private static LocationFactory      instance;
     private final AddressChecker        checker;
 
-    private LocationFactory()
+    public LocationFactory()
     {
         this.checker = new AddressChecker();
-    }
-
-
-    public static LocationFactory getInstance()
-    {
-        if(instance == null)
-            instance = new LocationFactory();
-
-        return instance;
     }
 
 

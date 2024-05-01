@@ -59,9 +59,11 @@ public class TransportOfferDao {
                 ResultSet rs = getOfferProc.getResultSet();
                 if(rs.next())                                   // Construct transport offer with data in the result set
                 {
+                    LocationFactory locationFactory = new LocationFactory();
+
                     Route transportRoute = new Route(
-                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
-                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
+                            locationFactory.createLocation(rs.getString("departureLocationAddress")),
+                            locationFactory.createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
                     DateRange departureAndReturnDates = new DateRange(
@@ -70,16 +72,17 @@ public class TransportOfferDao {
                     );
 
                     offer = new TransportOffer(
-                            rs.getInt("id"),
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getString("companyName"),
-                            rs.getInt("companyId"),
                             rs.getInt("transportQuality"),
                             rs.getInt("numOfTravelers"),
                             rs.getInt("pricePerTraveler"),
                             transportRoute,
                             departureAndReturnDates
                     );
+
+                    offer.setId(rs.getInt("id"));
+                    offer.setCompanyId(rs.getInt("companyId"));
                 }
                 rs.close();
             }
@@ -175,9 +178,11 @@ public class TransportOfferDao {
                 ResultSet rs = getRequestProc.getResultSet();
                 if (rs.next())                                  // Construct transport changes with data in the result set
                 {
+                    LocationFactory locationFactory = new LocationFactory();
+
                     Route fromToLocation = new Route(
-                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
-                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
+                            locationFactory.createLocation(rs.getString("departureLocationAddress")),
+                            locationFactory.createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
                     desiredOffer = ChangesFactory.getInstance().createDesiredTransportOffer(
