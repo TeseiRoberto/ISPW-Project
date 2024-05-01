@@ -2,12 +2,8 @@ package com.rt.ispwproject.model;
 
 import com.rt.ispwproject.beans.Transport;
 
-public interface TransportChangesRequest {
+public interface TransportChanges {
 
-    // Setters
-    void setId(int id);
-
-    // Getters
     int getId();
     TransportType getType();
     int getQuality();

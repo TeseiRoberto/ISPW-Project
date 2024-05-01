@@ -75,9 +75,9 @@ public class HolidayOffer {
     public HolidayOfferMetadata getMetadata()                   { return this.metadata; }
     public Location getDestination()                            { return this.destination; }
     public DateRange getHolidayDuration()                       { return this.holidayDuration; }
+    public int getPrice()                                       { return this.price; }
     public AccommodationOffer getAccommodationOffer()           { return this.accommodationOffer; }
     public TransportOffer getTransportOffer()                   { return this.transportOffer; }
-    public int getPrice()                                       { return this.price; }
 
 
     // Converts an HolidayOffer instance into an Offer instance (model to bean class conversion)

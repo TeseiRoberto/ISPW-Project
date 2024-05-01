@@ -112,6 +112,7 @@ public class RequestChangesGfxControllerCmd extends BaseGfxControllerCmd {
                 case "destination":
                     view.print("Insert your destination: ");
                     transportChanges.setArrivalLocation(view.getStringFromUser());
+                    isAccommodationChangeRequired = true;
                     isTransportChangeRequired = true;
                     break;
 

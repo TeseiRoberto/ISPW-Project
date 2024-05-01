@@ -2,7 +2,6 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.model.AccommodationRequirements;
 import com.rt.ispwproject.model.AccommodationType;
 
@@ -55,13 +54,12 @@ public class AccommodationRequirementsDao {
                 ResultSet rs = getReqProc.getResultSet();   // The result set should contain only one entry
                 if(rs.next())
                 {
-                    accommodationReq = AccommodationFactory.getInstance().createRequirements(
+                    accommodationReq = new AccommodationRequirements(
+                            rs.getInt("id"),
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getInt("accommodationQuality"),
                             rs.getInt("numOfRooms")
                     );
-
-                    accommodationReq.setId(rs.getInt("id"));
                 }
                 rs.close();
             }

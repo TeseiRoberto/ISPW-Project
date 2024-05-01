@@ -178,6 +178,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
         if(newValue == null || newValue.isEmpty())
             return;
 
+        requestedAccommodationChangeCheckBox.setSelected(true);
         requestedTransportChangeCheckBox.setSelected(true);
     }
 

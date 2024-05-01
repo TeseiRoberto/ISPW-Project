@@ -2,7 +2,7 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.factories.AccommodationFactory;
+import com.rt.ispwproject.factories.ChangesFactory;
 import com.rt.ispwproject.factories.LocationFactory;
 import com.rt.ispwproject.model.*;
 
@@ -64,18 +64,17 @@ public class AccommodationOfferDao {
                             rs.getDate("checkOutDate").toLocalDate()
                     );
 
-                    offer = AccommodationFactory.getInstance().createOffer(
+                    offer = new AccommodationOffer(
+                            rs.getInt("id"),
                             AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
                             rs.getString("accommodationName"),
-                            locatedIn,
-                            lengthOfStay,
+                            rs.getInt("accommodationId"),
                             rs.getInt("accommodationQuality"),
+                            locatedIn,
                             rs.getInt("numOfRoomsOffered"),
+                            lengthOfStay,
                             rs.getInt("totalPrice")
                     );
-
-                    offer.setId(rs.getInt("id"));
-                    offer.setAccommodationId(rs.getInt("accommodationId"));
                 }
                 rs.close();
             }
@@ -128,6 +127,76 @@ public class AccommodationOfferDao {
             deleteOfferProc.execute();
         } catch(SQLException e) {
             throw new DbException("Failed to invoke the \"deleteAccommodationOffer\" stored procedure:\n" + e.getMessage());
+        }
+    }
+
+
+    // Stores the given accommodation changes (the accommodation offer desired by the user) in the db and returns the identifier of the changes
+    public int postOfferDesiredByUser(AccommodationChanges desiredOffer) throws DbException
+    {
+        int desiredAccommodationId = 0;
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement postRequestProc = connection.prepareCall("CALL createAccommodationChangesRequest(?, ?, ?, ?)"))
+        {
+            postRequestProc.setString("newAccommodationType_in", desiredOffer.getType().toPersistenceType());
+            postRequestProc.setInt("newAccommodationQuality_in", desiredOffer.getQuality());
+            postRequestProc.setInt("newNumOfRooms_in", desiredOffer.getNumOfRooms());
+            postRequestProc.registerOutParameter("accommodationChangesId_out", Types.INTEGER);
+
+            postRequestProc.execute();
+            desiredAccommodationId = postRequestProc.getInt("accommodationChangesId_out");
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"createAccommodationChangesRequest\" stored procedure:\n" + e.getMessage());
+        }
+
+        return desiredAccommodationId;
+    }
+
+
+    // Retrieves the accommodation changes (the accommodation offer desired by the user) associated to the given id
+    public AccommodationOffer getOfferDesiredByUser(int offerId) throws DbException
+    {
+        AccommodationOffer desiredOffer = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+        try(CallableStatement getRequestProc = connection.prepareCall("CALL getAccommodationChangesRequest(?)"))
+        {
+            getRequestProc.setInt("requestId_in", offerId);
+            boolean status = getRequestProc.execute();
+            if(status)                                          // If the stored procedure returned a result set
+            {
+                ResultSet rs = getRequestProc.getResultSet();
+                if (rs.next())                                  // Construct accommodation changes with data in the result set
+                {
+                    desiredOffer = ChangesFactory.getInstance().createDesiredAccommodationOffer(
+                            AccommodationType.fromPersistenceType(rs.getString("accommodationType")),
+                            rs.getInt("accommodationQuality"),
+                            rs.getInt("numOfRooms")
+                    );
+
+                    desiredOffer.setId(rs.getInt("id"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbException("Failed to invoke the \"getAccommodationChangesRequest\" stored procedure:\n" + e.getMessage());
+        }
+
+        if(desiredOffer == null)
+            throw new DbException("Accommodation changes request not found");
+
+        return desiredOffer;
+    }
+
+
+    // Removes the given accommodation changes (accommodation offer desired by the user) from the db (if it exists)
+    public void removeOfferDesiredByUser(AccommodationChanges desiredOffer) throws DbException
+    {
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement deleteRequestProc = connection.prepareCall("CALL deleteAccommodationChangesRequest(?)"))
+        {
+            deleteRequestProc.setInt("requestId_in", desiredOffer.getId());
+            deleteRequestProc.execute();
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"deleteAccommodationChangesRequest\" stored procedure:\n" + e.getMessage());
         }
     }
 

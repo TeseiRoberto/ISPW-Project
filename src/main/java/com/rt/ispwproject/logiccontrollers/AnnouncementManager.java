@@ -6,9 +6,7 @@ import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.HolidayRequirementsDao;
 import com.rt.ispwproject.exceptions.DbException;
-import com.rt.ispwproject.factories.AccommodationFactory;
 import com.rt.ispwproject.factories.LocationFactory;
-import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.util.ArrayList;
@@ -27,25 +25,30 @@ public class AnnouncementManager {
 
         Profile user = SessionManager.getInstance().getProfile(currSession);
 
-        // Create holiday requirements with data in the given announcement
+        // Create holiday requirements using data in the given announcement
         HolidayRequirementsMetadata metadata = new HolidayRequirementsMetadata(user, announce.getDateOfPost());
-        DateRange holidayDuration = new DateRange(announce.getHolidayDuration().getDepartureDate(), announce.getHolidayDuration().getReturnDate());
+
+        DateRange holidayDuration = new DateRange(
+                announce.getHolidayDuration().getDepartureDate(),
+                announce.getHolidayDuration().getReturnDate()
+        );
+
         Route fromToLocation = new Route(
                 LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getDepartureLocation() ),
                 LocationFactory.getInstance().createLocation( announce.getTransportRequirements().getArrivalLocation() )
         );
 
-        AccommodationRequirements accommodationReq = AccommodationFactory.getInstance().createRequirements(
+        AccommodationRequirements accommodationReq = new AccommodationRequirements(
                 AccommodationType.fromViewType(announce.getAccommodationRequirements().getType()),
                 announce.getAccommodationRequirements().getQuality(),
                 announce.getAccommodationRequirements().getNumOfRooms()
         );
 
-        TransportRequirements transportReq = TransportFactory.getInstance().createRequirements(
+        TransportRequirements transportReq = new TransportRequirements(
                 TransportType.fromViewType(announce.getTransportRequirements().getType()),
                 announce.getTransportRequirements().getQuality(),
-                fromToLocation,
-                announce.getTransportRequirements().getNumOfTravelers()
+                announce.getTransportRequirements().getNumOfTravelers(),
+                fromToLocation
         );
 
         HolidayRequirements newReq = new HolidayRequirements(

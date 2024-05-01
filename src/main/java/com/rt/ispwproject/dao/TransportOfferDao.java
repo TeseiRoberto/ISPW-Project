@@ -2,8 +2,8 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.ChangesFactory;
 import com.rt.ispwproject.factories.LocationFactory;
-import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -69,18 +69,17 @@ public class TransportOfferDao {
                             rs.getDate("returnDate").toLocalDate()
                     );
 
-                    offer = TransportFactory.getInstance().createOffer(
+                    offer = new TransportOffer(
+                            rs.getInt("id"),
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getString("companyName"),
-                            transportRoute,
-                            departureAndReturnDates,
+                            rs.getInt("companyId"),
                             rs.getInt("transportQuality"),
                             rs.getInt("numOfTravelers"),
-                            rs.getInt("pricePerTraveler")
+                            rs.getInt("pricePerTraveler"),
+                            transportRoute,
+                            departureAndReturnDates
                     );
-
-                    offer.setId(rs.getInt("id"));
-                    offer.setCompanyId(rs.getInt("companyId"));
                 }
                 rs.close();
             }
@@ -135,4 +134,86 @@ public class TransportOfferDao {
             throw new DbException("Failed to invoke the \"deleteTransportOffer\" stored procedure:\n" + e.getMessage());
         }
     }
+
+
+    // Stores the given transport changes (the transport offer desired by the user) in the db and returns the identifier of the changes
+    public int postOfferDesiredByUser(TransportChanges desiredOffer) throws DbException
+    {
+        int desiredTransportId = 0;
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement postRequestProc = connection.prepareCall("CALL createTransportChangesRequest(?, ?, ?, ?, ?, ?)"))
+        {
+            postRequestProc.setString(  "newTransportType_in", desiredOffer.getType().toPersistenceType());
+            postRequestProc.setInt(     "newTransportQuality_in", desiredOffer.getQuality());
+            postRequestProc.setInt(     "newNumOfTravelers_in", desiredOffer.getNumOfTravelers());
+            postRequestProc.setString(  "newDepartureLocationAddress_in", desiredOffer.getRoute().getDepartureLocation().getAddress());
+            postRequestProc.setString(  "newArrivalLocationAddress_in", desiredOffer.getRoute().getArrivalLocation().getAddress());
+            postRequestProc.registerOutParameter("transportChangesId_out", Types.INTEGER);
+
+            postRequestProc.execute();
+            desiredTransportId = postRequestProc.getInt("transportChangesId_out");
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"createTransportChangesRequest\" stored procedure:\n" + e.getMessage());
+        }
+
+        return desiredTransportId;
+    }
+
+
+    // Retrieves the transport changes (the transport offer desired by the user) associated to the given id
+    public TransportOffer getOfferDesiredByUser(int offerId) throws DbException
+    {
+        TransportOffer desiredOffer = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+        try(CallableStatement getRequestProc = connection.prepareCall("CALL getTransportChangesRequest(?)"))
+        {
+            getRequestProc.setInt("requestId_in", offerId);
+            boolean status = getRequestProc.execute();
+            if(status)                                          // If the stored procedure returned a result set
+            {
+                ResultSet rs = getRequestProc.getResultSet();
+                if (rs.next())                                  // Construct transport changes with data in the result set
+                {
+                    Route fromToLocation = new Route(
+                            LocationFactory.getInstance().createLocation(rs.getString("departureLocationAddress")),
+                            LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
+                    );
+
+                    desiredOffer = ChangesFactory.getInstance().createDesiredTransportOffer(
+                            TransportType.fromPersistenceType(rs.getString("transportType")),
+                            rs.getInt("transportQuality"),
+                            rs.getInt("numOfTravelers"),
+                            fromToLocation
+                    );
+
+                    desiredOffer.setId(rs.getInt("id"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DbException("Failed to invoke the \"getTransportChangesRequest\" stored procedure:\n" + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            throw new DbException("Cannot get transport requirements, persistence layer returned invalid data:\n" + e.getMessage());
+        }
+
+        if(desiredOffer == null)
+            throw new DbException("Transport changes request not found");
+
+        return desiredOffer;
+    }
+
+
+    // Removes the given transport changes request from the db (if it exists)
+    public void removeOfferDesiredByUser(TransportChanges desiredOffer) throws DbException
+    {
+        Connection connection = DbConnection.getInstance().getConnection();
+        try (CallableStatement deleteRequestProc = connection.prepareCall("CALL deleteTransportChangesRequest(?)"))
+        {
+            deleteRequestProc.setInt("requestId_in", desiredOffer.getId());
+            deleteRequestProc.execute();
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"deleteTransportChangesRequest\" stored procedure:\n" + e.getMessage());
+        }
+    }
+
 }

@@ -14,7 +14,10 @@ import java.util.List;
 public class SearchAnnouncementsManager {
 
 
-    // Returns a list of announcements width ids starting from startId, the list size is between 0 and maxAnnouncementsNum
+    // Returns a list of announcements that have been posted in the system by users
+    // @currSession: user that is searching for announcements
+    // @startId: indicates from which announcement to start searching
+    // @maxAnnouncementsNum: maximum number of elements that will be returned
     public List<Announcement> searchAnnouncements(Session currSession, int startId, int maxAnnouncementsNum) throws DbException, IllegalCallerException, IllegalArgumentException
     {
         if(!SessionManager.getInstance().isLoggedAs(currSession, UserRole.TRAVEL_AGENCY))

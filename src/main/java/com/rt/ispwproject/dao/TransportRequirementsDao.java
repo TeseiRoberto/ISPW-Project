@@ -3,7 +3,6 @@ package com.rt.ispwproject.dao;
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.LocationFactory;
-import com.rt.ispwproject.factories.TransportFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -61,14 +60,13 @@ public class TransportRequirementsDao {
                             LocationFactory.getInstance().createLocation(rs.getString("arrivalLocationAddress"))
                     );
 
-                    transportReq = TransportFactory.getInstance().createRequirements(
+                    transportReq = new TransportRequirements(
+                            rs.getInt("id"),
                             TransportType.fromPersistenceType(rs.getString("transportType")),
                             rs.getInt("transportQuality"),
-                            fromToLocation,
-                            rs.getInt("numOfTravelers")
+                            rs.getInt("numOfTravelers"),
+                            fromToLocation
                     );
-
-                    transportReq.setId(rs.getInt("id"));
                 }
 
                 rs.close();

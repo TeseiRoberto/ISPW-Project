@@ -206,7 +206,7 @@ public abstract class BaseViewCmd {
         for(int i = 0; i < announcements.size(); i++)
         {
             Announcement a = announcements.get(i);
-            printf("%d] %s - %s - %s - %s - %d views ", i + 1,
+            printf("%d] %s - %s - %s - %s - %d views", i + 1,
                     a.getDestination(),
                     a.getHolidayDuration().getDepartureDate().toString(),
                     a.getHolidayDuration().getReturnDate().toString(),
@@ -215,7 +215,7 @@ public abstract class BaseViewCmd {
             );
 
             if(showOwnerUsername)
-                printf("posted by: %s\n", a.getOwnerUsername());
+                printf(" posted by: %s\n", a.getOwnerUsername());
             else
                 print("\n");
         }
@@ -246,6 +246,7 @@ public abstract class BaseViewCmd {
         );
 
         printList(fields, numberedFields);
+        print("\n");
     }
 
 

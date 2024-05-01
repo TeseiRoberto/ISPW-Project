@@ -121,6 +121,12 @@ public class AnnouncementDetailsGfxControllerCmd extends BaseGfxControllerCmd {
         if(offers == null || offers.isEmpty())
             return;
 
+        if(offers.size() == 1)
+        {
+            view.showErrorDialog("There is no previous offer");
+            return;
+        }
+
         if(offerIndex <= 0)                                     // Wrap around the index
             offerIndex = offers.size();
 
@@ -133,6 +139,12 @@ public class AnnouncementDetailsGfxControllerCmd extends BaseGfxControllerCmd {
     {
         if(offers == null || offers.isEmpty())
             return;
+
+        if(offers.size() == 1)
+        {
+            view.showErrorDialog("There is no next offer");
+            return;
+        }
 
         if(offerIndex + 1 >= offers.size())                        // Wrap around the index
             offerIndex = -1;

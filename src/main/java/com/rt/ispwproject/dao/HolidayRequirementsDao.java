@@ -75,35 +75,6 @@ public class HolidayRequirementsDao {
     }
 
 
-    // Retrieves the holiday requirements posted by the given user from the db
-    public List<HolidayRequirements> getRequirementsPostedByUser(int userId) throws DbException
-    {
-        List<HolidayRequirements> requirements = null;
-        Connection connection = DbConnection.getInstance().getConnection();
-
-        // Create callable statement and setup parameters to invoke the getHolidayRequirements stored procedure
-        try (CallableStatement getReqProc = connection.prepareCall("call getHolidayRequirements(?)"))
-        {
-            getReqProc.setInt("userId_in", userId);
-
-            boolean status = getReqProc.execute();
-            if(status)                                      // If the stored procedure returned a result set
-            {
-                ResultSet rs = getReqProc.getResultSet();
-                requirements = createHolidayRequirementsFromResultSet(rs, -1);
-                rs.close();
-            }
-
-        } catch (SQLException e) {
-            throw new DbException("Failed to invoke the \"getHolidayRequirements\" stored procedure:\n" + e.getMessage());
-        } catch(DbException e) {
-            throw new DbException("Cannot get holiday requirements posted by user:\n" + e.getMessage());
-        }
-
-        return requirements;
-    }
-
-
     // Retrieves the holiday requirements associated to the given id from the db
     public HolidayRequirements getRequirementsById(int requirementsId) throws DbException
     {
@@ -130,6 +101,35 @@ public class HolidayRequirementsDao {
             throw new DbException("Cannot find holiday requirements with id " + requirementsId);
 
         return requirements.getFirst();
+    }
+
+
+    // Retrieves the holiday requirements posted by the given user from the db
+    public List<HolidayRequirements> getRequirementsPostedByUser(int userId) throws DbException
+    {
+        List<HolidayRequirements> requirements = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        // Create callable statement and setup parameters to invoke the getHolidayRequirements stored procedure
+        try (CallableStatement getReqProc = connection.prepareCall("call getHolidayRequirements(?)"))
+        {
+            getReqProc.setInt("userId_in", userId);
+
+            boolean status = getReqProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getReqProc.getResultSet();
+                requirements = createHolidayRequirementsFromResultSet(rs, -1);
+                rs.close();
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Failed to invoke the \"getHolidayRequirements\" stored procedure:\n" + e.getMessage());
+        } catch(DbException e) {
+            throw new DbException("Cannot get holiday requirements posted by user:\n" + e.getMessage());
+        }
+
+        return requirements;
     }
 
 

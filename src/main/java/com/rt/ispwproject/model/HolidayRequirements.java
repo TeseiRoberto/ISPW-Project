@@ -7,7 +7,7 @@ import com.rt.ispwproject.beans.Duration;
 public class HolidayRequirements {
 
     private final HolidayRequirementsMetadata   metadata;
-    private String                              holidayDescription;
+    private final String                        holidayDescription;
     protected int                               availableBudget;
     private final DateRange                     holidayDuration;
     private final AccommodationRequirements     accommodationReq;
@@ -21,7 +21,7 @@ public class HolidayRequirements {
             throw new IllegalArgumentException("Metadata must be specified for the holiday requirements");
 
         if(duration == null)
-            throw new IllegalArgumentException("A duration of the holiday must be specified");
+            throw new IllegalArgumentException("Holiday duration must be specified for the holiday requirements");
 
         if(availableBudget <= 0)
             throw new IllegalArgumentException("The available budget for the holiday must be equal to (or greater than) 1");

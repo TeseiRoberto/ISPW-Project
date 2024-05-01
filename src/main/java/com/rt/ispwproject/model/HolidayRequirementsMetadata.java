@@ -9,7 +9,6 @@ public class HolidayRequirementsMetadata {
     private final LocalDate     dateOfPost;
     private int                 numOfViews;
     private int                 numOfOffersReceived;
-    private boolean             isSatisfied;
 
 
     public HolidayRequirementsMetadata(Profile requirementsOwner, LocalDate dateOfPost) throws IllegalArgumentException
@@ -21,7 +20,7 @@ public class HolidayRequirementsMetadata {
     public HolidayRequirementsMetadata(int requirementsId, Profile requirementsOwner, LocalDate dateOfPost, int numOfOffersReceived, int numOfViews) throws IllegalArgumentException
     {
         if(requirementsOwner == null)
-            throw new IllegalArgumentException("Requirements owner must be specified");
+            throw new IllegalArgumentException("Holiday requirements owner must be specified");
 
         if(dateOfPost == null)
             throw new IllegalArgumentException("Date of post must be specified");
@@ -31,7 +30,6 @@ public class HolidayRequirementsMetadata {
         this.dateOfPost = dateOfPost;
         this.numOfViews = numOfViews;
         this.numOfOffersReceived = numOfOffersReceived;
-        this.isSatisfied = false;
     }
 
 
@@ -41,6 +39,5 @@ public class HolidayRequirementsMetadata {
     public LocalDate getDateOfPost()        { return this.dateOfPost; }
     public int getNumOfViews()              { return this.numOfViews; }
     public int getNumOfOffersReceived()     { return this.numOfOffersReceived; }
-    public boolean isSatisfied()            { return this.isSatisfied; }
 
 }

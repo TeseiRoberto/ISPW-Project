@@ -84,6 +84,8 @@ public class OfferDetailsGfxControllerJfx extends BaseTravelAgencyGfxControllerJ
                 setRequestedChangesFields();
         } catch (DbException | IllegalArgumentException | IllegalCallerException e)
         {
+            System.out.println(e.getMessage() + e.getCause());
+
             showErrorDialog(e.getMessage());
         }
 

@@ -2,6 +2,7 @@ package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.ChangesFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -12,18 +13,18 @@ public class ChangesRequestDao {
     // Stores the given ChangesRequest in the db
     public void postRequest(ChangesRequest changes) throws DbException
     {
-        AccommodationChangesRequestDao accommodationChangesDao = new AccommodationChangesRequestDao();
-        TransportChangesRequestDao transportChangesDao = new TransportChangesRequestDao();
+        AccommodationOfferDao accommodationDao = new AccommodationOfferDao();
+        TransportOfferDao transportDao = new TransportOfferDao();
 
-        int accommodationChangesId = 0;
-        int transportChangesId = 0;
+        int desiredAccommodationId = 0;
+        int desiredTransportId = 0;
 
         Connection connection = DbConnection.getInstance().getConnection();
         try (CallableStatement createRequestProc = connection.prepareCall("CALL createChangesRequest(?, ?, ?, ?, ?, ?, ?, ?, ?)"))
         {
-            createRequestProc.setInt("ownerId_in", changes.getMetadata().getRequestOwner().getUserId());
-            createRequestProc.setInt("relativeOfferId_in", changes.getMetadata().getRelativeOfferId());
-            createRequestProc.setInt("bidderAgencyId_in", changes.getMetadata().getRelativeOfferOwner().getUserId());
+            createRequestProc.setInt("ownerId_in", changes.getRequestOwner().getUserId());
+            createRequestProc.setInt("relativeOfferId_in", changes.getRelativeOfferId());
+            createRequestProc.setInt("bidderAgencyId_in", changes.getRelativeOfferOwner().getUserId());
             createRequestProc.setString("changesDescription_in", changes.getChangesDescription());
             createRequestProc.setNull("newDepartureDate_in", Types.DATE);
             createRequestProc.setNull("newReturnDate_in", Types.DATE);
@@ -32,59 +33,63 @@ public class ChangesRequestDao {
             // Set parameters of the stored procedure according to the requested changes
             if(changes.isHolidayDurationChangeRequired())
             {
-                createRequestProc.setDate("newDepartureDate_in", Date.valueOf(changes.getHolidayDuration().getStartDate()));
-                createRequestProc.setDate("newReturnDate_in", Date.valueOf(changes.getHolidayDuration().getEndDate()));
+                createRequestProc.setDate("newDepartureDate_in", Date.valueOf(changes.getHolidayDurationChange().getStartDate()));
+                createRequestProc.setDate("newReturnDate_in", Date.valueOf(changes.getHolidayDurationChange().getEndDate()));
             }
 
             if(changes.isPriceChangeRequired())
-                createRequestProc.setInt("requiredPrice_in", changes.getPrice());
+                createRequestProc.setInt("requiredPrice_in", changes.getPriceChange());
 
             if(changes.isAccommodationChangeRequired())
-                accommodationChangesId = accommodationChangesDao.postChangesRequest(changes.getAccommodationChanges());
+                desiredAccommodationId = accommodationDao.postOfferDesiredByUser(changes.getAccommodationChanges());
 
             if(changes.isTransportChangeRequired())
-                transportChangesId = transportChangesDao.postChangesRequest(changes.getTransportChanges());
+                desiredTransportId = transportDao.postOfferDesiredByUser(changes.getTransportChanges());
 
-            createRequestProc.setInt("accommodationChangesId_in", accommodationChangesId);
-            createRequestProc.setInt("transportChangesId_in", transportChangesId);
+            createRequestProc.setInt("accommodationChangesId_in", desiredAccommodationId);
+            createRequestProc.setInt("transportChangesId_in", desiredTransportId);
 
             createRequestProc.execute();
         } catch(SQLException e) {
-            if(accommodationChangesId != 0)
+            if(desiredAccommodationId != 0)
             {
-                AccommodationChangesRequest accommodationChanges = accommodationChangesDao.getChangesRequestById(accommodationChangesId);
-                accommodationChangesDao.removeChangesRequest(accommodationChanges);
+                AccommodationOffer desiredAccommodation = accommodationDao.getOfferDesiredByUser(desiredAccommodationId);
+                accommodationDao.removeOfferDesiredByUser(desiredAccommodation);
             }
 
-            if(transportChangesId != 0)
+            if(desiredTransportId != 0)
             {
-                TransportChangesRequest transportChanges = transportChangesDao.getChangesRequestById(transportChangesId);
-                transportChangesDao.removeChangesRequest(transportChanges);
+                TransportOffer desiredTransport = transportDao.getOfferDesiredByUser(desiredTransportId);
+                transportDao.removeOfferDesiredByUser(desiredTransport);
             }
 
             throw new DbException("Failed to invoke the \"createChangesRequest\" stored procedure:\n" + e.getMessage());
         } catch (DbException e) {
-            if(accommodationChangesId != 0)
+            if(desiredAccommodationId != 0)
             {
-                AccommodationChangesRequest accommodationChanges = accommodationChangesDao.getChangesRequestById(accommodationChangesId);
-                accommodationChangesDao.removeChangesRequest(accommodationChanges);
+                AccommodationOffer desiredAccommodation = accommodationDao.getOfferDesiredByUser(desiredAccommodationId);
+                accommodationDao.removeOfferDesiredByUser(desiredAccommodation);
             }
 
-            if(transportChangesId != 0)
+            if(desiredTransportId != 0)
             {
-                TransportChangesRequest transportChanges = transportChangesDao.getChangesRequestById(transportChangesId);
-                transportChangesDao.removeChangesRequest(transportChanges);
+                TransportOffer desiredTransport = transportDao.getOfferDesiredByUser(desiredTransportId);
+                transportDao.removeOfferDesiredByUser(desiredTransport);
             }
 
             throw new DbException("Cannot post request of changes:\n" + e.getMessage());
         }
+
     }
 
 
     // Retrieves the changes requested on the holiday offer associated to the given id (if there is a request)
     public ChangesRequest getChangesRequestForOffer(int offerId) throws DbException
     {
-        ChangesRequest request = null;
+        String changesDescription = "";
+        HolidayOffer desiredOffer = null;
+
+        // Let's retrieve data of the desired offer
         Connection connection = DbConnection.getInstance().getConnection();
         try (CallableStatement getRequestProc = connection.prepareCall("CALL getRequestedChangesOnOffer(?)"))
         {
@@ -93,7 +98,12 @@ public class ChangesRequestDao {
             if(status)
             {
                 ResultSet rs = getRequestProc.getResultSet();
-                request = createRequestFromResultSet(rs);
+
+                if(rs.next())
+                {
+                    desiredOffer = createDesiredOfferFromResultSet(rs);
+                    changesDescription = rs.getString("changesDescription");
+                }
             }
 
         } catch (SQLException e) {
@@ -102,14 +112,24 @@ public class ChangesRequestDao {
             throw new DbException("Cannot get changes requested on holiday offer with id " + offerId + ":\n" + e.getMessage());
         }
 
-        return request;
+        // If the desired offer has not been found in db then no change was requested on the offer associated to the given id
+        if(desiredOffer == null)
+            return null;
+
+        // Otherwise we retrieve original offer made by the travel agency and build the request of changes using the factory
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        HolidayOffer agencyOffer = offerDao.getOfferById(offerId);
+
+        return ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, changesDescription);
     }
 
 
     // Retrieves the request of changes associated to the given id from the db
     public ChangesRequest getChangesRequestById(int requestId) throws DbException
     {
-        ChangesRequest request = null;
+        String changesDescription = "";
+        HolidayOffer desiredOffer = null;
+
         Connection connection = DbConnection.getInstance().getConnection();
         try (CallableStatement getRequestProc = connection.prepareCall("CALL getChangesRequestById(?)"))
         {
@@ -118,7 +138,10 @@ public class ChangesRequestDao {
             if(status)
             {
                 ResultSet rs = getRequestProc.getResultSet();
-                request = createRequestFromResultSet(rs);
+                if(rs.next())
+                {
+                    desiredOffer = createDesiredOfferFromResultSet(rs);
+                }
             }
 
         } catch (SQLException e) {
@@ -127,30 +150,37 @@ public class ChangesRequestDao {
             throw new DbException("Cannot get request of changes with id " + requestId + ":\n" + e.getMessage());
         }
 
-        return request;
+        if(desiredOffer == null)
+            throw new DbException("");
+
+        // Now we retrieve the original offer made by the travel agency and build the Changes request using the factory
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        HolidayOffer agencyOffer = offerDao.getOfferById(desiredOffer.getMetadata().getRelativeRequirementsId());
+
+        return ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, changesDescription);
     }
 
 
-    // Removes the request of changes associated to the given id from the db
+    // Removes the given request of changes from the db
     public void removeRequest(ChangesRequest request) throws DbException
     {
         Connection connection = DbConnection.getInstance().getConnection();
         try (CallableStatement removeRequestProc = connection.prepareCall("CALL deleteChangesRequest(?)"))
         {
-            removeRequestProc.setInt("requestId_in", request.getMetadata().getRequestId());
+            if(request.isAccommodationChangeRequired())     // Delete the accommodation desired by the user (if present)
+            {
+                AccommodationOfferDao accommodationDao = new AccommodationOfferDao();
+                accommodationDao.removeOfferDesiredByUser(request.getAccommodationChanges());
+            }
+
+            if(request.isTransportChangeRequired())         // Delete the transport offer desired by the user (if present)
+            {
+                TransportOfferDao transportDao = new TransportOfferDao();
+                transportDao.removeOfferDesiredByUser(request.getTransportChanges());
+            }
+
+            removeRequestProc.setInt("requestId_in", request.getRequestId());
             removeRequestProc.execute();
-
-            if(request.isAccommodationChangeRequired())     // Delete accommodation changes request if is present
-            {
-                AccommodationChangesRequestDao accommodationChangesDao = new AccommodationChangesRequestDao();
-                accommodationChangesDao.removeChangesRequest(request.getAccommodationChanges());
-            }
-
-            if(request.isTransportChangeRequired())         // Delete transport changes request if is present
-            {
-                TransportChangesRequestDao transportChangesDao = new TransportChangesRequestDao();
-                transportChangesDao.removeChangesRequest(request.getTransportChanges());
-            }
 
         } catch (SQLException e) {
             throw new DbException("Failed to invoke the \"deleteChangesRequest\" stored procedure:\n" + e.getMessage());
@@ -160,64 +190,73 @@ public class ChangesRequestDao {
     }
 
 
-    // Creates a ChangesRequest instance using data contained in the given result set
-    private ChangesRequest createRequestFromResultSet(ResultSet rs) throws SQLException, DbException
+    // Creates an HolidayOffer instance that represents the offer desired by the user using data contained in the given result set
+    private HolidayOffer createDesiredOfferFromResultSet(ResultSet rs) throws SQLException, DbException
     {
-        if(!rs.next())
-            return null;
+        HolidayOffer desiredOffer;
 
-        // Retrieve profile of the request owner and the request addressee
+        // Retrieve the original holiday offer made by the travel agency
+        HolidayOfferDao offerDao = new HolidayOfferDao();
+        HolidayOffer agencyOffer = offerDao.getOfferById(rs.getInt("relativeOfferId"));
+
+        // Retrieve profile of the owner of the desired offer
         ProfileDao profileDao = new ProfileDao();
-        Profile requestOwner = profileDao.getProfileById(rs.getInt("ownerId"));
-        Profile requestAddressee = profileDao.getProfileById(rs.getInt("bidderAgencyId"));
+        Profile offerOwner = profileDao.getProfileById(rs.getInt("ownerId"));
 
-        ChangesRequest request = null;
+        // Now let's build the desired holiday offer using not-null data present the result set
         try {
-            ChangesRequestMetadata metadata = new ChangesRequestMetadata(
+            HolidayOfferMetadata metadata = new HolidayOfferMetadata(
                     rs.getInt("id"),
-                    requestOwner,
+                    offerOwner,
+                    HolidayOfferState.PENDING,
                     rs.getInt("relativeOfferId"),
-                    requestAddressee
+                    agencyOffer.getMetadata().getOfferOwner()
             );
 
-            request = new ChangesRequest(metadata, rs.getString("changesDescription"));
+            // By default, the desired holiday offer is equal to the one made by the travel agency
+            desiredOffer = new HolidayOffer(
+                    metadata,
+                    agencyOffer.getDestination(),
+                    agencyOffer.getHolidayDuration(),
+                    agencyOffer.getPrice(),
+                    agencyOffer.getAccommodationOffer(),
+                    agencyOffer.getTransportOffer()
+            );
 
-            // Populate the changes request with not-null data present the result set
             Date newDepartureDate = rs.getDate("newDepartureDate");
-            if(!rs.wasNull())
-            {
+            if (!rs.wasNull()) {
                 DateRange newHolidayDuration = new DateRange(
                         newDepartureDate.toLocalDate(),
                         rs.getDate("newReturnDate").toLocalDate()
                 );
 
-                request.setHolidayDuration(newHolidayDuration);
+                desiredOffer.setHolidayDuration(newHolidayDuration);
             }
 
             int requiredPrice = rs.getInt("newPrice");
-            if(!rs.wasNull())
-                request.setPrice(requiredPrice);
+            if (!rs.wasNull())
+                desiredOffer.setPrice(requiredPrice);
 
-            int accommodationChangesId = rs.getInt("accommodationChangesId");
-            if(accommodationChangesId != 0)
-            {
-                AccommodationChangesRequestDao accommodationChangesDao = new AccommodationChangesRequestDao();
-                AccommodationChangesRequest changes = accommodationChangesDao.getChangesRequestById(accommodationChangesId);
-                request.setAccommodationChanges(changes);
+            int accommodationId = rs.getInt("accommodationChangesId");
+            if (accommodationId != 0) {
+                AccommodationOfferDao accommodationDao = new AccommodationOfferDao();
+                AccommodationOffer desiredAccommodation = accommodationDao.getOfferDesiredByUser(accommodationId);
+                desiredOffer.setAccommodationOffer(desiredAccommodation);
             }
 
-            int transportChangesId = rs.getInt("transportChangesId");
-            if(transportChangesId != 0)
-            {
-                TransportChangesRequestDao accommodationChangesDao = new TransportChangesRequestDao();
-                TransportChangesRequest changes = accommodationChangesDao.getChangesRequestById(transportChangesId);
-                request.setTransportChanges(changes);
+            int transportId = rs.getInt("transportChangesId");
+            if (transportId != 0) {
+                TransportOfferDao transportDao = new TransportOfferDao();
+                TransportOffer desiredTransport = transportDao.getOfferDesiredByUser(transportId);
+                desiredOffer.setTransportOffer(desiredTransport);
             }
+
         } catch (IllegalArgumentException e) {
             throw new DbException("persistence layer returned invalid data:\n" + e.getMessage());
         }
 
-        return request;
+        return desiredOffer;
     }
 
 }
+

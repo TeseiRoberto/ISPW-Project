@@ -74,6 +74,34 @@ public class HolidayOfferDao {
     }
 
 
+    // Retrieves the holiday offer associated to the given id from the db
+    public HolidayOffer getOfferById(int offerId) throws DbException
+    {
+        List<HolidayOffer> holidayOffer = null;
+        Connection connection = DbConnection.getInstance().getConnection();
+
+        try (CallableStatement getOfferProc = connection.prepareCall("CALL getHolidayOfferById(?)"))
+        {
+            getOfferProc.setInt("offerId_in", offerId);
+            boolean status = getOfferProc.execute();
+            if(status)                                      // If the stored procedure returned a result set
+            {
+                ResultSet rs = getOfferProc.getResultSet();
+                holidayOffer = createHolidayOffersFromResultSet(rs);
+                rs.close();
+            }
+
+        } catch(SQLException e) {
+            throw new DbException("Failed to invoke the \"getHolidayOfferById\" stored procedure:\n" + e.getMessage());
+        }
+
+        if(holidayOffer == null || holidayOffer.size() != 1)
+            throw new DbException("Cannot find holiday offer with id " + offerId);
+
+        return holidayOffer.getFirst();
+    }
+
+
     // Retrieves all the holiday offers made by travel agencies to the holiday requirements associated to the given holidayReqId
     public List<HolidayOffer> getOffersForHolidayRequirements(int holidayReqId) throws DbException
     {
@@ -125,34 +153,6 @@ public class HolidayOfferDao {
         }
 
         return holidayOffers;
-    }
-
-
-    // Retrieves the holiday offer associated to the given id from the db
-    public HolidayOffer getOfferById(int offerId) throws DbException
-    {
-        List<HolidayOffer> holidayOffer = null;
-        Connection connection = DbConnection.getInstance().getConnection();
-
-        try (CallableStatement getOfferProc = connection.prepareCall("CALL getHolidayOfferById(?)"))
-        {
-            getOfferProc.setInt("offerId_in", offerId);
-            boolean status = getOfferProc.execute();
-            if(status)                                      // If the stored procedure returned a result set
-            {
-                ResultSet rs = getOfferProc.getResultSet();
-                holidayOffer = createHolidayOffersFromResultSet(rs);
-                rs.close();
-            }
-
-        } catch(SQLException e) {
-            throw new DbException("Failed to invoke the \"getHolidayOfferById\" stored procedure:\n" + e.getMessage());
-        }
-
-        if(holidayOffer == null || holidayOffer.size() != 1)
-            throw new DbException("Cannot find holiday offer with id " + offerId);
-
-        return holidayOffer.getFirst();
     }
 
 
