@@ -34,7 +34,7 @@ public class MakeCounterofferGfxControllerJfx extends BaseMakeOfferGfxController
 
 
     // Fills in the fields of the user request with the requested changes data
-    public void setRequestFields()
+    private void setRequestFields()
     {
         this.announcementOwnerText.setText(requestedChanges.getOwnerUsername());
         this.announcementDescriptionTextarea.setText(requestedChanges.getChangesDescription());
@@ -82,7 +82,7 @@ public class MakeCounterofferGfxControllerJfx extends BaseMakeOfferGfxController
 
 
     // Fills in the fields of the offer with the offer data
-    public void setOfferFields()
+    private void setOfferFields()
     {
         this.offeredDestinationTextfield.setText(currOffer.getDestination());
         this.offeredDepartureDatePicker.setValue(currOffer.getHolidayDuration().getDepartureDate());

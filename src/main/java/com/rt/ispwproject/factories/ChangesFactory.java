@@ -7,7 +7,8 @@ import com.rt.ispwproject.model.*;
 // This class is responsible for the creation of HolidayOfferAdapter instances
 public class ChangesFactory {
 
-    private static ChangesFactory instance = null;
+    private static ChangesFactory   instance = null;
+    public static String            NO_CHANGE_SPECIFIED_MSG = "No change has been specified!";
 
     private ChangesFactory() {}
 
@@ -105,9 +106,11 @@ public class ChangesFactory {
     }
 
 
-    public ChangesRequest createChangesRequest(HolidayOffer agencyOffer, HolidayOffer desiredOffer, String changesDescription)
+    public ChangesRequest createChangesRequest(HolidayOffer agencyOffer, HolidayOffer desiredOffer, String changesDescription) throws IllegalArgumentException
     {
-        return new HolidayOfferAdapter(agencyOffer, desiredOffer, changesDescription);
+        ChangesRequest request = new HolidayOfferAdapter(agencyOffer, desiredOffer, changesDescription);
+        checkRequestValidity(request);
+        return request;
     }
 
 
@@ -143,7 +146,7 @@ public class ChangesFactory {
                 return;
         }
 
-        throw new IllegalArgumentException("No change has been specified!");
+        throw new IllegalArgumentException(NO_CHANGE_SPECIFIED_MSG);
     }
 
 }

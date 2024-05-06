@@ -24,7 +24,7 @@ public class LoginGfxControllerJfx extends Application {
     @Override
     public void start(Stage stage) throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginGfxControllerJfx.class.getResource("common/loginScreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginGfxControllerJfx.class.getResource(BaseGfxControllerJfx.LOGIN_SCREEN_NAME));
         Scene scene = new Scene(fxmlLoader.load(), 720, 480);
         stage.setTitle("My Holiday");
         stage.setScene(scene);
@@ -58,11 +58,11 @@ public class LoginGfxControllerJfx extends Application {
         if (session.getUserRole() == UserRole.SIMPLE_USER)
         {
             loader.setControllerFactory(c -> new MyAnnouncementsGfxControllerJfx(session, mainStage));
-            loader.setLocation(getClass().getResource("simpleUser/myAnnouncementsScreen.fxml"));
+            loader.setLocation(getClass().getResource(BaseGfxControllerJfx.MY_ANNOUNCEMENTS_SCREEN_NAME));
         } else if (session.getUserRole() == UserRole.TRAVEL_AGENCY)
         {
                 loader.setControllerFactory(c -> new SearchAnnouncementsGfxControllerJfx(session, mainStage));
-                loader.setLocation(getClass().getResource("travelAgency/searchAnnouncementsScreen.fxml"));
+                loader.setLocation(getClass().getResource(BaseGfxControllerJfx.SEARCH_ANNOUNCEMENTS_SCREEN_NAME));
         }
 
         try {

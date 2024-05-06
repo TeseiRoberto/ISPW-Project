@@ -19,11 +19,11 @@ public class TransportSearcher {
 
 
     // Queries the API for transports tht
-    public List<Transport> searchTransportOffers(String departureLocation, String arrivalLocation,
+    public List<Transport> searchTransportOffers(String departureAddress, String arrivalAddress,
                                                  Duration departureAnsReturnDates, int numOfTravelers) throws ApiException
     {
-        if(departureLocation == null ||  departureLocation.isBlank() || arrivalLocation == null  || arrivalLocation.isBlank())
-            throw new ApiException(API_NAME, "Departure and/or arrival location has not been specified");
+        if(departureAddress == null ||  departureAddress.isBlank() || arrivalAddress == null  || arrivalAddress.isBlank())
+            throw new ApiException(API_NAME, "Departure and/or arrival address has not been specified");
 
         if(departureAnsReturnDates == null)
             throw new ApiException(API_NAME, "Departure and return dates has not been specified");
@@ -34,7 +34,7 @@ public class TransportSearcher {
         // Here we should query the external transports API to get the available transport offers.
         // For now, we simulate the existence of the API by generating a list of transports with random properties
 
-        return generateRandomTransportOffers(departureLocation, arrivalLocation, numOfTravelers);
+        return generateRandomTransportOffers(departureAddress, arrivalAddress, numOfTravelers);
     }
 
 

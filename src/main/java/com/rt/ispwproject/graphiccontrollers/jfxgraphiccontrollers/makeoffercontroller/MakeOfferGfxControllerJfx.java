@@ -32,7 +32,7 @@ public class MakeOfferGfxControllerJfx extends BaseMakeOfferGfxControllerJfx {
 
 
     // Fills in the fields of the user request with the announcement data
-    public void setRequestFields()
+    private void setRequestFields()
     {
         announcementOwnerText.setText(currAnnounce.getOwnerUsername());
         announcementDescriptionTextarea.setText(currAnnounce.getHolidayDescription());

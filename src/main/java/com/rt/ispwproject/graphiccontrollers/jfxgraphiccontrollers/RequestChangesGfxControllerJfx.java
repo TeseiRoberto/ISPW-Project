@@ -99,7 +99,7 @@ public class RequestChangesGfxControllerJfx extends BaseSimpleUserGfxControllerJ
 
 
     // Fills in the fields of the travel agency offer with the current offer data
-    public void setOfferFields()
+    private void setOfferFields()
     {
         offeredDestinationText.setText(currOffer.getDestination());
         offeredPriceText.setText(currOffer.getPriceAsStr());

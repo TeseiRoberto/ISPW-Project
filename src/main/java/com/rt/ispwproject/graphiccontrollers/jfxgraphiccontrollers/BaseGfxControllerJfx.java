@@ -14,6 +14,9 @@ import java.net.URL;
 // This class defines some common behaviour for the javafx graphic controllers
 public class BaseGfxControllerJfx {
 
+    // Names of the screen use by all users
+    protected static final String   LOGIN_SCREEN_NAME = "common/loginScreen.fxml";
+
     // Names of the screens used by the simple user
     protected static final String   MY_ANNOUNCEMENTS_SCREEN_NAME = "simpleUser/myAnnouncementsScreen.fxml";
     protected static final String   CREATE_ANNOUNCEMENT_SCREEN_NAME = "simpleUser/createAnnouncementScreen.fxml";

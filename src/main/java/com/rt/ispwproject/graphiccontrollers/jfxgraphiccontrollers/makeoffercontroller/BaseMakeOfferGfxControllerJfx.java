@@ -416,7 +416,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
     // Creates a generic search window, a search window is composed of a main title and a scroll pane in which
     // graphics elements will be placed, if a search window was already opened then an exception is thrown
-    public void createSearchWindow(String windowTitle, String screenTitle, int width, int height) throws IllegalStateException
+    private void createSearchWindow(String windowTitle, String screenTitle, int width, int height) throws IllegalStateException
     {
         if(searchWindow != null)                            // Only one search window can be active at any given time
         {
@@ -449,7 +449,7 @@ public class BaseMakeOfferGfxControllerJfx extends BaseTravelAgencyGfxController
 
 
     // Closes the search window if it is open
-    public void destroySearchWindow()
+    private void destroySearchWindow()
     {
         if(searchWindow != null)
         {

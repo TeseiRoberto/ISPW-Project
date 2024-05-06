@@ -19,9 +19,9 @@ public enum UserRole {
 
 
     // Converts the user role from the representation used in the persistence layer to the system representation
-    public static UserRole fromPersistenceType(String state) throws IllegalArgumentException
+    public static UserRole fromPersistenceType(String role) throws IllegalArgumentException
     {
-        return switch(state)
+        return switch(role)
         {
             case "SIMPLE_USER" ->   SIMPLE_USER;
             case "TRAVEL_AGENCY" -> TRAVEL_AGENCY;
