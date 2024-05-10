@@ -7,10 +7,11 @@ import com.rt.ispwproject.config.SessionManager;
 import com.rt.ispwproject.config.UserRole;
 import com.rt.ispwproject.dao.ChangesRequestDao;
 import com.rt.ispwproject.dao.HolidayOfferDao;
-import com.rt.ispwproject.dao.ProfileDao;
+import com.rt.ispwproject.dao.profiledao.ProfileDao;
 import com.rt.ispwproject.exceptions.ApiException;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.ProfileDaoFactory;
 import com.rt.ispwproject.model.*;
 
 import java.net.URL;
@@ -32,7 +33,7 @@ public class OfferManager {
             throw new IllegalCallerException("You must be logged in to make an offer to another user");
 
         // Retrieve the profiles of the offer owner and announcement owner
-        ProfileDao profileDao = new ProfileDao();
+        ProfileDao profileDao = ProfileDaoFactory.getInstance().createDao();
         Profile announcementOwner = profileDao.getProfileByUsername(offer.getRelativeAnnouncementOwnerUsername());
         Profile offerOwner = SessionManager.getInstance().getProfile(currSession);
 

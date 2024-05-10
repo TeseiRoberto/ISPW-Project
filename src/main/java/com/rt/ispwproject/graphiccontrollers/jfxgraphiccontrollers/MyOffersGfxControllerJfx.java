@@ -17,7 +17,6 @@ import java.util.List;
 // Graphic controller that displays the list of offers made by the "TRAVEL_AGENCY"
 public class MyOffersGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
 
-    private List<Offer>     offers = null;
     @FXML private VBox      offersVbox;
 
 
@@ -30,13 +29,15 @@ public class MyOffersGfxControllerJfx extends BaseTravelAgencyGfxControllerJfx {
     // Loads offers made by the travel agency and displays them
     @FXML void initialize()
     {
+        List<Offer> offers;
+
         try {
             OfferManager offerManager = new OfferManager();
             offers = offerManager.getMyOffers(currSession);
 
         } catch(DbException | IllegalArgumentException e)
         {
-            offers.clear();
+            offers = List.of();
             showErrorDialog(e.getMessage());
         }
 

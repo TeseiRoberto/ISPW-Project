@@ -1,8 +1,9 @@
 package com.rt.ispwproject.config;
 
 import com.rt.ispwproject.beans.Session;
-import com.rt.ispwproject.dao.ProfileDao;
+import com.rt.ispwproject.dao.profiledao.ProfileDao;
 import com.rt.ispwproject.exceptions.DbException;
+import com.rt.ispwproject.factories.ProfileDaoFactory;
 import com.rt.ispwproject.model.Profile;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class SessionManager {
         if(password == null || password.isEmpty())
             throw new IllegalArgumentException("Password cannot be empty");
 
-        ProfileDao dao = new ProfileDao();
+        ProfileDao dao = ProfileDaoFactory.getInstance().createDao();
         Profile profile = dao.getProfile(username, password);
         Session newSession = new Session(profile.getUsername(), profile.getUserRole());
 

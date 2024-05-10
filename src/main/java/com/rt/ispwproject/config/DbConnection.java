@@ -33,7 +33,7 @@ public class DbConnection {
         } catch (IOException e) {
             throw new DbException("Cannot connect to db, " + DB_CREDENTIALS_FILE_NAME + " not found");
         } catch (SQLException e) {
-            throw new DbException("Db error " + e.getMessage());
+            throw new DbException("Db error: " + e.getMessage());
         }
     }
 

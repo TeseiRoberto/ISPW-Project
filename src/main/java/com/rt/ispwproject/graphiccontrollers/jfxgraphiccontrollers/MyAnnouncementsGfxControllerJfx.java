@@ -18,7 +18,6 @@ import java.util.List;
 public class MyAnnouncementsGfxControllerJfx extends BaseSimpleUserGfxControllerJfx {
 
     @FXML VBox                      announcementsVbox;
-    private List<Announcement>      announcements;
 
 
     // Loads all the announcements posted by user and displays them
@@ -31,16 +30,18 @@ public class MyAnnouncementsGfxControllerJfx extends BaseSimpleUserGfxController
     // Load the announcements posted by the user and creates a DetailsBannerGfxElement for each of them
     @FXML void initialize()
     {
+        List<Announcement> announcements;
+
         try {
             AnnouncementManager annManager = new AnnouncementManager();
             announcements = annManager.getMyAnnouncements(currSession);
         } catch(DbException | IllegalCallerException | IllegalArgumentException e)
         {
             showErrorDialog(e.getMessage());
-            announcements.clear();
+            announcements = List.of();
         }
 
-        if(announcements.isEmpty())
+        if(announcements == null || announcements.isEmpty())
         {
             Label infoMsg = new Label("No announcement has been posted yet.");
             infoMsg.setTextAlignment(TextAlignment.CENTER);

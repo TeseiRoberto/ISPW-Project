@@ -23,12 +23,15 @@ public class TestChangesFactory {
     {
         Throwable e = assertThrows(IllegalArgumentException.class, () -> {
 
-                HolidayOffer offer = createDummyOffer();
+                Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
+                Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
+
+                HolidayOffer offer = createDummyOffer(travelAgency, user);
                 ChangesFactory.getInstance().createChangesRequest(offer, offer, "");
             }
         );
 
-        assertEquals(ChangesFactory.NO_CHANGE_SPECIFIED_MSG, e.getMessage());
+        assertEquals("User cannot request changes on an offer made by himself!", e.getMessage());
     }
 
 
@@ -37,8 +40,11 @@ public class TestChangesFactory {
     @Test
     void positiveTestCreateRequestOfChanges()
     {
-        HolidayOffer agencyOffer = createDummyOffer();
-        HolidayOffer desiredOffer = createDummyOffer();
+        Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
+        Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
+
+        HolidayOffer agencyOffer = createDummyOffer(travelAgency, user);
+        HolidayOffer desiredOffer = createDummyOffer(user, travelAgency);
 
         // This must not fail because accommodation offer and transport offer instances are different
         // in the 2 offers, so it's like if changes on accommodation and transport are requested
@@ -48,12 +54,9 @@ public class TestChangesFactory {
 
 
     // Creates an HolidayOffer instance with dummy data
-    private HolidayOffer createDummyOffer()
+    private HolidayOffer createDummyOffer(Profile offerOwner, Profile offerAddressee)
     {
-        Profile agency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
-        Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
-
-        HolidayOfferMetadata metadata = new HolidayOfferMetadata(agency, HolidayOfferState.PENDING, 0, user);
+        HolidayOfferMetadata metadata = new HolidayOfferMetadata(offerOwner, HolidayOfferState.PENDING, 0, offerAddressee);
 
         Location departureLocation = new Location("Rome");
         Location arrivalLocation = new Location("London");

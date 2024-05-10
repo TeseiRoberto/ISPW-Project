@@ -21,7 +21,6 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
 
     @FXML TextField             searchBarTextfield;
     @FXML VBox                  announcementsVbox;
-    private List<Announcement>  announcements;
     private static final int    MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED = 10;
 
 
@@ -34,16 +33,18 @@ public class SearchAnnouncementsGfxControllerJfx extends BaseTravelAgencyGfxCont
     // Loads some of the announcements posted by users and displays them
     @FXML void initialize()
     {
+        List<Announcement> announcements;
+
         try {
             SearchAnnouncementsManager searchManager = new SearchAnnouncementsManager();
             announcements = searchManager.searchAnnouncements(currSession, 0, MAX_NUM_OF_ANNOUNCEMENTS_DISPLAYED);
         } catch(DbException | IllegalCallerException | IllegalArgumentException e)
         {
             showErrorDialog(e.getMessage());
-            announcements.clear();
+            announcements = List.of();
         }
 
-        if(announcements.isEmpty())
+        if(announcements == null || announcements.isEmpty())
         {
             Label infoMsg = new Label("No announcement is currently available.");
             infoMsg.setTextAlignment(TextAlignment.CENTER);

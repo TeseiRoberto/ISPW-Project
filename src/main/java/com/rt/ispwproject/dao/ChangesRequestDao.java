@@ -1,8 +1,10 @@
 package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
+import com.rt.ispwproject.dao.profiledao.ProfileDao;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.ChangesFactory;
+import com.rt.ispwproject.factories.ProfileDaoFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -86,8 +88,7 @@ public class ChangesRequestDao {
     // Retrieves the changes requested on the holiday offer associated to the given id (if there is a request)
     public ChangesRequest getChangesRequestForOffer(int offerId) throws DbException
     {
-        String changesDescription = "";
-        HolidayOffer desiredOffer = null;
+        ChangesRequest request = null;
 
         // Let's retrieve data of the desired offer
         Connection connection = DbConnection.getInstance().getConnection();
@@ -98,12 +99,8 @@ public class ChangesRequestDao {
             if(status)
             {
                 ResultSet rs = getRequestProc.getResultSet();
-
                 if(rs.next())
-                {
-                    desiredOffer = createDesiredOfferFromResultSet(rs);
-                    changesDescription = rs.getString("changesDescription");
-                }
+                    request = createChangesRequestFromResultSet(rs);
             }
 
         } catch (SQLException e) {
@@ -112,23 +109,14 @@ public class ChangesRequestDao {
             throw new DbException("Cannot get changes requested on holiday offer with id " + offerId + ":\n" + e.getMessage());
         }
 
-        // If the desired offer has not been found in db then no change was requested on the offer associated to the given id
-        if(desiredOffer == null)
-            return null;
-
-        // Otherwise we retrieve original offer made by the travel agency and build the request of changes using the factory
-        HolidayOfferDao offerDao = new HolidayOfferDao();
-        HolidayOffer agencyOffer = offerDao.getOfferById(offerId);
-
-        return ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, changesDescription);
+        return request;
     }
 
 
     // Retrieves the request of changes associated to the given id from the db
     public ChangesRequest getChangesRequestById(int requestId) throws DbException
     {
-        String changesDescription = "";
-        HolidayOffer desiredOffer = null;
+        ChangesRequest request= null;
 
         Connection connection = DbConnection.getInstance().getConnection();
         try (CallableStatement getRequestProc = connection.prepareCall("CALL getChangesRequestById(?)"))
@@ -139,9 +127,7 @@ public class ChangesRequestDao {
             {
                 ResultSet rs = getRequestProc.getResultSet();
                 if(rs.next())
-                {
-                    desiredOffer = createDesiredOfferFromResultSet(rs);
-                }
+                    request = createChangesRequestFromResultSet(rs);
             }
 
         } catch (SQLException e) {
@@ -150,14 +136,10 @@ public class ChangesRequestDao {
             throw new DbException("Cannot get request of changes with id " + requestId + ":\n" + e.getMessage());
         }
 
-        if(desiredOffer == null)
-            throw new DbException("");
+        if(request == null)
+            throw new DbException("Cannot find request of changes with id: " + requestId);
 
-        // Now we retrieve the original offer made by the travel agency and build the Changes request using the factory
-        HolidayOfferDao offerDao = new HolidayOfferDao();
-        HolidayOffer agencyOffer = offerDao.getOfferById(desiredOffer.getMetadata().getRelativeRequirementsId());
-
-        return ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, changesDescription);
+        return request;
     }
 
 
@@ -191,19 +173,21 @@ public class ChangesRequestDao {
 
 
     // Creates an HolidayOffer instance that represents the offer desired by the user using data contained in the given result set
-    private HolidayOffer createDesiredOfferFromResultSet(ResultSet rs) throws SQLException, DbException
+    private ChangesRequest createChangesRequestFromResultSet(ResultSet rs) throws SQLException, DbException
     {
-        HolidayOffer desiredOffer;
+        String changesDescription = rs.getString("changesDescription");
 
         // Retrieve the original holiday offer made by the travel agency
         HolidayOfferDao offerDao = new HolidayOfferDao();
         HolidayOffer agencyOffer = offerDao.getOfferById(rs.getInt("relativeOfferId"));
 
         // Retrieve profile of the owner of the desired offer
-        ProfileDao profileDao = new ProfileDao();
+        ProfileDao profileDao = ProfileDaoFactory.getInstance().createDao();
         Profile offerOwner = profileDao.getProfileById(rs.getInt("ownerId"));
 
         // Now let's build the desired holiday offer using not-null data present the result set
+        HolidayOffer desiredOffer;
+
         try {
             HolidayOfferMetadata metadata = new HolidayOfferMetadata(
                     rs.getInt("id"),
@@ -257,7 +241,7 @@ public class ChangesRequestDao {
             throw new DbException("persistence layer returned invalid data:\n" + e.getMessage());
         }
 
-        return desiredOffer;
+        return ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, changesDescription);
     }
 
 }

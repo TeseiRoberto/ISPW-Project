@@ -1,8 +1,10 @@
 package com.rt.ispwproject.dao;
 
 import com.rt.ispwproject.config.DbConnection;
+import com.rt.ispwproject.dao.profiledao.ProfileDao;
 import com.rt.ispwproject.exceptions.DbException;
 import com.rt.ispwproject.factories.LocationFactory;
+import com.rt.ispwproject.factories.ProfileDaoFactory;
 import com.rt.ispwproject.model.*;
 
 import java.sql.*;
@@ -189,7 +191,7 @@ public class HolidayOfferDao {
     {
         ArrayList<HolidayOffer> result = new ArrayList<>();
 
-        ProfileDao profileDao = new ProfileDao();
+        ProfileDao profileDao = ProfileDaoFactory.getInstance().createDao();
         AccommodationOfferDao accommodationOfferDao = new AccommodationOfferDao();
         TransportOfferDao transportOfferDao = new TransportOfferDao();
         LocationFactory locationFactory = new LocationFactory();

@@ -1,4 +1,4 @@
-package com.rt.ispwproject.dao;
+package com.rt.ispwproject.dao.profiledao;
 
 import com.rt.ispwproject.config.DbConnection;
 import com.rt.ispwproject.config.UserRole;
@@ -7,7 +7,7 @@ import com.rt.ispwproject.model.Profile;
 
 import java.sql.*;
 
-public class ProfileDao {
+public class ProfileDaoMysql implements ProfileDao {
 
 
     // Retrieves profile associated to the given credentials from db

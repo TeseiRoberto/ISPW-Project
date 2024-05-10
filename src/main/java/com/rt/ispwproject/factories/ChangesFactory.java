@@ -8,7 +8,7 @@ import com.rt.ispwproject.model.*;
 public class ChangesFactory {
 
     private static ChangesFactory   instance = null;
-    public static String            NO_CHANGE_SPECIFIED_MSG = "No change has been specified!";
+
 
     private ChangesFactory() {}
 
@@ -108,6 +108,12 @@ public class ChangesFactory {
 
     public ChangesRequest createChangesRequest(HolidayOffer agencyOffer, HolidayOffer desiredOffer, String changesDescription) throws IllegalArgumentException
     {
+        if(agencyOffer == null)
+            throw new IllegalArgumentException("An Holiday offer must be specified to create a request of changes!");
+
+        if(desiredOffer == null)
+            throw new IllegalArgumentException("A desired holiday offer must be specified to create a request of changes!");
+
         ChangesRequest request = new HolidayOfferAdapter(agencyOffer, desiredOffer, changesDescription);
         checkRequestValidity(request);
         return request;
@@ -133,6 +139,9 @@ public class ChangesFactory {
     {
         if(request != null)
         {
+            if(request.getRequestOwner().isEqual(request.getRelativeOfferOwner()))
+                throw new IllegalArgumentException("User cannot request changes on an offer made by himself!");
+
             if(request.isHolidayDurationChangeRequired())
                 return;
 
@@ -146,7 +155,7 @@ public class ChangesFactory {
                 return;
         }
 
-        throw new IllegalArgumentException(NO_CHANGE_SPECIFIED_MSG);
+        throw new IllegalArgumentException("No change has been specified!");
     }
 
 }

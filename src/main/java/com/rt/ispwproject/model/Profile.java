@@ -24,4 +24,6 @@ public class Profile {
     public String getUsername()     { return this.username; }
     public String getEmail()        { return this.email; }
     public UserRole getUserRole()   { return this.role; }
+
+    public boolean isEqual(Profile other) { return this.username.equals(other.getUsername()); }
 }
