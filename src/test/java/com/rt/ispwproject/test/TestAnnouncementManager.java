@@ -18,16 +18,16 @@ class TestAnnouncementManager {
     @Test
     void testPostAnnouncement() throws IllegalArgumentException, DbException
     {
-        Session testSession = createTestSession();
-        Announcement testAnnounce = createTestAnnouncement(testSession);
+        Session testSession = createDummySession();
+        Announcement announce = createDummyAnnouncement(testSession);
 
         // Post new announcement
         AnnouncementManager announcementManager = new AnnouncementManager();
-        announcementManager.postAnnouncement(testSession, testAnnounce);
+        announcementManager.postAnnouncement(testSession, announce);
 
         // Check that the announcement was posted correctly
         List<Announcement> announcementList = announcementManager.getMyAnnouncements(testSession);
-        assertTrue(announcementExistsInList(testAnnounce, announcementList));
+        assertTrue(announcementExistsInList(announce, announcementList));
     }
 
 
@@ -51,31 +51,13 @@ class TestAnnouncementManager {
             if(!announce.getDateOfPost().equals(a.getDateOfPost()))
                 continue;
 
-            if(!announce.getHolidayDuration().getDepartureDate().equals(a.getHolidayDuration().getDepartureDate()))
+            if(!announce.getHolidayDuration().isEqual(a.getHolidayDuration()))
                 continue;
 
-            if(!announce.getHolidayDuration().getReturnDate().equals(a.getHolidayDuration().getReturnDate()))
+            if(!announce.getAccommodationRequirements().isEqual(a.getAccommodationRequirements()))
                 continue;
 
-            if(!announce.getAccommodationRequirements().getType().equals(a.getAccommodationRequirements().getType()))
-                continue;
-
-            if(announce.getAccommodationRequirements().getQuality() != a.getAccommodationRequirements().getQuality())
-                continue;
-
-            if(announce.getAccommodationRequirements().getNumOfRooms() != a.getAccommodationRequirements().getNumOfRooms())
-                continue;
-
-            if(!announce.getTransportRequirements().getType().equals(a.getTransportRequirements().getType()))
-                continue;
-
-            if(announce.getTransportRequirements().getQuality() != a.getTransportRequirements().getQuality())
-                continue;
-
-            if(announce.getTransportRequirements().getNumOfTravelers() != a.getTransportRequirements().getNumOfTravelers())
-                continue;
-
-            if(!announce.getTransportRequirements().getDepartureLocation().equals(a.getTransportRequirements().getDepartureLocation()))
+            if(!announce.getTransportRequirements().isEqual(a.getTransportRequirements()))
                 continue;
 
             return true;
@@ -86,14 +68,14 @@ class TestAnnouncementManager {
 
 
     // Creates a session associated to a test account
-    private Session createTestSession() throws IllegalArgumentException, DbException
+    private Session createDummySession() throws IllegalArgumentException, DbException
     {
         return SessionManager.getInstance().createNewSession("testUser", "0000");
     }
 
 
     // Creates a test announcement
-    private Announcement createTestAnnouncement(Session user) throws IllegalArgumentException
+    private Announcement createDummyAnnouncement(Session user) throws IllegalArgumentException
     {
         Accommodation accommodationReq = new Accommodation("Hotel", 4, 1);
         Transport transportReq = new Transport("Airplane", 3, "Rome", "London", 1);

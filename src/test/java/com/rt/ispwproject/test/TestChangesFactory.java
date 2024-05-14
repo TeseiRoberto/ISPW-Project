@@ -16,7 +16,7 @@ public class TestChangesFactory {
     // In the system we represent a request of changes made by a user as a couple of holiday offers, the first offer
     // is the one made by the travel agency and the second one is the offer desired by the user.
     // To build request of changes we use a factory class, this method tries to create a request of changes in which
-    // the desired offer and the agency offer are the same.
+    // the desired offer and the agency offer contains the same data.
     // In such case we expect the factory to throw an exception
     @Test
     void negativeTestCreateRequestOfChanges()
@@ -26,12 +26,17 @@ public class TestChangesFactory {
                 Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
                 Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
 
-                HolidayOffer offer = createDummyOffer(travelAgency, user);
-                ChangesFactory.getInstance().createChangesRequest(offer, offer, "");
+                HolidayOffer agencyOffer = createDummyOffer(travelAgency, user);
+                HolidayOffer desiredOffer = createDummyOffer(user, travelAgency);
+
+                desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
+                desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
+
+                ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
             }
         );
 
-        assertEquals("User cannot request changes on an offer made by himself!", e.getMessage());
+        assertEquals(ChangesFactory.NO_CHANGE_ERROR_MSG, e.getMessage());
     }
 
 

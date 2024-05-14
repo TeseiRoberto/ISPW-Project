@@ -8,6 +8,7 @@ import com.rt.ispwproject.model.*;
 public class ChangesFactory {
 
     private static ChangesFactory   instance = null;
+    public static final String      NO_CHANGE_ERROR_MSG = "No change has been specified!";
 
 
     private ChangesFactory() {}
@@ -35,7 +36,7 @@ public class ChangesFactory {
             throw new IllegalArgumentException("The user which is requesting changes is unknown!");
 
         if(changes == null)
-            throw new IllegalArgumentException("No change has been specified!");
+            throw new IllegalArgumentException(NO_CHANGE_ERROR_MSG);
 
         // Let's construct the offer desired by the user
         HolidayOfferMetadata desiredOfferMetadata = new HolidayOfferMetadata(
@@ -155,7 +156,7 @@ public class ChangesFactory {
                 return;
         }
 
-        throw new IllegalArgumentException("No change has been specified!");
+        throw new IllegalArgumentException(NO_CHANGE_ERROR_MSG);
     }
 
 }

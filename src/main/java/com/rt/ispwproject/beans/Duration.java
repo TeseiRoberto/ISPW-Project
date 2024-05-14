@@ -59,4 +59,10 @@ public class Duration {
 
         return Period.between(departureDate, returnDate).getDays();
     }
+
+
+    public boolean isEqual(Duration other)
+    {
+        return departureDate.isEqual(other.getDepartureDate()) && returnDate.isEqual(other.getReturnDate());
+    }
 }

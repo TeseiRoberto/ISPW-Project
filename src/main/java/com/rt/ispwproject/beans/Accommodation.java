@@ -25,7 +25,7 @@ public class Accommodation {
         this.quality = 0;
         this.numOfRooms = 0;
         this.totalPrice = 0;
-        this.imagesLinks = null;
+        this.imagesLinks = List.of();
     }
 
 
@@ -146,5 +146,32 @@ public class Accommodation {
     public static List<String> getAvailableTypes()
     {
         return List.of( "Not specified", "Hotel" );
+    }
+
+
+    public boolean isEqual(Accommodation other)
+    {
+        if(!type.equals(other.type))
+            return false;
+
+        if(!name.equals(other.name))
+            return false;
+
+        if(accommodationId != other.accommodationId)
+            return false;
+
+        if(!address.equals(other.address))
+            return false;
+
+        if(quality != other.quality)
+            return false;
+
+        if(numOfRooms != other.numOfRooms)
+            return false;
+
+        if(totalPrice != other.totalPrice)
+            return false;
+
+        return true;
     }
 }

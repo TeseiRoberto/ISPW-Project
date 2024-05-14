@@ -154,4 +154,34 @@ public class Transport {
     {
         return List.of( "Not specified", "Airplane", "Train", "Ferry", "Bus" );
     }
+
+
+    public boolean isEqual(Transport other)
+    {
+        if(!type.equals(other.type))
+            return false;
+
+        if(!companyName.equals(other.companyName))
+            return false;
+
+        if(companyId != other.companyId)
+            return false;
+
+        if(quality != other.quality)
+            return false;
+
+        if(numOfTravelers != other.numOfTravelers)
+            return false;
+
+        if(!departureLocation.equals(other.departureLocation))
+            return false;
+
+        if(!arrivalLocation.equals(other.arrivalLocation))
+            return false;
+
+        if(pricePerTraveler != other.pricePerTraveler)
+            return false;
+
+        return true;
+    }
 }
