@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ProfileDaoFileSystem implements ProfileDao {
 
-    private final static String DATA_FILENAME = "users.csv";
+    private static final String DATA_FILENAME = "users.csv";
 
 
     // Retrieves profile associated to the given credentials from db
@@ -38,19 +38,16 @@ public class ProfileDaoFileSystem implements ProfileDao {
     private Profile getProfileDetails(Integer userId, String username, String password) throws DbException
     {
         if(userId == null && username == null)
-                throw new DbException("Cannot get profile details, user id and username are both empty");
+            throw new DbException("Cannot get profile details, user id and username are both empty");
 
         Profile profile = null;
+        String line;
+
         try (BufferedReader profileReader = new BufferedReader( new FileReader(DATA_FILENAME) ))
         {
-            boolean found = false;
-            String line;
-            while((line = profileReader.readLine()) != null && !found)
+            while((line = profileReader.readLine()) != null)
             {
                 String[] data = line.split(",");
-
-                if(data.length != 5)
-                    throw new DbException("Failed to retrieve profile details:\nThe users data file is corrupted");
 
                 int profileId = Integer.parseInt(data[0]);
                 String profileName = data[1];
@@ -61,28 +58,27 @@ public class ProfileDaoFileSystem implements ProfileDao {
                 if(userId != null && userId == profileId)
                 {
                     profile = new Profile(profileId, profileName, profileEmail, profileRole);
-                    found = true;
+                    break;
                 } else if(username != null && username.equals(profileName))
                 {
-                    if(password == null)
-                    {
-                        profile = new Profile(profileId, profileName, profileEmail, profileRole);
-                        found = true;
-                    } else if(password.equals(profilePassword))
-                    {
-                        profile = new Profile(profileId, profileName, profileEmail, profileRole);
-                        found = true;
-                    }
+                    if(password != null && !password.equals(profilePassword))
+                        continue;
+
+                    profile = new Profile(profileId, profileName, profileEmail, profileRole);
+                    break;
                 }
             }
 
         } catch(IOException | IllegalArgumentException e) {
-            throw new DbException("Failed to invoke the \"getUserDetails\" stored procedure, read operation of data file has failed:\n" + e.getMessage());
+            throw new DbException("Failed to retrieve profile details, read operation of data file has failed:\n" + e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            throw new DbException("Failed to retrieve profile details: the users data file is corrupted");
         }
 
-        if (profile == null)
+        if(profile == null)
             throw new DbException("User not found");
 
         return profile;
     }
+
 }

@@ -169,9 +169,6 @@ public class Accommodation {
         if(numOfRooms != other.numOfRooms)
             return false;
 
-        if(totalPrice != other.totalPrice)
-            return false;
-
-        return true;
+        return totalPrice == other.totalPrice;
     }
 }

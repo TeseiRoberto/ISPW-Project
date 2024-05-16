@@ -4,4 +4,4 @@
 4,testUser,test_user@email.com,0000,SIMPLE_USER
 5,holidayHero,holidayhero@email.com,0000,TRAVEL_AGENCY
 6,pippo,pippo@email.com,0000,SIMPLE_USER
-7,testTravelAgency,test_travel_agency@email.com,TRAVEL_AGENCY
+7,testTravelAgency,test_travel_agency@email.com,0000,TRAVEL_AGENCY

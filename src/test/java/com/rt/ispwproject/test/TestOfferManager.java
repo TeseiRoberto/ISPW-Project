@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestOfferManager {
+class TestOfferManager {
 
     @Test
     void testMakeOffer() throws DbException, RuntimeException

@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TestChangesFactory {
+class TestChangesFactory {
 
 
     // In the system we represent a request of changes made by a user as a couple of holiday offers, the first offer
@@ -26,11 +25,17 @@ public class TestChangesFactory {
                 Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
                 Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
 
-                HolidayOffer agencyOffer = createDummyOffer(travelAgency, user);
-                HolidayOffer desiredOffer = createDummyOffer(user, travelAgency);
+                HolidayOffer agencyOffer;
+                HolidayOffer desiredOffer;
+                try {
+                        agencyOffer = createDummyOffer(travelAgency, user);
+                        desiredOffer = createDummyOffer(user, travelAgency);
 
-                desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
-                desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
+                        desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
+                        desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
+                } catch(IllegalArgumentException err) {
+                        throw new RuntimeException("An error has occurred while building the dummy offers:" + err.getMessage());
+                }
 
                 ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
             }
@@ -54,7 +59,8 @@ public class TestChangesFactory {
         // This must not fail because accommodation offer and transport offer instances are different
         // in the 2 offers, so it's like if changes on accommodation and transport are requested
 
-        ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
+        ChangesRequest req = ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
+        assertNotEquals(req, null);
     }
 
 

@@ -179,9 +179,6 @@ public class Transport {
         if(!arrivalLocation.equals(other.arrivalLocation))
             return false;
 
-        if(pricePerTraveler != other.pricePerTraveler)
-            return false;
-
-        return true;
+        return pricePerTraveler == other.pricePerTraveler;
     }
 }
