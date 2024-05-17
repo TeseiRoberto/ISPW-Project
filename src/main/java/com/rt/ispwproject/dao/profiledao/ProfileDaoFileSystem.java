@@ -40,32 +40,36 @@ public class ProfileDaoFileSystem implements ProfileDao {
         if(userId == null && username == null)
             throw new DbException("Cannot get profile details, user id and username are both empty");
 
-        Profile profile = null;
+        int profileId = 0;
+        String profileName = "";
+        String profileEmail = "";
+        String profilePassword = "";
+        UserRole profileRole = null;
+
         String line;
+        boolean found = false;
 
         try (BufferedReader profileReader = new BufferedReader( new FileReader(DATA_FILENAME) ))
         {
-            while((line = profileReader.readLine()) != null)
+            while((line = profileReader.readLine()) != null && !found)
             {
                 String[] data = line.split(",");
 
-                int profileId = Integer.parseInt(data[0]);
-                String profileName = data[1];
-                String profileEmail = data[2];
-                String profilePassword = data[3];
-                UserRole profileRole = UserRole.fromPersistenceType(data[4]);
+                profileId = Integer.parseInt(data[0]);
+                profileName = data[1];
+                profileEmail = data[2];
+                profilePassword = data[3];
+                profileRole = UserRole.fromPersistenceType(data[4]);
 
                 if(userId != null && userId == profileId)
                 {
-                    profile = new Profile(profileId, profileName, profileEmail, profileRole);
-                    break;
+                    found = true;
                 } else if(username != null && username.equals(profileName))
                 {
                     if(password != null && !password.equals(profilePassword))
-                        continue;
+                        break;
 
-                    profile = new Profile(profileId, profileName, profileEmail, profileRole);
-                    break;
+                    found = true;
                 }
             }
 
@@ -75,10 +79,10 @@ public class ProfileDaoFileSystem implements ProfileDao {
             throw new DbException("Failed to retrieve profile details: the users data file is corrupted");
         }
 
-        if(profile == null)
+        if(!found)
             throw new DbException("User not found");
 
-        return profile;
+        return new Profile(profileId, profileName, profileEmail, profileRole);
     }
 
 }

@@ -18,25 +18,18 @@ class TestChangesFactory {
     // the desired offer and the agency offer contains the same data.
     // In such case we expect the factory to throw an exception
     @Test
-    void negativeTestCreateRequestOfChanges()
+    void negativeTestCreateRequestOfChanges() throws IllegalArgumentException
     {
+        Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
+        Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
+
+        HolidayOffer agencyOffer = createDummyOffer(travelAgency, user);
+        HolidayOffer desiredOffer = createDummyOffer(user, travelAgency);
+
+        desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
+        desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
+
         Throwable e = assertThrows(IllegalArgumentException.class, () -> {
-
-                Profile travelAgency = new Profile(0, "dummyTravelAgency", "dummyAgency@email.com", UserRole.TRAVEL_AGENCY);
-                Profile user = new Profile(0, "dummyUser", "dummyUser@email.com", UserRole.SIMPLE_USER);
-
-                HolidayOffer agencyOffer;
-                HolidayOffer desiredOffer;
-                try {
-                        agencyOffer = createDummyOffer(travelAgency, user);
-                        desiredOffer = createDummyOffer(user, travelAgency);
-
-                        desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
-                        desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
-                } catch(IllegalArgumentException err) {
-                        throw new RuntimeException("An error has occurred while building the dummy offers:" + err.getMessage());
-                }
-
                 ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
             }
         );
@@ -60,7 +53,7 @@ class TestChangesFactory {
         // in the 2 offers, so it's like if changes on accommodation and transport are requested
 
         ChangesRequest req = ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
-        assertNotEquals(req, null);
+        assertNotEquals(null, req);
     }
 
 
