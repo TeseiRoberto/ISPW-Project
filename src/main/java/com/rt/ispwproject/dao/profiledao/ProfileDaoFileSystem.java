@@ -40,49 +40,41 @@ public class ProfileDaoFileSystem implements ProfileDao {
         if(userId == null && username == null)
             throw new DbException("Cannot get profile details, user id and username are both empty");
 
-        int profileId = 0;
-        String profileName = "";
-        String profileEmail = "";
-        String profilePassword = "";
-        UserRole profileRole = null;
-
         String line;
-        boolean found = false;
+        Profile profile = null;
 
         try (BufferedReader profileReader = new BufferedReader( new FileReader(DATA_FILENAME) ))
         {
-            while((line = profileReader.readLine()) != null && !found)
+            while((line = profileReader.readLine()) != null && profile == null)
             {
                 String[] data = line.split(",");
 
-                profileId = Integer.parseInt(data[0]);
-                profileName = data[1];
-                profileEmail = data[2];
-                profilePassword = data[3];
-                profileRole = UserRole.fromPersistenceType(data[4]);
+                int profileId = Integer.parseInt(data[0]);
+                String profileName = data[1];
+                String profileEmail = data[2];
+                String profilePassword = data[3];
+                UserRole profileRole = UserRole.fromPersistenceType(data[4]);
 
                 if(userId != null && userId == profileId)
                 {
-                    found = true;
+                    profile = new Profile(profileId, profileName, profileEmail, profileRole);
                 } else if(username != null && username.equals(profileName))
                 {
                     if(password != null && !password.equals(profilePassword))
                         break;
 
-                    found = true;
+                    profile = new Profile(profileId, profileName, profileEmail, profileRole);
                 }
             }
 
-        } catch(IOException | IllegalArgumentException e) {
-            throw new DbException("Failed to retrieve profile details, read operation of data file has failed:\n" + e.getMessage());
-        } catch (IndexOutOfBoundsException e) {
-            throw new DbException("Failed to retrieve profile details: the users data file is corrupted");
+        } catch(IOException | IllegalArgumentException | IndexOutOfBoundsException e) {
+            throw new DbException("Failed to retrieve profile details: read operation of data file has failed, file is corrupted or not available");
         }
 
-        if(!found)
+        if(profile == null)
             throw new DbException("User not found");
 
-        return new Profile(profileId, profileName, profileEmail, profileRole);
+        return profile;
     }
 
 }

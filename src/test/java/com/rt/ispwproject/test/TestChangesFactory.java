@@ -29,9 +29,10 @@ class TestChangesFactory {
         desiredOffer.setAccommodationOffer(agencyOffer.getAccommodationOffer());
         desiredOffer.setTransportOffer(agencyOffer.getTransportOffer());
 
-        Throwable e = assertThrows(IllegalArgumentException.class, () -> {
-                ChangesFactory.getInstance().createChangesRequest(agencyOffer, desiredOffer, "");
-            }
+        ChangesFactory factory = ChangesFactory.getInstance();
+
+        Throwable e = assertThrows(IllegalArgumentException.class, () ->
+                factory.createChangesRequest(agencyOffer, desiredOffer, "")
         );
 
         assertEquals(ChangesFactory.NO_CHANGE_ERROR_MSG, e.getMessage());
