@@ -603,7 +603,7 @@
                         </HBox>
                      </children>
                   </GridPane>
-                  <Button id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onMakeCounterofferClick" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Make counteroffer" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="makeOffer_btn" mnemonicParsing="false" onMouseClicked="#onMakeCounterofferClick" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: E69E0F; -fx-background-radius: 4px; -fx-border-color: #2B2B2B; -fx-border-radius: 4px; -fx-background-insets: 1px;" text="Make counteroffer" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
